@@ -25,27 +25,27 @@ struct TextFieldView: View {
                         text = ""
                     } label: {
                         Image(systemName: SystemIcons.xmarkIcon)
-                            .foregroundStyle(Color.slTextSecondary)
+                            .foregroundStyle(.slTextSecondary)
                     }
                 }
             }
             .frame(maxWidth: .infinity)
             .frame(height: 54)
-            .font(Font.body)
+            .font(AppFont.bodyRegular)
             .padding(.horizontal)
-            .background(Color.slBackgroundElevated)
-            .cornerRadius(12)
+            .background(.slBackgroundElevated)
+            .cornerRadius(Metrics.cornerRadius)
             .overlay {
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke( isError ? Color.slDestructive : .clear, lineWidth: 0.5)
+                RoundedRectangle(cornerRadius: Metrics.cornerRadius)
+                    .stroke( isError ? .slDestructive : .clear, lineWidth: 0.5)
             }
             
             if isError, let errorMessage {
                 Text(errorMessage)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
-                    .font(Font.footnote)
-                    .foregroundStyle(Color.slDestructive)
+                    .font(AppFont.footnote)
+                    .foregroundStyle(.slDestructive)
             }
         }
     }

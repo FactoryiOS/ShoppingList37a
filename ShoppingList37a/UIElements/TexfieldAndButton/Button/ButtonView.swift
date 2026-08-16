@@ -18,11 +18,11 @@ struct ButtonView: View {
             action()
         } label: {
             Text(title)
-                .foregroundStyle(isActive ? Color.white : Color.slTextSecondary)
-                .font(Font.headline)
+                .foregroundStyle(isActive ? .white : .slTextSecondary)
+                .font(AppFont.headline)
                 .frame(maxWidth: .infinity)
                 .frame(height: 44)
-                .background(isActive ? Color.slAccent : Color.slButtonDisabled)
+                .background(isActive ? .slAccent : .slButtonDisabled)
                 .cornerRadius(100)
         }
         .disabled(!isActive)
