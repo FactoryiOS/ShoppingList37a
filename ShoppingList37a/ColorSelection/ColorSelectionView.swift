@@ -16,7 +16,7 @@ struct ColorSelectionView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(title)
-                .font(Font.callout)
+                .font(AppFont.callout)
                 .foregroundStyle(.slTextCounter)
                 .padding(.top, 12)
                 .padding(.leading, 12)
