@@ -6,3 +6,32 @@
 //
 
 import Foundation
+import SwiftUI
+
+struct ButtonView: View {
+    var isActive: Bool
+    var title: String
+    var action: () -> Void
+    
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            Text(title)
+                .foregroundStyle(isActive ? Color.white : Color.slTextSecondary)
+                .font(Font.headline)
+                .frame(maxWidth: .infinity)
+                .frame(height: 44)
+                .background(isActive ? Color.slAccent : Color.slButtonDisabled)
+                .cornerRadius(100)
+        }
+        .disabled(!isActive)
+    }
+}
+
+#Preview {
+    ZStack {
+        Color.slTextSecondary
+        ButtonView(isActive: true, title: "Создать", action: { })
+    }
+}

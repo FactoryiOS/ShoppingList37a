@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+struct Placeholder {
+    static let textFieldPlaceholder = "Введите название списка"
+}
+
+struct SystemIcons {
+    static let xmarkIcon = "xmark.circle.fill"
+}
