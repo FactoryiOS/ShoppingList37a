@@ -52,7 +52,7 @@ struct IconPickerView: View {
             LazyVGrid(columns: columns, spacing: Constants.rowSpacing) {
                 ForEach(icons) { icon in
                     Button {
-                        selection = (selection == icon) ? nil : icon
+                        selection = icon
                     } label: {
                         IconCell(
                             icon: icon,
