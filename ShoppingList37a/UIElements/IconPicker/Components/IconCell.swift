@@ -24,7 +24,7 @@ struct IconCell: View {
             .resizable()
             .scaledToFit()
             .frame(width: Constants.iconSize, height: Constants.iconSize)
-            .foregroundStyle(.slBackgroundPrimary)
+            .foregroundStyle(Color(.slBackgroundPrimary))
             .padding(Constants.padding)
             .background(isSelected ? selectionColor : Color(.slIconBackground))
             .clipShape(Circle())
