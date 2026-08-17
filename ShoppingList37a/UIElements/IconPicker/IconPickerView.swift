@@ -47,7 +47,7 @@ struct IconPickerView: View {
         VStack(alignment: .leading, spacing: Constants.contentSpacing) {
             Text(title)
                 .font(AppFont.callout)
-                .foregroundStyle(Color(.slTextPrimary))
+                .foregroundStyle(Color(.slTextCounter))
             
             LazyVGrid(columns: colums, spacing: Constants.rowSpacing) {
                 ForEach(icons) { icon in
