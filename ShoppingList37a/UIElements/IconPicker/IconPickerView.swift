@@ -26,7 +26,7 @@ struct IconPickerView: View {
     @Binding var selection: SelectableIcon?
     let selectionColor: Color
     
-    private let colums = Array(
+    private let columns = Array(
         repeating: GridItem(spacing: Constants.columnSpacing),
         count: Constants.columnCount
     )
@@ -49,7 +49,7 @@ struct IconPickerView: View {
                 .font(AppFont.callout)
                 .foregroundStyle(Color(.slTextCounter))
             
-            LazyVGrid(columns: colums, spacing: Constants.rowSpacing) {
+            LazyVGrid(columns: columns, spacing: Constants.rowSpacing) {
                 ForEach(icons) { icon in
                     Button {
                         selection = (selection == icon) ? nil : icon
