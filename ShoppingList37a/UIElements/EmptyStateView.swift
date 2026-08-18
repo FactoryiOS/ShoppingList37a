@@ -49,7 +49,7 @@ struct EmptyStateView: View {
             VStack(spacing: 4) {
                 
                 Text(state.title)
-                    .font(.title3.weight(.semibold))
+                    .font(AppFont.title3SemiBold)
                     .foregroundStyle(.slTextPrimary)
                     .multilineTextAlignment(.center)
                 
