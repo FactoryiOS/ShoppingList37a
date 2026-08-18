@@ -7,6 +7,35 @@
 
 import SwiftUI
 
+/// Displays a placeholder for empty shopping lists or shopping items.
+struct EmptyStateView: View {
+    
+    let state: EmptyState
+    
+    var body: some View {
+        VStack(spacing: 28) {
+            Image(state.image)
+                .resizable()
+                .scaledToFit()
+                .padding(.horizontal, state.imageHorizontalPadding)
+            
+            VStack(spacing: 4) {
+                Text(state.title)
+                    .font(AppFont.title3SemiBold)
+                    .foregroundStyle(.slTextPrimary)
+                    .multilineTextAlignment(.center)
+                
+                Text(state.subtitle)
+                    .font(AppFont.bodyRegular)
+                    .foregroundStyle(.slTextPrimary)
+                    .multilineTextAlignment(.center)
+                
+            }
+            
+        }
+    }
+}
+
 enum EmptyState {
     case shoppingLists
     case shoppingItems
@@ -21,6 +50,16 @@ enum EmptyState {
         }
     }
     
+    var imageHorizontalPadding: CGFloat {
+        switch self {
+        case .shoppingLists:
+            49
+
+        case .shoppingItems:
+            16
+        }
+    }
+    
     var title: String {
         "Давайте спланируем покупки!"
     }
@@ -32,34 +71,6 @@ enum EmptyState {
             
         case .shoppingItems:
             "Начните добавлять товары"
-        }
-    }
-}
-
-/// Displays a placeholder for empty shopping lists or shopping items.
-struct EmptyStateView: View {
-    
-    let state: EmptyState
-    
-    var body: some View {
-        VStack(spacing: 28) {
-            
-            Image(state.image)
-            
-            VStack(spacing: 4) {
-                
-                Text(state.title)
-                    .font(AppFont.title3SemiBold)
-                    .foregroundStyle(.slTextPrimary)
-                    .multilineTextAlignment(.center)
-                
-                Text(state.subtitle)
-                    .font(AppFont.bodyRegular)
-                    .foregroundStyle(.slTextPrimary)
-                    .multilineTextAlignment(.center)
-                
-            }
-            
         }
     }
 }
