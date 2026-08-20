@@ -21,6 +21,9 @@ enum AppFont {
     /// 20, Medium.
     static let title3 = Font.title3.weight(.medium)
     
+    /// 20, Semibold.
+    static let title3SemiBold = Font.title3.weight(.semibold)
+    
     /// 17, Medium.
     static let headline = Font.headline.weight(.medium)
     
