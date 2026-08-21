@@ -17,7 +17,7 @@ struct ShoppingItemView: View {
 
             Text(item.name)
                 .font(AppFont.bodyRegular)
-                .foregroundStyle(item.isBought ? .slTextSecondary : .slTextPrimary)
+                .foregroundStyle(item.isBought ? .slTextSecondary : .slTextCounter)
 
             Spacer()
 
@@ -32,7 +32,7 @@ struct ShoppingItemView: View {
     private var checkbox: some View {
         Group {
             if item.isBought {
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 4)
                     .fill(.slAccent)
                     .overlay {
                         Image(systemName: "checkmark")
@@ -40,8 +40,8 @@ struct ShoppingItemView: View {
                             .foregroundStyle(.slTextOnAccent)
                     }
             } else {
-                RoundedRectangle(cornerRadius: 8)
-                    .strokeBorder(.slIconBackground, lineWidth: 2)
+                RoundedRectangle(cornerRadius: 4)
+                    .strokeBorder(.slCheckboxBorder, lineWidth: 2)
             }
         }
         .frame(width: 28, height: 28)
