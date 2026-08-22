@@ -11,7 +11,6 @@ struct WelcomeScreen: View {
     
     private enum Constants {
         static let title = "Добро пожаловать!"
-        static let imageName = "imgOnboarding"
         static let headline = "Никогда не забывайте,\nчто нужно купить"
         static let supportingText = "Создавайте списки\nи не переживайте о покупках"
         static let buttonTitle = "Начать"
@@ -39,7 +38,7 @@ struct WelcomeScreen: View {
                 Spacer()
                     .frame(height: Constants.titleToImageSpacing)
                 
-                Image(Constants.imageName)
+                Image(.imgOnboarding)
                     .resizable()
                     .scaledToFit()
                     .padding(.horizontal, Constants.horizontalPadding)
