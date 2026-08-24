@@ -19,8 +19,15 @@ extension CreateListView {
 			case .edit: "Сохранить"
 			}
 		}
+		
+		var colorSectionTitle: String {
+			switch self {
+			case .create: "Выберите дизайн"
+			case .edit: "Цвет"
+			}
+		}
 	}
-
+	
 	@MainActor
 	@Observable
 	final class Observed {

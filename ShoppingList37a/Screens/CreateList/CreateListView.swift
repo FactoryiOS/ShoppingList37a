@@ -3,10 +3,10 @@ import SwiftUI
 struct CreateListView: View {
 	@Environment(\.dismiss) private var dismiss
 	
-	@State private var observed: CreateListObserved
+	@State private var observed: Observed
 	var onSave: () -> Void = {}
 	
-	init(observed: @autoclosure @MainActor () -> CreateListObserved = CreateListObserved()) {
+	init(observed: @autoclosure @MainActor () -> Observed = Observed()) {
 		_observed = State(wrappedValue: observed())
 	}
 	
@@ -20,15 +20,14 @@ struct CreateListView: View {
 					label: {
 						HStack(spacing: 0) {
 							Image(systemName: "chevron.left")
-								.font(.system(size: 16, weight: .regular))
+								.font(AppFont.callout)
 								.foregroundStyle(Color(.slTextPrimary))
 								.frame(width: 28, height: 44)
 							
-							Text(observed.mode == .create ? "Создать список" : "Редактировать список")
-								.font(.system(size: 17, weight: .medium))
+							Text(observed.mode.title)
+								.font(AppFont.headline)
 								.foregroundStyle(Color(.slTextPrimary))
-								.lineSpacing(22 - 17)
-								.padding(.leading, 8) 
+								.padding(.leading, 8)
 						}
 					}
 				)
@@ -38,11 +37,9 @@ struct CreateListView: View {
 			}
 			.padding(.horizontal, 16)
 			.frame(height: 52)
-			.background(Color(.slBackgroundPrimary))
 			
 			ScrollView {
 				VStack(spacing: 16) {
-					
 					TextFieldView(
 						placeholder: "Введите название списка",
 						text: $observed.listName,
@@ -53,17 +50,16 @@ struct CreateListView: View {
 					
 					ColorSelectionView(
 						selectedColor: $observed.selectedColor,
-						title: observed.mode == .create ? "Выберите дизайн" : "Цвет"
+						title: observed.mode.colorSectionTitle
 					)
 					
 					IconPickerView(
 						selection: $observed.selectedIcon,
-						selectionColor: observed.selectedColor?.color ?? Color(.slAccent)
+						selectionColor: observed.currentSelectionColor
 					)
 				}
 				.padding(.horizontal, 16)
 			}
-			.background(Color(.slBackgroundPrimary).ignoresSafeArea())
 			
 			VStack {
 				ButtonView(
@@ -77,22 +73,22 @@ struct CreateListView: View {
 				.padding(.horizontal, 16)
 				.padding(.bottom, 8)
 			}
-			.background(Color(.slBackgroundPrimary))
 		}
+		.background(Color(.slBackgroundPrimary).ignoresSafeArea())
 		.navigationBarBackButtonHidden(true)
 	}
 }
 
 #Preview("Создание списка") {
 	NavigationStack {
-		CreateListView(observed: CreateListObserved(mode: .create))
+		CreateListView(observed: CreateListView.Observed(mode: .create))
 	}
 }
 
 #Preview("Редактирование списка") {
 	NavigationStack {
 		CreateListView(
-			observed: CreateListObserved(
+			observed: CreateListView.Observed(
 				mode: .edit,
 				listName: "Новый год",
 				selectedColor: .red,
