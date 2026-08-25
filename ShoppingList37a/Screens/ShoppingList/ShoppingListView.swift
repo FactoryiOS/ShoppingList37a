@@ -60,6 +60,7 @@ struct ShoppingListView: View {
                 .contentShape(Rectangle())
                 .onTapGesture { observed.toggleBought(item) }
                 .listRowInsets(EdgeInsets())
+                .listRowSeparator(.hidden, edges: .top)
                 .listRowBackground(Color.slBackgroundPrimary)
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button(role: .destructive) {
