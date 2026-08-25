@@ -9,6 +9,8 @@ import SwiftUI
 
 struct WelcomeScreen: View {
     
+    let onStart: () -> Void
+    
     private enum Constants {
         static let title = "Добро пожаловать!"
         static let headline = "Никогда не забывайте,\nчто нужно купить"
@@ -64,7 +66,7 @@ struct WelcomeScreen: View {
                 ButtonView(
                     isActive: true,
                     title: Constants.buttonTitle,
-                    action: { }
+                    action: onStart
                 )
                 .padding(.horizontal, Constants.buttonHorizontalPadding)
             }
@@ -75,11 +77,11 @@ struct WelcomeScreen: View {
 }
 
 #Preview("Light") {
-    WelcomeScreen()
+    WelcomeScreen(onStart: {})
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
-    WelcomeScreen()
+    WelcomeScreen(onStart: {})
         .preferredColorScheme(.dark)
 }
