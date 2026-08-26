@@ -51,16 +51,15 @@ struct ShoppingListView: View {
     }
 
     private var backTitle: some View {
-        HStack(spacing: Constants.titleSpacing) {
-            Button(action: onBack) {
+        Button(action: onBack) {
+            HStack(spacing: Constants.titleSpacing) {
                 Image(systemName: Constants.backIcon)
                     .font(AppFont.bodySemiBold)
-                    .foregroundStyle(.slTextPrimary)
-            }
 
-            Text(observed.listTitle)
-                .font(AppFont.bodySemiBold)
-                .foregroundStyle(.slTextPrimary)
+                Text(observed.listTitle)
+                    .font(AppFont.bodySemiBold)
+            }
+            .foregroundStyle(.slTextPrimary)
         }
     }
 

@@ -8,6 +8,7 @@ import SwiftUI
 
 private enum Constants {
     static let searchIcon = "magnifyingglass"
+    static let clearIcon = "xmark.circle.fill"
     static let spacing: CGFloat = 8
     static let cornerRadius: CGFloat = 10
     static let height: CGFloat = 36
@@ -17,6 +18,8 @@ struct SearchFieldView: View {
     let placeholder: String
 
     @Binding var text: String
+
+    @FocusState private var isFocused: Bool
 
     var body: some View {
         HStack(spacing: Constants.spacing) {
@@ -30,11 +33,27 @@ struct SearchFieldView: View {
             )
             .font(AppFont.bodyRegular)
             .foregroundStyle(.slTextPrimary)
+            .focused($isFocused)
+            .textInputAutocapitalization(.never)
+            .autocorrectionDisabled()
+            .submitLabel(.search)
+            .accessibilityAddTraits(.isSearchField)
+
+            if !text.isEmpty {
+                Button {
+                    text = ""
+                } label: {
+                    Image(systemName: Constants.clearIcon)
+                        .foregroundStyle(.slTextSecondary)
+                }
+            }
         }
         .padding(.horizontal, Constants.spacing)
         .frame(height: Constants.height)
         .background(.slBackgroundElevated)
         .cornerRadius(Constants.cornerRadius)
+        .contentShape(Rectangle())
+        .onTapGesture { isFocused = true }
     }
 }
 
