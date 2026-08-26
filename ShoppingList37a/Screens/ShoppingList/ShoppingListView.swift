@@ -73,7 +73,7 @@ struct ShoppingListView: View {
 
     @ViewBuilder
     private var content: some View {
-        if observed.items.isEmpty {
+        if observed.filteredItems.isEmpty {
             Spacer()
             EmptyStateView(state: .shoppingItems)
                 .padding(.horizontal, Constants.spacing)
