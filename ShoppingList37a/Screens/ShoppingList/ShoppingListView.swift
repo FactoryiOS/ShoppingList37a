@@ -9,10 +9,13 @@ import SwiftUI
 private enum Constants {
     static let addTitle = "Добавить товар"
     static let searchPrompt = "Поиск"
+    static let backIcon = "chevron.left"
     static let menuIcon = "ellipsis.circle"
     static let editIcon = "square.and.pencil"
     static let deleteIcon = "trash"
     static let spacing: CGFloat = 16
+    static let titleSpacing: CGFloat = 8
+    static let searchVerticalPadding: CGFloat = 8
 }
 
 struct ShoppingListView: View {
@@ -21,24 +24,50 @@ struct ShoppingListView: View {
     var onEdit: (ShoppingItem) -> Void = { _ in }
     var onDelete: (ShoppingItem) -> Void = { _ in }
     var onMenu: () -> Void = { }
+    var onBack: () -> Void = { }
 
     var body: some View {
         VStack(spacing: 0) {
+            SearchFieldView(placeholder: Constants.searchPrompt, text: $observed.searchText)
+                .padding(.horizontal, Constants.spacing)
+                .padding(.vertical, Constants.searchVerticalPadding)
             content
             ButtonView(isActive: true, title: Constants.addTitle, action: onAdd)
                 .padding(Constants.spacing)
         }
         .background(.slBackgroundPrimary)
-        .navigationTitle(observed.listTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: $observed.searchText, prompt: Constants.searchPrompt)
+        .navigationBarBackButtonHidden(true)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: onMenu) {
-                    Image(systemName: Constants.menuIcon)
-                        .foregroundStyle(.slTextPrimary)
-                }
+            if #available(iOS 26.0, *) {
+                ToolbarItem(placement: .topBarLeading) { backTitle }
+                    .sharedBackgroundVisibility(.hidden)
+                ToolbarItem(placement: .topBarTrailing) { menuButton }
+                    .sharedBackgroundVisibility(.hidden)
+            } else {
+                ToolbarItem(placement: .topBarLeading) { backTitle }
+                ToolbarItem(placement: .topBarTrailing) { menuButton }
             }
+        }
+    }
+
+    private var backTitle: some View {
+        HStack(spacing: Constants.titleSpacing) {
+            Button(action: onBack) {
+                Image(systemName: Constants.backIcon)
+                    .font(AppFont.bodySemiBold)
+                    .foregroundStyle(.slTextPrimary)
+            }
+
+            Text(observed.listTitle)
+                .font(AppFont.bodySemiBold)
+                .foregroundStyle(.slTextPrimary)
+        }
+    }
+
+    private var menuButton: some View {
+        Button(action: onMenu) {
+            Image(systemName: Constants.menuIcon)
+                .foregroundStyle(.slTextPrimary)
         }
     }
 
