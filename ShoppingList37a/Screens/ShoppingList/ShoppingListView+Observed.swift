@@ -18,8 +18,9 @@ extension ShoppingListView {
 
         /// Товары, отфильтрованные по строке поиска.
         var filteredItems: [ShoppingItem] {
-            guard !searchText.isEmpty else { return items }
-            return items.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+            let query = searchText.trimmingCharacters(in: .whitespaces)
+            guard !query.isEmpty else { return items }
+            return items.filter { $0.name.localizedCaseInsensitiveContains(query) }
         }
 
         init(

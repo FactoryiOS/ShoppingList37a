@@ -94,7 +94,7 @@ struct ShoppingListView: View {
                 )
                 .listRowBackground(Color.slBackgroundPrimary)
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                    Button(role: .destructive) {
+                    Button {
                         onDelete(item)
                     } label: {
                         Image(systemName: Constants.deleteIcon)
