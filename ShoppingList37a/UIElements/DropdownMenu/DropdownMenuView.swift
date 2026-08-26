@@ -3,8 +3,8 @@ import SwiftUI
 struct DropdownMenuView: View {
 	@Binding var selectedTheme: AppTheme
 	@Binding var isThemeExpanded: Bool
-	let onDismiss: () -> Void // Колбэк для закрытия меню извне
-
+	let onDismiss: () -> Void
+	
 	var body: some View {
 		VStack(spacing: 0) {
 			if !isThemeExpanded {
@@ -19,8 +19,7 @@ struct DropdownMenuView: View {
 		.shadow(color: Color.black.opacity(0.12), radius: 8, x: 0, y: 4)
 		.transition(.opacity.combined(with: .scale(scale: 0.95, anchor: .topTrailing)))
 	}
-
-	// MARK: - Первый уровень меню
+	
 	private var mainMenuLayers: some View {
 		VStack(spacing: 0) {
 			MenuRow(
@@ -48,8 +47,7 @@ struct DropdownMenuView: View {
 			)
 		}
 	}
-
-	// MARK: - Второй уровень (Выбор тем)
+	
 	private var themeSelectionLayers: some View {
 		VStack(spacing: 0) {
 			MenuRow(
@@ -82,7 +80,7 @@ struct DropdownMenuView: View {
 			}
 		}
 	}
-
+	
 	private var divider: some View {
 		Rectangle()
 			.fill(Color(.slTextPrimary).opacity(0.15))
@@ -90,7 +88,6 @@ struct DropdownMenuView: View {
 	}
 }
 
-// MARK: - Переиспользуемая строка меню
 private struct MenuRow: View {
 	let title: String
 	let font: Font
@@ -100,7 +97,7 @@ private struct MenuRow: View {
 	var chevronRotation: Double = 0
 	let height: CGFloat
 	let action: () -> Void
-
+	
 	var body: some View {
 		Button(
 			action: {
