@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CreateListView: View {
-	@Environment(\.dismiss) private var dismiss
+    @Environment(Router.self) private var router
 	
 	@State private var observed: Observed
 	var onSave: () -> Void = {}
@@ -14,9 +14,9 @@ struct CreateListView: View {
 		VStack(spacing: 0) {
 			HStack {
 				Button(
-					action: {
-						dismiss()
-					},
+                    action: {
+                        router.pop()
+                    },
 					label: {
 						HStack(spacing: 0) {
 							Image(systemName: "chevron.left")
@@ -65,10 +65,10 @@ struct CreateListView: View {
 				ButtonView(
 					isActive: observed.isSaveEnabled,
 					title: observed.mode.actionButtonTitle,
-					action: {
-						onSave()
-						dismiss()
-					}
+                    action: {
+                        onSave()
+                        router.pop()
+                    }
 				)
 				.padding(.horizontal, 16)
 				.padding(.bottom, 8)
@@ -83,6 +83,7 @@ struct CreateListView: View {
 	NavigationStack {
 		CreateListView(observed: CreateListView.Observed(mode: .create))
 	}
+    .environment(Router())
 }
 
 #Preview("Редактирование списка") {
@@ -96,4 +97,5 @@ struct CreateListView: View {
 			)
 		)
 	}
+    .environment(Router())
 }

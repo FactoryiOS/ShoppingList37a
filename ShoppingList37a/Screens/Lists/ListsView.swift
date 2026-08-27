@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct ListsView: View {
+    
+    @Environment(Router.self) private var router
 
     let observed: Observed
 
     private enum Constants {
         static let title = "Мои списки"
         static let createButtonTitle = "Создать список"
+        static let editIcon = "square.and.pencil"
     }
 
     var body: some View {
@@ -66,6 +69,16 @@ struct ListsView: View {
         List {
             ForEach(observed.lists) { item in
                 ListItemCell(item: item)
+                    .onTapGesture {
+                        router.push(.shoppingList(item))
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        Button {
+                            router.push(.editList(item))
+                        } label: {
+                            Image(systemName: Constants.editIcon)
+                        }
+                    }
                     .listRowSeparator(.hidden)
                     .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                     .listRowBackground(Color.clear)
@@ -79,7 +92,9 @@ struct ListsView: View {
         ButtonView(
             isActive: true,
             title: Constants.createButtonTitle,
-            action: {}
+            action: {
+                router.push(.createList)
+            }
         )
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
@@ -88,8 +103,10 @@ struct ListsView: View {
 
 #Preview("Empty") {
     ListsView(observed: .init(lists: []))
+        .environment(Router())
 }
 
 #Preview("Data") {
     ListsView(observed: .init(lists: ListItem.mocks))
+        .environment(Router())
 }
