@@ -41,8 +41,6 @@ struct CreateListView: View {
         .navigationBarBackButtonHidden(true)
     }
     
-    // MARK: - Subviews
-    
     private var navigationHeader: some View {
         HStack {
             Button(
@@ -83,7 +81,6 @@ struct CreateListView: View {
     }
 }
 
-// MARK: - Previews
 #Preview("Создание списка") {
     CreateListView(observed: .init(mode: .create))
         .environment(Router())
