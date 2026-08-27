@@ -100,7 +100,3 @@ struct CreateListView: View {
     )
     .environment(Router())
 }
-		)
-	}
-    .environment(Router())
-}
