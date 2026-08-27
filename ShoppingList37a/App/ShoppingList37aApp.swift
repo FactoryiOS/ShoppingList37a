@@ -1,21 +1,16 @@
-//
-//  ShoppingList37aApp.swift
-//  ShoppingList37a
-//
-//  Created by Nikita Tsomuk on 10.08.2026.
-//
-
 import SwiftUI
 
 @main
 struct ShoppingList37aApp: App {
-    
-    @State private var appState = AppState()
-    
-    var body: some Scene {
-        WindowGroup {
-            RootView()
-                .environment(appState)
-        }
-    }
+	
+	@State private var appState = AppState()
+	@AppStorage("selected_app_theme") private var selectedTheme: AppTheme = .system
+	
+	var body: some Scene {
+		WindowGroup {
+			RootView()
+				.environment(appState)
+				.preferredColorScheme(selectedTheme.colorScheme)
+		}
+	}
 }
