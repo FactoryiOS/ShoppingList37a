@@ -4,5 +4,60 @@
 //
 //  Created by Kirill Maidanovich on 28.08.2026.
 //
+import SwiftUI
+import SwiftData
 
-import Foundation
+@Model
+final class SDShoppingList {
+    var id: UUID
+    var title: String
+    var iconRawValue: String
+    var colorRawValue: String
+    var boughtCount: Int { items.filter(\.isBought).count }
+    var totalCount: Int { items.count }
+    
+    @Relationship(deleteRule: .cascade, inverse: \SDShoppingItem.list)
+    var items: [SDShoppingItem] = []
+
+    init(id: UUID, title: String, icon: SelectableIcon, color: SelectableColor/*, boughtCount: Int, totalCount: Int*/) {
+        self.id = id
+        self.title = title
+        self.iconRawValue = icon.rawValue
+        self.colorRawValue = color.rawValue
+//        self.boughtCount = boughtCount
+//        self.totalCount = totalCount
+    }
+    
+    var icon: SelectableIcon {
+        get { SelectableIcon(rawValue: iconRawValue) ?? .snow }
+        set { iconRawValue = newValue.rawValue }
+    }
+    
+    var color: SelectableColor {
+        get { SelectableColor(rawValue: colorRawValue) ?? .blue }
+        set { colorRawValue = newValue.rawValue }
+    }
+}
+
+@Model
+final class SDShoppingItem {
+    var id: UUID
+    var name: String
+    var quantity: Int
+    var unitRawValue: String
+    var isBought: Bool
+    var list: SDShoppingList?
+    
+    init(id: UUID, name: String, quantity: Int, unit: ShoppingItemUnit, isBought: Bool) {
+        self.id = id
+        self.name = name
+        self.quantity = quantity
+        self.unitRawValue = unit.rawValue
+        self.isBought = isBought
+    }
+    
+    var unit: ShoppingItemUnit {
+        get { ShoppingItemUnit(rawValue: unitRawValue) ?? .pieces}
+        set { unitRawValue = newValue.rawValue}
+    }
+}

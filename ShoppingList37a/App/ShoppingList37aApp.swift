@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct ShoppingList37aApp: App {
@@ -17,5 +18,6 @@ struct ShoppingList37aApp: App {
             RootView()
                 .environment(appState)
         }
+        .modelContainer(for: [SDShoppingList.self, SDShoppingItem.self])
     }
 }
