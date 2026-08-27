@@ -1,17 +1,15 @@
-//
-//  ListsView.swift
-//  ShoppingList37a
-//
-//  Created by Andrew Ruzavin on 23/8/26.
-//
-
 import SwiftUI
 
 struct ListsView: View {
     
     @Environment(Router.self) private var router
-
+    
     let observed: Observed
+    
+    @AppStorage("selected_app_theme") private var selectedTheme: AppTheme = .system
+    
+    @State private var isMenuPresented = false
+    @State private var isThemeExpanded = false
 
     private enum Constants {
         static let title = "Мои списки"
@@ -20,7 +18,7 @@ struct ListsView: View {
     }
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .topTrailing) {
             Color(.slBackgroundPrimary)
                 .ignoresSafeArea()
 
@@ -29,7 +27,22 @@ struct ListsView: View {
                 content
                 createButton
             }
+            .onTapGesture {
+                dismissMenu()
+            }
+            
+            if isMenuPresented {
+                DropdownMenuView(
+                    selectedTheme: $selectedTheme,
+                    isThemeExpanded: $isThemeExpanded,
+                    onDismiss: { dismissMenu() }
+                )
+                .padding(.top, 44)
+                .padding(.trailing, 16)
+                .zIndex(1)
+            }
         }
+        .preferredColorScheme(selectedTheme.colorScheme)
     }
 
     private var header: some View {
@@ -47,12 +60,20 @@ struct ListsView: View {
     }
 
     private var menuButton: some View {
-        Button(action: {}, label: {
-            Image(.icEllipsis)
-                .renderingMode(.template)
-                .foregroundStyle(Color(.slTextPrimary))
-                .frame(width: 44, height: 44)
-        })
+        Button(
+            action: {
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    isMenuPresented.toggle()
+                    if !isMenuPresented { isThemeExpanded = false }
+                }
+            },
+            label: {
+                Image(.icEllipsis)
+                    .renderingMode(.template)
+                    .foregroundStyle(Color(.slTextPrimary))
+                    .frame(width: 44, height: 44)
+            }
+        )
     }
 
     @ViewBuilder
@@ -70,11 +91,11 @@ struct ListsView: View {
             ForEach(observed.lists) { item in
                 ListItemCell(item: item)
                     .onTapGesture {
-                        router.push(.shoppingList(item))
+                        router.push(.shoppingList(item)) // Интегрирована её навигация по тапу
                     }
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                         Button {
-                            router.push(.editList(item))
+                            router.push(.editList(item)) // Интегрирован её свайп на редактирование
                         } label: {
                             Image(systemName: Constants.editIcon)
                         }
@@ -93,11 +114,20 @@ struct ListsView: View {
             isActive: true,
             title: Constants.createButtonTitle,
             action: {
-                router.push(.createList)
+                router.push(.createList) // Интегрирован её переход к созданию списка
             }
         )
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
+    }
+
+    private func dismissMenu() {
+        if isMenuPresented {
+            withAnimation(.easeInOut(duration: 0.15)) {
+                isMenuPresented = false
+                isThemeExpanded = false
+            }
+        }
     }
 }
 
