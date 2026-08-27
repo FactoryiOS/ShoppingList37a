@@ -19,7 +19,7 @@ final class SDShoppingList {
     @Relationship(deleteRule: .cascade, inverse: \SDShoppingItem.list)
     var items: [SDShoppingItem] = []
 
-    init(id: UUID, title: String, icon: SelectableIcon, color: SelectableColor/*, boughtCount: Int, totalCount: Int*/) {
+    init(id: UUID = UUID(), title: String, icon: SelectableIcon, color: SelectableColor/*, boughtCount: Int, totalCount: Int*/) {
         self.id = id
         self.title = title
         self.iconRawValue = icon.rawValue
@@ -48,12 +48,12 @@ final class SDShoppingItem {
     var isBought: Bool
     var list: SDShoppingList?
     
-    init(id: UUID, name: String, quantity: Int, unit: ShoppingItemUnit, isBought: Bool) {
+    init(id: UUID = UUID(), name: String, quantity: Int, unit: ShoppingItemUnit) {
         self.id = id
         self.name = name
         self.quantity = quantity
         self.unitRawValue = unit.rawValue
-        self.isBought = isBought
+        self.isBought = false
     }
     
     var unit: ShoppingItemUnit {

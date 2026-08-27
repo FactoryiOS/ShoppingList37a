@@ -10,3 +10,7 @@ import Foundation
 enum Errors {
     static let duplicateName = "Это название уже используется, пожалуйста, измените его."
 }
+
+enum DataError: Error {
+    case saveFailed(Error)
+}

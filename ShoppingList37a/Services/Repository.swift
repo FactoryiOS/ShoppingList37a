@@ -8,3 +8,76 @@
 import Foundation
 import SwiftData
 
+@Observable
+final class Repository {
+    private let context: ModelContext
+    
+    init(context: ModelContext) {
+        self.context = context
+    }
+    
+    //MARK: There are all the methods for a shopping lists.
+    
+    func createList(title: String, icon: SelectableIcon, color: SelectableColor) {
+        let list = SDShoppingList(title: title, icon: icon, color: color)
+        context.insert(list)
+        save()
+    }
+    
+    func updateList(_ list: SDShoppingList, title: String, icon: SelectableIcon, color: SelectableColor) {
+        list.title = title
+        list.icon = icon
+        list.color = color
+        save()
+    }
+    
+    func duplicateList(_ list: SDShoppingList) {
+        let copy = SDShoppingList(title: list.title, icon: list.icon, color: list.color)
+        copy.items = list.items.map {
+            SDShoppingItem(name: $0.name, quantity: $0.quantity, unit: $0.unit)
+        }
+        context.insert(copy)
+        save()
+    }
+    
+    func deleteList(_ list: SDShoppingList) {
+        context.delete(list)
+        save()
+    }
+    
+    //MARK: There are all the methods for shopping items.
+    
+    func addItem(to shoppingList: SDShoppingList, name: String, quantity: Int, unit: ShoppingItemUnit) {
+        let item = SDShoppingItem(name: name, quantity: quantity, unit: unit)
+        item.list = shoppingList
+        context.insert(item)
+        save()
+    }
+    
+    func updateItem(_ item: SDShoppingItem, name: String, quantity: Int, unit: ShoppingItemUnit) {
+        item.name = name
+        item.quantity = quantity
+        item.unit = unit
+        save()
+    }
+    
+    func deleteItem(_ item: SDShoppingItem) {
+        context.delete(item)
+        save()
+    }
+    
+    func toggleBought(_ item: SDShoppingItem) {
+        item.isBought.toggle()
+        save()
+    }
+    
+    //MARK: Private
+    
+    private func save() {
+        do {
+            try context.save()
+        } catch {
+            print(DataError.saveFailed(error))
+        }
+    }
+}
