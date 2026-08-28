@@ -15,3 +15,15 @@ struct ListItem: Identifiable {
     let boughtCount: Int
     let totalCount: Int
 }
+
+extension ListItem {
+    init(from sdList: SDShoppingList) {
+        self.init(
+            id: sdList.id,
+            title: sdList.title,
+            icon: sdList.icon,
+            color: sdList.color,
+            boughtCount: sdList.boughtCount,
+            totalCount: sdList.totalCount)
+    }
+}

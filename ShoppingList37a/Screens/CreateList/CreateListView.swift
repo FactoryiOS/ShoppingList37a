@@ -4,7 +4,7 @@ struct CreateListView: View {
 	@Environment(\.dismiss) private var dismiss
 	
 	@State private var observed: Observed
-	var onSave: () -> Void = {}
+	var onSave: (String, SelectableColor, SelectableIcon) -> Void = { _, _, _ in }
 	
 	init(observed: @autoclosure @MainActor () -> Observed = Observed()) {
 		_observed = State(wrappedValue: observed())
@@ -66,7 +66,9 @@ struct CreateListView: View {
 					isActive: observed.isSaveEnabled,
 					title: observed.mode.actionButtonTitle,
 					action: {
-						onSave()
+                        guard let color = observed.selectedColor,
+                              let icon = observed.selectedIcon else { return }
+                        onSave(observed.listName, color, icon)
 						dismiss()
 					}
 				)
