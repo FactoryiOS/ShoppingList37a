@@ -26,8 +26,8 @@ struct ItemEditView: View {
             TextFieldView(
                 placeholder: Constants.namePlaceholder,
                 text: $observed.name,
-                isError: false,
-                errorMessage: nil
+                isError: observed.isNameDuplicate,
+                errorMessage: observed.nameError
             )
             HStack(spacing: Constants.spacing) {
                 TextFieldView(
@@ -92,4 +92,14 @@ struct ItemEditView: View {
         )
     )
     .preferredColorScheme(.dark)
+}
+
+#Preview("duplicate") {
+    ItemEditView(
+        observed: ItemEditView.Observed(
+            name: "Чайник",
+            existingNames: ["чайник"]
+        )
+    )
+    .preferredColorScheme(.light)
 }

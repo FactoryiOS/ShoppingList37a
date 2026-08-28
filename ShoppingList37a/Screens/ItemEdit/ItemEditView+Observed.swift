@@ -29,21 +29,37 @@ extension ItemEditView {
         var name: String
         var quantity: String
         var unit: String
+        
+        let existingNames: Set<String>
+
+        private var normalizedName: String {
+            name.trimmingCharacters(in: .whitespaces).lowercased()
+        }
+
+        var isNameDuplicate: Bool {
+            !normalizedName.isEmpty && existingNames.contains(normalizedName)
+        }
+
+        var nameError: String? {
+            isNameDuplicate ? Errors.itemAlreadyExists : nil
+        }
 
         var isDoneEnabled: Bool {
-            !name.isEmpty && !quantity.isEmpty && !unit.isEmpty
+            !name.isEmpty && !quantity.isEmpty && !unit.isEmpty && !isNameDuplicate
         }
 
         init(
             mode: Mode = .create,
             name: String = "",
             quantity: String = "",
-            unit: String = "шт"
+            unit: String = "шт",
+            existingNames: Set<String> = []
         ) {
             self.mode = mode
             self.name = name
             self.quantity = quantity
             self.unit = unit
+            self.existingNames = existingNames
         }
     }
 }
