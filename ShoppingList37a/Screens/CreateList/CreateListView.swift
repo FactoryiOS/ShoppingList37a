@@ -2,9 +2,14 @@ import SwiftUI
 
 struct CreateListView: View {
     @Environment(Router.self) private var router
-    
-    var observed: Observed
+
+    @State private var observed: Observed
+
     var onSave: () -> Void = {}
+
+    init(observed: @autoclosure @MainActor () -> Observed = Observed()) {
+        _observed = State(wrappedValue: observed())
+    }
     
     var body: some View {
         @Bindable var observed = observed
@@ -82,18 +87,22 @@ struct CreateListView: View {
 }
 
 #Preview("Создание списка") {
-    CreateListView(observed: .init(mode: .create))
-        .environment(Router())
+    NavigationStack {
+        CreateListView(observed: .init(mode: .create))
+    }
+    .environment(Router())
 }
 
 #Preview("Редактирование списка") {
-    CreateListView(
-        observed: .init(
-            mode: .edit,
-            listName: "Новый год",
-            selectedColor: .red,
-            selectedIcon: .calendar
+    NavigationStack {
+        CreateListView(
+            observed: .init(
+                mode: .edit,
+                listName: "Новый год",
+                selectedColor: .red,
+                selectedIcon: .calendar
+            )
         )
-    )
+    }
     .environment(Router())
 }

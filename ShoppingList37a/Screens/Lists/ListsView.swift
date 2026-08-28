@@ -10,55 +10,71 @@ struct ListsView: View {
     
     @State private var isMenuPresented = false
     @State private var isThemeExpanded = false
-
+    
     private enum Constants {
         static let title = "Мои списки"
         static let createButtonTitle = "Создать список"
         static let editIcon = "square.and.pencil"
     }
-
+    
     var body: some View {
-        ZStack(alignment: .topTrailing) {
+        ZStack {
             Color(.slBackgroundPrimary)
                 .ignoresSafeArea()
-
+            
             VStack(spacing: 0) {
                 header
                 content
                 createButton
             }
-            .onTapGesture {
-                dismissMenu()
-            }
-            
+        }
+        .overlay {
             if isMenuPresented {
-                DropdownMenuView(
-                    selectedTheme: $selectedTheme,
-                    isThemeExpanded: $isThemeExpanded,
-                    onDismiss: { dismissMenu() }
+                Color.clear
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        dismissMenu()
+                    }
+            }
+        }
+        .overlay {
+            if isMenuPresented {
+                ZStack(alignment: .topTrailing) {
+                    DropdownMenuView(
+                        selectedTheme: $selectedTheme,
+                        isThemeExpanded: $isThemeExpanded,
+                        onDismiss: {
+                            dismissMenu()
+                        }
+                    )
+                    .padding(.top, 44)
+                    .padding(.trailing, 16)
+                    .zIndex(1)
+                }
+                .frame(
+                    maxWidth: .infinity,
+                    maxHeight: .infinity,
+                    alignment: .topTrailing
                 )
-                .padding(.top, 44)
-                .padding(.trailing, 16)
-                .zIndex(1)
             }
         }
         .preferredColorScheme(selectedTheme.colorScheme)
     }
-
+    
     private var header: some View {
         HStack {
             Text(Constants.title)
                 .font(AppFont.title1)
                 .foregroundStyle(Color(.slTextPrimary))
-
+            
             Spacer()
-
+            
             menuButton
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 6)
     }
-
+    
     private var menuButton: some View {
         Button(
             action: {
@@ -75,7 +91,7 @@ struct ListsView: View {
             }
         )
     }
-
+    
     @ViewBuilder
     private var content: some View {
         if observed.lists.isEmpty {
@@ -85,17 +101,17 @@ struct ListsView: View {
             listView
         }
     }
-
+    
     private var listView: some View {
         List {
             ForEach(observed.lists) { item in
                 ListItemCell(item: item)
                     .onTapGesture {
-                        router.push(.shoppingList(item)) // Интегрирована её навигация по тапу
+                        router.push(.shoppingList(item))
                     }
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                         Button {
-                            router.push(.editList(item)) // Интегрирован её свайп на редактирование
+                            router.push(.editList(item))
                         } label: {
                             Image(systemName: Constants.editIcon)
                         }
@@ -108,19 +124,19 @@ struct ListsView: View {
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
     }
-
+    
     private var createButton: some View {
         ButtonView(
             isActive: true,
             title: Constants.createButtonTitle,
             action: {
-                router.push(.createList) // Интегрирован её переход к созданию списка
+                router.push(.createList)
             }
         )
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
     }
-
+    
     private func dismissMenu() {
         if isMenuPresented {
             withAnimation(.easeInOut(duration: 0.15)) {
