@@ -6,8 +6,11 @@ struct CreateListView: View {
     @State private var observed: Observed
     var onSave: (String, SelectableColor, SelectableIcon) -> Void = { _, _, _ in }
 
-    init(observed: @autoclosure @MainActor () -> Observed = Observed()) {
+    init(observed: @autoclosure @MainActor () -> Observed = Observed(),
+    onSave: @escaping (String, SelectableColor, SelectableIcon) -> Void = { _, _, _ in }
+    ) {
         _observed = State(wrappedValue: observed())
+        self.onSave = onSave
     }
 
     var body: some View {

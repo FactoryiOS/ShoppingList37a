@@ -28,3 +28,9 @@ struct ShoppingItem: Identifiable {
         self.isBought = isBought
     }
 }
+
+extension ShoppingItem {
+    init(from sdItem: SDShoppingItem) {
+        self.init(id: sdItem.id, name: sdItem.name, quantity: sdItem.quantity, unit: sdItem.unit, isBought: sdItem.isBought)
+    }
+}

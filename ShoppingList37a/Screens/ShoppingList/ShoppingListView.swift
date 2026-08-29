@@ -23,6 +23,7 @@ struct ShoppingListView: View {
     var onAdd: () -> Void = { }
     var onEdit: (ShoppingItem) -> Void = { _ in }
     var onDelete: (ShoppingItem) -> Void = { _ in }
+    var onToggleBought: (ShoppingItem) -> Void = { _ in }
     var onMenu: () -> Void = { }
     var onBack: () -> Void = { }
 
@@ -86,7 +87,7 @@ struct ShoppingListView: View {
         List(observed.filteredItems) { item in
             ShoppingItemView(item: item)
                 .contentShape(Rectangle())
-                .onTapGesture { observed.toggleBought(item) }
+                .onTapGesture { onToggleBought(item) }
                 .listRowInsets(EdgeInsets())
                 .listRowSeparator(
                     item.id == observed.filteredItems.first?.id ? .hidden : .visible,

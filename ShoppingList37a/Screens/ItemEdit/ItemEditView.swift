@@ -68,7 +68,7 @@ struct ItemEditView: View {
 
                 Button(Constants.doneTitle) {
                     guard let quantity = Int(observed.quantity),
-                          let unit = ShoppingItemUnit(rawValue: observed.unit) else { return }
+                          let unit = ShoppingItemUnit(input: observed.unit) else { return }
                     onDone(observed.name, quantity, unit)
                 }
                 .font(AppFont.bodySemiBold)
