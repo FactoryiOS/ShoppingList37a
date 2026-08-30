@@ -54,7 +54,7 @@ struct ContentView: View {
                                 },
                                 
                                 onToggleBought: { item in
-                                    repository?.deleteItem(with: item.id, from: shoppingListItem)
+                                    repository?.toggleBought(with: item.id, from: shoppingListItem)
                                 },
                                 
                                 onBack: {

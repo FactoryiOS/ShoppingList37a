@@ -16,7 +16,7 @@ final class Repository {
         self.context = context
     }
     
-    // MARK: - There are all the methods for a shopping lists.
+    // MARK: - Shopping Lists Methods
     
     func createList(title: String, icon: SelectableIcon, color: SelectableColor) {
         let list = SDShoppingList(title: title, icon: icon, color: color)
@@ -45,7 +45,7 @@ final class Repository {
         save()
     }
     
-    // MARK: - There are all the methods for shopping items.
+    // MARK: - Shopping Items
     
     func addItem(to shoppingList: SDShoppingList, name: String, quantity: Int, unit: ShoppingItemUnit) {
         let item = SDShoppingItem(name: name, quantity: quantity, unit: unit)
@@ -61,8 +61,8 @@ final class Repository {
         save()
     }
     
-    func updateItem(with Id: UUID, in list: SDShoppingList, name: String, quantity: Int, unit: ShoppingItemUnit) {
-        guard let item = list.items.first(where: { $0.id == Id }) else { return }
+    func updateItem(with id: UUID, in list: SDShoppingList, name: String, quantity: Int, unit: ShoppingItemUnit) {
+        guard let item = list.items.first(where: { $0.id == id }) else { return }
         updateItem(item, name: name, quantity: quantity, unit: unit)
     }
     
