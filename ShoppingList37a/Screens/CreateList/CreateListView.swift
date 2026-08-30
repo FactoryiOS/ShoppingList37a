@@ -2,13 +2,15 @@ import SwiftUI
 
 struct CreateListView: View {
     @Environment(Router.self) private var router
-
+    
     @State private var observed: Observed
-
-    var onSave: () -> Void = {}
-
-    init(observed: @autoclosure @MainActor () -> Observed = Observed()) {
+    var onSave: (String, SelectableColor, SelectableIcon) -> Void = { _, _, _ in }
+    
+    init(observed: @autoclosure @MainActor () -> Observed = Observed(),
+         onSave: @escaping (String, SelectableColor, SelectableIcon) -> Void = { _, _, _ in }
+    ) {
         _observed = State(wrappedValue: observed())
+        self.onSave = onSave
     }
     
     var body: some View {
@@ -77,20 +79,15 @@ struct CreateListView: View {
             isActive: observed.isSaveEnabled,
             title: observed.mode.actionButtonTitle,
             action: {
-                onSave()
+                guard let color = observed.selectedColor,
+                      let icon = observed.selectedIcon else { return }
+                onSave(observed.listName, color, icon)
                 router.pop()
             }
         )
         .padding(.horizontal, 16)
         .padding(.bottom, 8)
     }
-}
-
-#Preview("Создание списка") {
-    NavigationStack {
-        CreateListView(observed: .init(mode: .create))
-    }
-    .environment(Router())
 }
 
 #Preview("Редактирование списка") {

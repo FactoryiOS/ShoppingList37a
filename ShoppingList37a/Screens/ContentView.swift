@@ -1,6 +1,11 @@
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var context
+    @Query(sort: \SDShoppingList.title) private var sdList: [SDShoppingList]
+    @State private var repository: Repository?
+    @State private var activeList: SDShoppingList?
     
     @Environment(Router.self) private var router
     @AppStorage("selected_app_theme") private var selectedTheme: AppTheme = .system
@@ -9,11 +14,13 @@ struct ContentView: View {
         @Bindable var router = router
         
         NavigationStack(path: $router.navigationPath) {
-            ListsView(observed: .init(lists: ListItem.mocks))
+            ListsView(observed: .init(lists: sdList.map { ListItem(from: $0)}))
                 .navigationDestination(for: Route.self) { route in
                     switch route {
                     case .createList:
-                        CreateListView(observed: .init(mode: .create))
+                        CreateListView(observed: .init(mode: .create)) { title, color, icon in
+                            repository?.createList(title: title, icon: icon, color: color)
+                        }
                         
                     case .editList(let list):
                         CreateListView(
@@ -22,24 +29,39 @@ struct ContentView: View {
                                 listName: list.title,
                                 selectedColor: list.color,
                                 selectedIcon: list.icon
-                            )
-                        )
+                            )) { title, color, icon in
+                                if let sdList = sdList.first(where: { $0.id == list.id }) {
+                                    repository?.updateList(sdList, title: title, icon: icon, color: color)
+                                }
+                            }
                         
                     case .shoppingList(let list):
-                        ShoppingListView(
-                            observed: .init(
-                                listTitle: list.title
-                            ),
-                            onAdd: {
-                                router.showModal(.createItem)
-                            },
-                            onEdit: { item in
-                                router.showModal(.editItem(item))
-                            },
-                            onBack: {
-                                router.pop()
-                            }
-                        )
+                        if let shoppingListItem = sdList.first(where: { $0.id == list.id }) {
+                            ShoppingListView(
+                                observed: .init(
+                                    listTitle: shoppingListItem.title, items: shoppingListItem.items.map { ShoppingItem(from: $0)}
+                                ),
+                                onAdd: {
+                                    activeList = shoppingListItem
+                                    router.showModal(.createItem)
+                                },
+                                onEdit: { item in
+                                    activeList = shoppingListItem
+                                    router.showModal(.editItem(item))
+                                },
+                                onDelete: { item in
+                                    repository?.deleteItem(with: item.id, from: shoppingListItem)
+                                },
+                                
+                                onToggleBought: { item in
+                                    repository?.toggleBought(with: item.id, from: shoppingListItem)
+                                },
+                                
+                                onBack: {
+                                    router.pop()
+                                }
+                            )
+                        }
                     }
                 }
         }
@@ -51,10 +73,17 @@ struct ContentView: View {
                     onCancel: {
                         router.presentedModal = nil
                     },
-                    onDone: {
+                    
+                    onDone: { name, quantity, unit in
+                        if let activeList { repository?.addItem(
+                            to: activeList,
+                            name: name,
+                            quantity: quantity,
+                            unit: unit)}
                         router.presentedModal = nil
                     }
                 )
+                
             case .editItem(let item):
                 ItemEditView(
                     observed: .init(
@@ -66,13 +95,22 @@ struct ContentView: View {
                     onCancel: {
                         router.presentedModal = nil
                     },
-                    onDone: {
+                    
+                    onDone: { name, quantity, unit in
+                        if let activeList {
+                            repository?.updateItem(with: item.id, in: activeList, name: name, quantity: quantity, unit: unit)
+                        }
                         router.presentedModal = nil
                     }
                 )
             }
         }
         .preferredColorScheme(selectedTheme.colorScheme)
+        .task {
+            if repository == nil {
+                repository = Repository(context: context)
+            }
+        }
     }
 }
 

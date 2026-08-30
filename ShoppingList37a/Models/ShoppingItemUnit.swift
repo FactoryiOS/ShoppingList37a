@@ -24,3 +24,15 @@ enum ShoppingItemUnit: String {
         }
     }
 }
+extension ShoppingItemUnit {
+    init?(input: String) {
+        switch input.lowercased().trimmingCharacters(in: .whitespaces) {
+        case "шт", "шт.": self = .pieces
+        case "кг", "кг.": self = .kilograms
+        case "г", "г.": self = .grams
+        case "л", "л.": self = .liters
+        case "мл", "мл.": self = .milliliters
+        default: return nil
+        }
+    }
+}
