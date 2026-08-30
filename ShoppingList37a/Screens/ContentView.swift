@@ -50,17 +50,11 @@ struct ContentView: View {
                                     router.showModal(.editItem(item))
                                 },
                                 onDelete: { item in
-                                    if let sdItem = shoppingListItem.items.first(where: {
-                                        $0.id == item.id
-                                    }) {
-                                        repository?.deleteItem(sdItem)
-                                    }
+                                    repository?.deleteItem(with: item.id, from: shoppingListItem)
                                 },
                                 
                                 onToggleBought: { item in
-                                    if let sdItem = shoppingListItem.items.first(where: { $0.id == item.id }) {
-                                        repository?.toggleBought(sdItem)
-                                    }
+                                    repository?.deleteItem(with: item.id, from: shoppingListItem)
                                 },
                                 
                                 onBack: {
@@ -103,13 +97,8 @@ struct ContentView: View {
                     },
                     
                     onDone: { name, quantity, unit in
-                        if let activeList,
-                           let sdItem = activeList.items.first(where: { $0.id == item.id }) {
-                            repository?.updateItem(
-                                sdItem,
-                                name: name,
-                                quantity: quantity,
-                                unit: unit)
+                        if let activeList {
+                            repository?.updateItem(with: item.id, in: activeList, name: name, quantity: quantity, unit: unit)
                         }
                         router.presentedModal = nil
                     }

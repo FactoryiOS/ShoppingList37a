@@ -16,7 +16,7 @@ final class Repository {
         self.context = context
     }
     
-    //MARK: There are all the methods for a shopping lists.
+    // MARK: - There are all the methods for a shopping lists.
     
     func createList(title: String, icon: SelectableIcon, color: SelectableColor) {
         let list = SDShoppingList(title: title, icon: icon, color: color)
@@ -45,7 +45,7 @@ final class Repository {
         save()
     }
     
-    //MARK: There are all the methods for shopping items.
+    // MARK: - There are all the methods for shopping items.
     
     func addItem(to shoppingList: SDShoppingList, name: String, quantity: Int, unit: ShoppingItemUnit) {
         let item = SDShoppingItem(name: name, quantity: quantity, unit: unit)
@@ -61,9 +61,19 @@ final class Repository {
         save()
     }
     
+    func updateItem(with Id: UUID, in list: SDShoppingList, name: String, quantity: Int, unit: ShoppingItemUnit) {
+        guard let item = list.items.first(where: { $0.id == Id }) else { return }
+        updateItem(item, name: name, quantity: quantity, unit: unit)
+    }
+    
     func deleteItem(_ item: SDShoppingItem) {
         context.delete(item)
         save()
+    }
+    
+    func deleteItem(with id: UUID, from list: SDShoppingList) {
+        guard let item = list.items.first(where: { $0.id == id }) else { return }
+        deleteItem(item)
     }
     
     func toggleBought(_ item: SDShoppingItem) {
@@ -71,7 +81,12 @@ final class Repository {
         save()
     }
     
-    //MARK: Private
+    func toggleBought(with id: UUID, from list: SDShoppingList) {
+        guard let item = list.items.first(where: { $0.id == id }) else { return }
+        toggleBought(item)
+    }
+    
+    // MARK: - Private
     
     private func save() {
         do {
