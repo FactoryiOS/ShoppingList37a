@@ -69,7 +69,9 @@ struct ContentView: View {
             switch modal {
             case .createItem:
                 ItemEditView(
-                    observed: .init(mode: .create),
+                    observed: .init(
+                        mode: .create,
+                        existingNames: existingItemNames(in: activeList)),
                     onCancel: {
                         router.presentedModal = nil
                     },
@@ -90,7 +92,8 @@ struct ContentView: View {
                         mode: .edit,
                         name: item.name,
                         quantity: String(item.quantity),
-                        unit: item.unit.title
+                        unit: item.unit.title,
+                        existingNames: existingItemNames(in: activeList, excluding: item.id)
                     ),
                     onCancel: {
                         router.presentedModal = nil
@@ -111,6 +114,17 @@ struct ContentView: View {
                 repository = Repository(context: context)
             }
         }
+    }
+    
+    private func existingItemNames(
+        in list: SDShoppingList?,
+        excluding id: UUID? = nil
+    ) -> Set<String> {
+        Set(
+            (list?.items ?? [])
+                .filter { $0.id != id }
+                .map { $0.name.trimmingCharacters(in: .whitespaces).lowercased() }
+        )
     }
 }
 
