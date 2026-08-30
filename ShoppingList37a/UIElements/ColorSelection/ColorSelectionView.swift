@@ -16,7 +16,7 @@ private enum Constants {
 struct ColorSelectionView: View {
     
     @Binding var selectedColor: SelectableColor?
-    var title: String
+    var title: LocalizedStringKey
     
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.spacingZero) {

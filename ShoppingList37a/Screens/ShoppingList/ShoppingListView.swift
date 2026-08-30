@@ -7,8 +7,8 @@
 import SwiftUI
 
 private enum Constants {
-    static let addTitle = "Добавить товар"
-    static let searchPrompt = "Поиск"
+    static let addTitle: LocalizedStringKey = "Добавить товар"
+    static let searchPrompt: LocalizedStringKey = "Поиск"
     static let backIcon = "chevron.left"
     static let menuIcon = "ellipsis.circle"
     static let editIcon = "square.and.pencil"

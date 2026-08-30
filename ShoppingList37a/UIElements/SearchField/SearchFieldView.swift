@@ -15,7 +15,7 @@ private enum Constants {
 }
 
 struct SearchFieldView: View {
-    let placeholder: String
+    let placeholder: LocalizedStringKey
 
     @Binding var text: String
 
@@ -27,10 +27,11 @@ struct SearchFieldView: View {
                 .foregroundStyle(.slTextSecondary)
 
             TextField(
-                "",
                 text: $text,
                 prompt: Text(placeholder).foregroundStyle(.slTextSecondary)
-            )
+            ) {
+                Text(verbatim: "")
+            }
             .font(AppFont.bodyRegular)
             .foregroundStyle(.slTextPrimary)
             .focused($isFocused)

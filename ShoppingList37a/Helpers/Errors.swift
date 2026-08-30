@@ -5,10 +5,10 @@
 //  Created by Kirill Maidanovich on 2026/8/15.
 //
 
-import Foundation
+import SwiftUI
 
 enum Errors {
-    static let duplicateName = "Это название уже используется, пожалуйста, измените его."
+    static let duplicateName: LocalizedStringKey = "Это название уже используется, пожалуйста, измените его."
 }
 
 enum DataError: Error {

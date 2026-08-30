@@ -21,7 +21,7 @@ struct ShoppingItemView: View {
 
             Spacer()
 
-            Text("\(item.quantity) \(item.unit.title)")
+            (Text(verbatim: "\(item.quantity) ") + Text(item.unit.title))
                 .font(AppFont.bodyRegular)
                 .foregroundStyle(item.isBought ? .slTextSecondary : .slTextCounter)
         }

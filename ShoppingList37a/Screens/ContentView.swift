@@ -90,7 +90,7 @@ struct ContentView: View {
                         mode: .edit,
                         name: item.name,
                         quantity: String(item.quantity),
-                        unit: item.unit.title
+                        unit: item.unit
                     ),
                     onCancel: {
                         router.presentedModal = nil

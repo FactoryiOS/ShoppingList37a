@@ -41,10 +41,10 @@ struct ListItemCell: View {
     
     private var counter: some View {
         (
-        Text("\(item.boughtCount)/")
+        Text(verbatim: "\(item.boughtCount)/")
             .font(AppFont.bodyRegular)
             .foregroundStyle(Color(.slTextCounter))
-        + Text("\(item.totalCount)")
+        + Text(verbatim: "\(item.totalCount)")
             .font(AppFont.headline)
             .foregroundStyle(Color(.slTextPrimary))
         )

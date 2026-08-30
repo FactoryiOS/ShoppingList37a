@@ -15,11 +15,11 @@ private enum Constants {
 }
 
 struct TextFieldView: View {
-    let placeholder: String
-    
+    let placeholder: LocalizedStringKey
+
     @Binding var text: String
     let isError: Bool
-    let errorMessage: String?
+    let errorMessage: LocalizedStringKey?
     
     var body: some View {
         VStack(spacing: Constants.spacing) {

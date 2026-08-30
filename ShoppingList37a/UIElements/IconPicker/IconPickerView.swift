@@ -10,7 +10,7 @@ import SwiftUI
 struct IconPickerView: View {
     
     private enum Constants {
-        static let title = "Выберите дизайн"
+        static let title: LocalizedStringKey = "Выберите дизайн"
         static let columnCount = 6
         static let padding: CGFloat = 12
         static let columnSpacing: CGFloat = 8
@@ -21,7 +21,7 @@ struct IconPickerView: View {
         static let selectionAnimation: Animation = .easeInOut(duration: 0.15)
     }
     
-    let title: String
+    let title: LocalizedStringKey
     let icons: [SelectableIcon]
     @Binding var selection: SelectableIcon?
     let selectionColor: Color
@@ -32,7 +32,7 @@ struct IconPickerView: View {
     )
     
     init(
-        title: String = Constants.title,
+        title: LocalizedStringKey = Constants.title,
         icons: [SelectableIcon] = SelectableIcon.allCases,
         selection: Binding<SelectableIcon?>,
         selectionColor: Color

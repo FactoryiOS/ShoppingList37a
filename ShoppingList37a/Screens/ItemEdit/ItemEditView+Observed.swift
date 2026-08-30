@@ -13,7 +13,7 @@ extension ItemEditView {
         case create
         case edit
 
-        var title: String {
+        var title: LocalizedStringKey {
             switch self {
             case .create: "Создание товара"
             case .edit: "Редактировать"
@@ -28,17 +28,17 @@ extension ItemEditView {
         let mode: Mode
         var name: String
         var quantity: String
-        var unit: String
+        var unit: ShoppingItemUnit
 
         var isDoneEnabled: Bool {
-            !name.isEmpty && !quantity.isEmpty && !unit.isEmpty
+            !name.isEmpty && !quantity.isEmpty
         }
 
         init(
             mode: Mode = .create,
             name: String = "",
             quantity: String = "",
-            unit: String = "шт"
+            unit: ShoppingItemUnit = .pieces
         ) {
             self.mode = mode
             self.name = name
