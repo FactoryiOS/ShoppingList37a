@@ -18,7 +18,7 @@ private enum Constants {
 struct ItemEditView: View {
     @Bindable var observed: Observed
     var onCancel: () -> Void = { }
-    var onDone: () -> Void = { }
+    var onDone: (String, Int, ShoppingItemUnit) -> Void = { _, _, _ in }
 
     var body: some View {
         VStack(spacing: Constants.spacing) {
@@ -67,7 +67,9 @@ struct ItemEditView: View {
                 Spacer()
 
                 Button(Constants.doneTitle) {
-                    onDone()
+                    guard let quantity = Int(observed.quantity),
+                          let unit = ShoppingItemUnit(input: observed.unit) else { return }
+                    onDone(observed.name, quantity, unit)
                 }
                 .font(AppFont.bodySemiBold)
                 .foregroundStyle(observed.isDoneEnabled ? .slAccent : .slTextSecondary)

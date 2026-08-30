@@ -7,11 +7,23 @@
 
 import Foundation
 
-struct ListItem: Identifiable {
+struct ListItem: Identifiable, Hashable {
     let id: UUID
     let title: String
     let icon: SelectableIcon
     let color: SelectableColor
     let boughtCount: Int
     let totalCount: Int
+}
+
+extension ListItem {
+    init(from sdList: SDShoppingList) {
+        self.init(
+            id: sdList.id,
+            title: sdList.title,
+            icon: sdList.icon,
+            color: sdList.color,
+            boughtCount: sdList.boughtCount,
+            totalCount: sdList.totalCount)
+    }
 }
