@@ -16,6 +16,7 @@ private enum Constants {
     static let unitValueSpacing: CGFloat = 4
     static let fieldHeight: CGFloat = 54
     static let fieldCornerRadius: CGFloat = 12
+    static let suggestionRowHeight: CGFloat = 44
 }
 
 struct ItemEditView: View {
@@ -32,6 +33,9 @@ struct ItemEditView: View {
                 isError: observed.isNameDuplicate,
                 errorMessage: observed.nameError
             )
+            if !observed.suggestions.isEmpty {
+                suggestionsList
+            }
             HStack(spacing: Constants.spacing) {
                 TextFieldView(
                     placeholder: Constants.quantityPlaceholder,
@@ -47,6 +51,29 @@ struct ItemEditView: View {
         }
         .padding(Constants.spacing)
         .background(.slBackgroundPrimary)
+    }
+
+    private var suggestionsList: some View {
+        VStack(spacing: 0) {
+            ForEach(observed.suggestions, id: \.self) { suggestion in
+                Button {
+                    observed.name = suggestion
+                } label: {
+                    Text(suggestion)
+                        .font(AppFont.bodyRegular)
+                        .foregroundStyle(.slTextPrimary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(height: Constants.suggestionRowHeight)
+                }
+
+                if suggestion != observed.suggestions.last {
+                    Divider()
+                }
+            }
+        }
+        .padding(.horizontal)
+        .background(.slBackgroundElevated)
+        .cornerRadius(Constants.fieldCornerRadius)
     }
 
     private var unitPicker: some View {
@@ -123,6 +150,16 @@ struct ItemEditView: View {
         )
     )
     .preferredColorScheme(.dark)
+}
+
+#Preview("suggestions") {
+    ItemEditView(
+        observed: ItemEditView.Observed(
+            name: "Ча",
+            suggestionNames: ["Чашка", "Чай", "Чайник", "Чабрец", "Молоко"]
+        )
+    )
+    .preferredColorScheme(.light)
 }
 
 #Preview("duplicate") {
