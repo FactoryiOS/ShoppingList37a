@@ -9,6 +9,7 @@ import Foundation
 
 enum Errors {
     static let duplicateName = "Это название уже используется, пожалуйста, измените его."
+    static let itemAlreadyExists = "Этот товар уже есть в списке, добавьте другой"
 }
 
 enum DataError: Error {

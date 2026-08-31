@@ -29,21 +29,41 @@ extension ItemEditView {
         var name: String
         var quantity: String
         var unit: String
+        
+        let existingNames: Set<String>
+
+        private static func normalized(_ string: String) -> String {
+            string.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        }
+
+        private var normalizedName: String {
+            Self.normalized(name)
+        }
+
+        var isNameDuplicate: Bool {
+            !normalizedName.isEmpty && existingNames.contains(normalizedName)
+        }
+
+        var nameError: String? {
+            isNameDuplicate ? Errors.itemAlreadyExists : nil
+        }
 
         var isDoneEnabled: Bool {
-            !name.isEmpty && !quantity.isEmpty && !unit.isEmpty
+            !name.isEmpty && !quantity.isEmpty && !unit.isEmpty && !isNameDuplicate
         }
 
         init(
             mode: Mode = .create,
             name: String = "",
             quantity: String = "",
-            unit: String = "шт"
+            unit: String = "шт",
+            existingNames: Set<String> = []
         ) {
             self.mode = mode
             self.name = name
             self.quantity = quantity
             self.unit = unit
+            self.existingNames = Set(existingNames.map(Self.normalized))
         }
     }
 }
