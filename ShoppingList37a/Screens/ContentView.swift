@@ -71,7 +71,8 @@ struct ContentView: View {
                 ItemEditView(
                     observed: .init(
                         mode: .create,
-                        existingNames: existingItemNames(in: activeList)),
+                        existingNames: existingItemNames(in: activeList),
+                        suggestionNames: allItemNames),
                     onCancel: {
                         router.presentedModal = nil
                     },
@@ -93,7 +94,8 @@ struct ContentView: View {
                         name: item.name,
                         quantity: String(item.quantity),
                         unit: item.unit,
-                        existingNames: existingItemNames(in: activeList, excluding: item.id)
+                        existingNames: existingItemNames(in: activeList, excluding: item.id),
+                        suggestionNames: allItemNames
                     ),
                     onCancel: {
                         router.presentedModal = nil
@@ -116,6 +118,10 @@ struct ContentView: View {
         }
     }
     
+    private var allItemNames: [String] {
+        sdList.flatMap(\.items).map(\.name)
+    }
+
     private func existingItemNames(
         in list: SDShoppingList?,
         excluding id: UUID? = nil
