@@ -9,6 +9,7 @@ import SwiftUI
 
 enum Errors {
     static let duplicateName: LocalizedStringKey = "Это название уже используется, пожалуйста, измените его."
+    static let itemAlreadyExists: LocalizedStringKey = "Этот товар уже есть в списке, добавьте другой"
 }
 
 enum DataError: Error {

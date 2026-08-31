@@ -30,20 +30,40 @@ extension ItemEditView {
         var quantity: String
         var unit: ShoppingItemUnit
 
+        let existingNames: Set<String>
+
+        private static func normalized(_ string: String) -> String {
+            string.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        }
+
+        private var normalizedName: String {
+            Self.normalized(name)
+        }
+
+        var isNameDuplicate: Bool {
+            !normalizedName.isEmpty && existingNames.contains(normalizedName)
+        }
+
+        var nameError: LocalizedStringKey? {
+            isNameDuplicate ? Errors.itemAlreadyExists : nil
+        }
+
         var isDoneEnabled: Bool {
-            !name.isEmpty && !quantity.isEmpty
+            !name.isEmpty && !quantity.isEmpty && !isNameDuplicate
         }
 
         init(
             mode: Mode = .create,
             name: String = "",
             quantity: String = "",
-            unit: ShoppingItemUnit = .pieces
+            unit: ShoppingItemUnit = .pieces,
+            existingNames: Set<String> = []
         ) {
             self.mode = mode
             self.name = name
             self.quantity = quantity
             self.unit = unit
+            self.existingNames = Set(existingNames.map(Self.normalized))
         }
     }
 }
