@@ -25,6 +25,8 @@ struct ItemEditView: View {
     var onDone: (String, Int, ShoppingItemUnit) -> Void = { _, _, _ in }
 
     var body: some View {
+        let suggestions = observed.suggestions
+
         VStack(spacing: Constants.spacing) {
             header
             TextFieldView(
@@ -33,8 +35,8 @@ struct ItemEditView: View {
                 isError: observed.isNameDuplicate,
                 errorMessage: observed.nameError
             )
-            if !observed.suggestions.isEmpty {
-                suggestionsList
+            if !suggestions.isEmpty {
+                suggestionsList(suggestions)
             }
             HStack(spacing: Constants.spacing) {
                 TextFieldView(
@@ -53,11 +55,11 @@ struct ItemEditView: View {
         .background(.slBackgroundPrimary)
     }
 
-    private var suggestionsList: some View {
+    private func suggestionsList(_ suggestions: [String]) -> some View {
         VStack(spacing: 0) {
-            ForEach(observed.suggestions, id: \.self) { suggestion in
+            ForEach(suggestions, id: \.self) { suggestion in
                 Button {
-                    observed.name = suggestion
+                    observed.selectSuggestion(suggestion)
                 } label: {
                     Text(suggestion)
                         .font(AppFont.bodyRegular)
@@ -66,7 +68,7 @@ struct ItemEditView: View {
                         .frame(height: Constants.suggestionRowHeight)
                 }
 
-                if suggestion != observed.suggestions.last {
+                if suggestion != suggestions.last {
                     Divider()
                 }
             }

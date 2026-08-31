@@ -57,26 +57,32 @@ extension ItemEditView {
             !name.isEmpty && !quantity.isEmpty && !isNameDuplicate
         }
 
+        /// Название, для которого подсказки не показываются: исходное при открытии или уже принятое.
+        private var acceptedName: String?
+
         /// Подсказки названий по введённому префиксу — без точного совпадения и товаров текущего списка.
         var suggestions: [String] {
             let query = normalizedName
-            guard !query.isEmpty else { return [] }
+            guard !query.isEmpty, name != acceptedName else { return [] }
 
             var seenNames = Set<String>()
-            let matches = suggestionNames.filter { name in
-                let normalized = Self.normalized(name)
-                return normalized.hasPrefix(query)
-                    && normalized != query
-                    && !existingNames.contains(normalized)
-                    && seenNames.insert(normalized).inserted
-            }
+            let matches = suggestionNames
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
+                .filter { name in
+                    let normalized = name.lowercased()
+                    return normalized.hasPrefix(query)
+                        && normalized != query
+                        && !existingNames.contains(normalized)
+                        && seenNames.insert(normalized).inserted
+                }
 
-            return Array(
-                matches
-                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-                    .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
-                    .prefix(Constants.maxSuggestions)
-            )
+            return Array(matches.prefix(Constants.maxSuggestions))
+        }
+
+        func selectSuggestion(_ suggestion: String) {
+            name = suggestion
+            acceptedName = suggestion
         }
 
         init(
@@ -93,6 +99,7 @@ extension ItemEditView {
             self.unit = unit
             self.existingNames = Set(existingNames.map(Self.normalized))
             self.suggestionNames = suggestionNames
+            self.acceptedName = mode == .edit ? name : nil
         }
     }
 }

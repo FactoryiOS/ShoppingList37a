@@ -72,7 +72,7 @@ struct ContentView: View {
                     observed: .init(
                         mode: .create,
                         existingNames: existingItemNames(in: activeList),
-                        suggestionNames: allItemNames),
+                        suggestionNames: allItemNames()),
                     onCancel: {
                         router.presentedModal = nil
                     },
@@ -95,7 +95,7 @@ struct ContentView: View {
                         quantity: String(item.quantity),
                         unit: item.unit,
                         existingNames: existingItemNames(in: activeList, excluding: item.id),
-                        suggestionNames: allItemNames
+                        suggestionNames: allItemNames(excluding: item.id)
                     ),
                     onCancel: {
                         router.presentedModal = nil
@@ -118,8 +118,11 @@ struct ContentView: View {
         }
     }
     
-    private var allItemNames: [String] {
-        sdList.flatMap(\.items).map(\.name)
+    private func allItemNames(excluding id: UUID? = nil) -> [String] {
+        sdList
+            .flatMap(\.items)
+            .filter { $0.id != id }
+            .map(\.name)
     }
 
     private func existingItemNames(
