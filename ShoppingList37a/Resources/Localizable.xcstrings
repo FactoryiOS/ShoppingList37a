@@ -350,6 +350,16 @@
           }
         }
       }
+    },
+    "Этот товар уже есть в списке, добавьте другой" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This item is already in the list, add another"
+          }
+        }
+      }
     }
   },
   "version" : "1.2"
