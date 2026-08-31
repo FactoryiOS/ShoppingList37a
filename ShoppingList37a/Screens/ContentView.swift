@@ -92,7 +92,7 @@ struct ContentView: View {
                         mode: .edit,
                         name: item.name,
                         quantity: String(item.quantity),
-                        unit: item.unit.title,
+                        unit: item.unit,
                         existingNames: existingItemNames(in: activeList, excluding: item.id)
                     ),
                     onCancel: {

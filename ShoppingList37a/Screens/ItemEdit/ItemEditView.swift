@@ -7,12 +7,15 @@
 import SwiftUI
 
 private enum Constants {
-    static let cancelTitle = "Отменить"
-    static let doneTitle = "Готово"
-    static let namePlaceholder = "Название"
-    static let quantityPlaceholder = "Количество"
-    static let unitPlaceholder = "Ед. изм."
+    static let cancelTitle: LocalizedStringKey = "Отменить"
+    static let doneTitle: LocalizedStringKey = "Готово"
+    static let namePlaceholder: LocalizedStringKey = "Название"
+    static let quantityPlaceholder: LocalizedStringKey = "Количество"
+    static let unitLabel: LocalizedStringKey = "Ед.изм.:"
     static let spacing: CGFloat = 16
+    static let unitValueSpacing: CGFloat = 4
+    static let fieldHeight: CGFloat = 54
+    static let fieldCornerRadius: CGFloat = 12
 }
 
 struct ItemEditView: View {
@@ -38,17 +41,44 @@ struct ItemEditView: View {
                 )
                 .keyboardType(.numberPad)
 
-                TextFieldView(
-                    placeholder: Constants.unitPlaceholder,
-                    text: $observed.unit,
-                    isError: false,
-                    errorMessage: nil
-                )
+                unitPicker
             }
             Spacer()
         }
         .padding(Constants.spacing)
         .background(.slBackgroundPrimary)
+    }
+
+    private var unitPicker: some View {
+        Menu {
+            Picker(selection: $observed.unit) {
+                ForEach(ShoppingItemUnit.allCases, id: \.self) { unit in
+                    Text(unit.title).tag(unit)
+                }
+            } label: {
+                Text(verbatim: "")
+            }
+        } label: {
+            HStack {
+                Text(Constants.unitLabel)
+                    .foregroundStyle(.slTextSecondary)
+
+                Spacer()
+
+                HStack(spacing: Constants.unitValueSpacing) {
+                    Text(observed.unit.title)
+
+                    Image(systemName: "chevron.up.chevron.down")
+                }
+                .foregroundStyle(.slAccent)
+            }
+            .font(AppFont.bodyRegular)
+            .padding(.horizontal)
+            .frame(maxWidth: .infinity)
+            .frame(height: Constants.fieldHeight)
+            .background(.slBackgroundElevated)
+            .cornerRadius(Constants.fieldCornerRadius)
+        }
     }
 
     private var header: some View {
@@ -67,9 +97,8 @@ struct ItemEditView: View {
                 Spacer()
 
                 Button(Constants.doneTitle) {
-                    guard let quantity = Int(observed.quantity),
-                          let unit = ShoppingItemUnit(input: observed.unit) else { return }
-                    onDone(observed.name, quantity, unit)
+                    guard let quantity = Int(observed.quantity) else { return }
+                    onDone(observed.name, quantity, observed.unit)
                 }
                 .font(AppFont.bodySemiBold)
                 .foregroundStyle(observed.isDoneEnabled ? .slAccent : .slTextSecondary)
@@ -90,7 +119,7 @@ struct ItemEditView: View {
             mode: .edit,
             name: "Чайник",
             quantity: "1",
-            unit: "шт"
+            unit: .pieces
         )
     )
     .preferredColorScheme(.dark)

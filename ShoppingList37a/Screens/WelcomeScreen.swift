@@ -12,10 +12,10 @@ struct WelcomeScreen: View {
     let onStart: () -> Void
     
     private enum Constants {
-        static let title = "Добро пожаловать!"
-        static let headline = "Никогда не забывайте,\nчто нужно купить"
-        static let supportingText = "Создавайте списки\nи не переживайте о покупках"
-        static let buttonTitle = "Начать"
+        static let title: LocalizedStringKey = "Добро пожаловать!"
+        static let headline: LocalizedStringKey = "Никогда не забывайте,\nчто нужно купить"
+        static let supportingText: LocalizedStringKey = "Создавайте списки\nи не переживайте о покупках"
+        static let buttonTitle: LocalizedStringKey = "Начать"
         
         static let topPadding: CGFloat = 39.3
         static let titleToImageSpacing: CGFloat = 48

@@ -6,21 +6,21 @@ extension CreateListView {
 		case create
 		case edit
 		
-		var title: String {
+		var title: LocalizedStringKey {
 			switch self {
 			case .create: "Создать список"
 			case .edit: "Редактировать список"
 			}
 		}
-		
-		var actionButtonTitle: String {
+
+		var actionButtonTitle: LocalizedStringKey {
 			switch self {
 			case .create: "Создать"
 			case .edit: "Сохранить"
 			}
 		}
-		
-		var colorSectionTitle: String {
+
+		var colorSectionTitle: LocalizedStringKey {
 			switch self {
 			case .create: "Выберите дизайн"
 			case .edit: "Цвет"

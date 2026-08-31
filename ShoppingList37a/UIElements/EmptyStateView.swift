@@ -60,15 +60,15 @@ enum EmptyState {
         }
     }
     
-    var title: String {
+    var title: LocalizedStringKey {
         "Давайте спланируем покупки!"
     }
-    
-    var subtitle: String {
+
+    var subtitle: LocalizedStringKey {
         switch self {
         case .shoppingLists:
             "Создайте свой первый список"
-            
+
         case .shoppingItems:
             "Начните добавлять товары"
         }

@@ -13,7 +13,7 @@ private enum Constants {
 
 struct ButtonView: View {
     var isActive: Bool
-    var title: String
+    var title: LocalizedStringKey
     var action: () -> Void
     
     var body: some View {

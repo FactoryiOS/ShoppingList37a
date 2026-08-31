@@ -64,7 +64,7 @@ struct DropdownMenuView: View {
 			
 			ForEach(AppTheme.allCases) { theme in
 				MenuRow(
-					title: theme.rawValue,
+					title: theme.title,
 					font: AppFont.bodyRegular,
 					systemTrailingIcon: selectedTheme == theme ? "checkmark" : nil,
 					height: 52,
@@ -89,7 +89,7 @@ struct DropdownMenuView: View {
 }
 
 private struct MenuRow: View {
-	let title: String
+	let title: LocalizedStringKey
 	let font: Font
 	var leadingIcon: ImageResource?
 	var trailingIcon: ImageResource?

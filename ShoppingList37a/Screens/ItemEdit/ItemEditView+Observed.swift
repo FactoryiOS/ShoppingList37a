@@ -13,7 +13,7 @@ extension ItemEditView {
         case create
         case edit
 
-        var title: String {
+        var title: LocalizedStringKey {
             switch self {
             case .create: "Создание товара"
             case .edit: "Редактировать"
@@ -28,8 +28,8 @@ extension ItemEditView {
         let mode: Mode
         var name: String
         var quantity: String
-        var unit: String
-        
+        var unit: ShoppingItemUnit
+
         let existingNames: Set<String>
 
         private static func normalized(_ string: String) -> String {
@@ -44,19 +44,19 @@ extension ItemEditView {
             !normalizedName.isEmpty && existingNames.contains(normalizedName)
         }
 
-        var nameError: String? {
+        var nameError: LocalizedStringKey? {
             isNameDuplicate ? Errors.itemAlreadyExists : nil
         }
 
         var isDoneEnabled: Bool {
-            !name.isEmpty && !quantity.isEmpty && !unit.isEmpty && !isNameDuplicate
+            !name.isEmpty && !quantity.isEmpty && !isNameDuplicate
         }
 
         init(
             mode: Mode = .create,
             name: String = "",
             quantity: String = "",
-            unit: String = "шт",
+            unit: ShoppingItemUnit = .pieces,
             existingNames: Set<String> = []
         ) {
             self.mode = mode

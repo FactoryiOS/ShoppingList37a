@@ -12,8 +12,8 @@ struct ListsView: View {
     @State private var isThemeExpanded = false
     
     private enum Constants {
-        static let title = "Мои списки"
-        static let createButtonTitle = "Создать список"
+        static let title: LocalizedStringKey = "Мои списки"
+        static let createButtonTitle: LocalizedStringKey = "Создать список"
         static let editIcon = "square.and.pencil"
     }
     
