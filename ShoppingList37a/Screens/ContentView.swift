@@ -123,7 +123,7 @@ struct ContentView: View {
         Set(
             (list?.items ?? [])
                 .filter { $0.id != id }
-                .map { $0.name.trimmingCharacters(in: .whitespaces).lowercased() }
+                .map { $0.name }
         )
     }
 }

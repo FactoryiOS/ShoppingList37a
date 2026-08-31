@@ -32,8 +32,12 @@ extension ItemEditView {
         
         let existingNames: Set<String>
 
+        private static func normalized(_ string: String) -> String {
+            string.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        }
+
         private var normalizedName: String {
-            name.trimmingCharacters(in: .whitespaces).lowercased()
+            Self.normalized(name)
         }
 
         var isNameDuplicate: Bool {
@@ -59,7 +63,7 @@ extension ItemEditView {
             self.name = name
             self.quantity = quantity
             self.unit = unit
-            self.existingNames = existingNames
+            self.existingNames = Set(existingNames.map(Self.normalized))
         }
     }
 }
