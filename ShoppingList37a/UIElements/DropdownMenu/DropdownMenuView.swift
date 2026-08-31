@@ -81,7 +81,7 @@ struct DropdownMenuView: View {
 		}
 	}
 	
-	private var divider: some View {
+    var divider: some View {
 		Rectangle()
 			.fill(Color(.slTextPrimary).opacity(0.15))
 			.frame(height: 1)

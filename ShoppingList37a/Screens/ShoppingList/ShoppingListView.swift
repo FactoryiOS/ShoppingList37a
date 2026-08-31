@@ -16,16 +16,18 @@ private enum Constants {
     static let spacing: CGFloat = 16
     static let titleSpacing: CGFloat = 8
     static let searchVerticalPadding: CGFloat = 8
+    static let menuButtonHeight: CGFloat = 44
 }
 
 struct ShoppingListView: View {
     @Bindable var observed: Observed
+    @State private var isMenuPresented = false
     var onAdd: () -> Void = { }
     var onEdit: (ShoppingItem) -> Void = { _ in }
     var onDelete: (ShoppingItem) -> Void = { _ in }
     var onToggleBought: (ShoppingItem) -> Void = { _ in }
-    var onMenu: () -> Void = { }
     var onBack: () -> Void = { }
+    var onMenuAction: (MenuAction) -> Void = { _ in }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -49,6 +51,30 @@ struct ShoppingListView: View {
                 ToolbarItem(placement: .topBarTrailing) { menuButton }
             }
         }
+        .overlay {
+            if isMenuPresented {
+                Color.clear
+                    .contentShape(Rectangle())
+                    .onTapGesture { isMenuPresented = false }
+            }
+        }
+        .overlay {
+            if isMenuPresented {
+                ZStack(alignment: .topTrailing) {
+                    ActionMenuView(onAction: { action in
+                        isMenuPresented = false
+                        if action == .sort {
+                            observed.sortAlphabetically()
+                        } else {
+                            onMenuAction(action)
+                        }
+                    })
+                    .padding(.top, Constants.menuButtonHeight)
+                    .padding(.trailing, Constants.spacing)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            }
+        }
     }
 
     private var backTitle: some View {
@@ -65,7 +91,9 @@ struct ShoppingListView: View {
     }
 
     private var menuButton: some View {
-        Button(action: onMenu) {
+        Button(action: {
+            isMenuPresented.toggle()
+        }) {
             Image(systemName: Constants.menuIcon)
                 .foregroundStyle(.slTextPrimary)
         }
