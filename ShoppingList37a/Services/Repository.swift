@@ -39,7 +39,11 @@ final class Repository {
     }
     
     func duplicateList(_ list: SDShoppingList) {
-        let copy = SDShoppingList(title: list.title, icon: list.icon, color: list.color)
+        let copy = SDShoppingList(
+            title: copyTitle(for: list.title),
+            icon: list.icon,
+            color: list.color
+        )
         copy.items = list.items.map {
             SDShoppingItem(name: $0.name, quantity: $0.quantity, unit: $0.unit)
         }
@@ -107,6 +111,35 @@ final class Repository {
         toggleBought(item)
     }
     
+    private func copyTitle(for title: String) -> String {
+        let suffix = String(localized: "копия")
+        let base = strippingCopySuffix(from: title, suffix: suffix)
+        let existing = existingTitles()
+
+        var candidate = "\(base) \(suffix)"
+        var index = 1
+        while existing.contains(candidate) {
+            index += 1
+            candidate = "\(base) \(suffix) \(index)"
+        }
+        return candidate
+    }
+
+    private func strippingCopySuffix(from title: String, suffix: String) -> String {
+        let escaped = NSRegularExpression.escapedPattern(for: suffix)
+        guard let regex = try? Regex("\\s+\(escaped)(\\s+\\d+)?$") else {
+            return title
+        }
+        let base = title.replacing(regex, with: "")
+        return base.isEmpty ? title : base
+    }
+
+    private func existingTitles() -> Set<String> {
+        let descriptor = FetchDescriptor<SDShoppingList>()
+        let lists = (try? context.fetch(descriptor)) ?? []
+        return Set(lists.map(\.title))
+    }
+
     private func save() {
         do {
             try context.save()
