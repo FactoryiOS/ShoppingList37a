@@ -3,7 +3,8 @@ import SwiftUI
 struct DropdownMenuView: View {
 	@Binding var selectedTheme: AppTheme
 	@Binding var isThemeExpanded: Bool
-	let onDismiss: () -> Void
+    let onSort: () -> Void
+    let onDismiss: () -> Void
 	
 	var body: some View {
 		VStack(spacing: 0) {
@@ -41,7 +42,7 @@ struct DropdownMenuView: View {
 				systemTrailingIcon: "arrow.up.arrow.down",
 				height: 52,
 				action: {
-					// Здесь в будущем можно вызвать сортировку
+					onSort()
 					onDismiss()
 				}
 			)
@@ -81,7 +82,7 @@ struct DropdownMenuView: View {
 		}
 	}
 	
-	private var divider: some View {
+    var divider: some View {
 		Rectangle()
 			.fill(Color(.slTextPrimary).opacity(0.15))
 			.frame(height: 1)
