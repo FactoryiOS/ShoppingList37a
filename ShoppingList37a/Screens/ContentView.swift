@@ -8,8 +8,7 @@ struct ContentView: View {
     @State private var activeList: SDShoppingList?
     
     @Environment(Router.self) private var router
-    @AppStorage("selected_app_theme") private var selectedTheme: AppTheme = .system
-    
+
     var body: some View {
         @Bindable var router = router
         
@@ -123,7 +122,6 @@ struct ContentView: View {
                 )
             }
         }
-        .preferredColorScheme(selectedTheme.colorScheme)
         .task {
             if repository == nil {
                 repository = Repository(context: context)

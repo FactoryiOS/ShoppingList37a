@@ -12,7 +12,7 @@ struct ListsView: View {
     
     let observed: Observed
     
-    @AppStorage("selected_app_theme") private var selectedTheme: AppTheme = .system
+    @AppStorage(AppTheme.storageKey) private var selectedTheme: AppTheme = .system
     
     @State private var isMenuPresented = false
     @State private var isThemeExpanded = false
@@ -58,7 +58,6 @@ struct ListsView: View {
                 )
             }
         }
-        .preferredColorScheme(selectedTheme.colorScheme)
     }
     
     private var header: some View {

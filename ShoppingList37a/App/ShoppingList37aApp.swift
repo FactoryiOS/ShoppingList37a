@@ -5,7 +5,7 @@ import SwiftData
 struct ShoppingList37aApp: App {
     @State private var appState = AppState()
     @State private var router = Router()
-    @AppStorage("selected_app_theme") private var selectedTheme: AppTheme = .system
+    @AppStorage(AppTheme.storageKey) private var selectedTheme: AppTheme = .system
     
     var body: some Scene {
         WindowGroup {
