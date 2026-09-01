@@ -80,6 +80,11 @@ final class Repository {
         save()
     }
     
+    func uncheckItems(in list: SDShoppingList) {
+        list.items.forEach { $0.isBought = false }
+        save()
+    }
+
     func updateItem(
         with id: UUID,
         in list: SDShoppingList,
@@ -89,6 +94,10 @@ final class Repository {
     ) {
         guard let item = list.items.first(where: { $0.id == id }) else { return }
         updateItem(item, name: name, quantity: quantity, unit: unit)
+    }
+    
+    func deleteBoughtItems(in list: SDShoppingList) {
+        list.items.filter(\.isBought).forEach { context.delete($0) }
     }
     
     func deleteItem(_ item: SDShoppingItem) {

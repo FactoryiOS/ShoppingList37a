@@ -6,6 +6,9 @@ struct ContentView: View {
     @Query(sort: \SDShoppingList.createdAt) private var sdList: [SDShoppingList]
     @State private var repository: Repository?
     @State private var activeList: SDShoppingList?
+    @State private var shareText: String = ""
+    @State private var isSharePresented = false
+    @State private var pendingDeletion: DeleteConfirmation?
     
     @Environment(Router.self) private var router
 
@@ -21,9 +24,7 @@ struct ContentView: View {
                     }
                 },
                 onDelete: { item in
-                    if let sdItem = sdList.first(where: { $0.id == item.id }) {
-                        repository?.deleteList(sdItem)
-                    }
+                    pendingDeletion = .deleteList(item)
                 }
             )
                 .navigationDestination(for: Route.self) { route in
@@ -70,26 +71,55 @@ struct ContentView: View {
                                     router.showModal(.editItem(item))
                                 },
                                 onDelete: { item in
-                                    repository?.deleteItem(with: item.id, from: shoppingListItem)
+                                    activeList = shoppingListItem
+                                    pendingDeletion = .deleteItem(item)
                                 },
                                 onToggleBought: { item in
                                     repository?.toggleBought(with: item.id, from: shoppingListItem)
                                 },
                                 onBack: {
                                     router.pop()
+                                },
+                                
+                                onMenuAction: { action in
+                                    switch action {
+                                    case .sort:
+                                        break
+                                    case .share:
+                                        shareText = shoppingListItem.items
+                                            .map {
+                                                "\($0.name) \($0.quantity) \($0.isBought)/\($0.unit.title)"
+                                            }
+                                            .joined(separator: "\n")
+                                        isSharePresented = true
+                                    case .uncheck:
+                                        activeList = shoppingListItem
+                                        repository?.uncheckItems(in: shoppingListItem)
+                                    case .deleteItems:
+                                        activeList = shoppingListItem
+                                        pendingDeletion = .deleteBoughtItems
+                                    }
                                 }
                             )
+                            .onAppear {
+                                activeList = shoppingListItem
+                            }
                         }
                     }
                 }
         }
+        .sheet(isPresented: $isSharePresented) {
+            ActivityView(items: [shareText])
+        }
+        
         .sheet(item: $router.presentedModal) { modal in
             switch modal {
             case .createItem:
                 ItemEditView(
                     observed: .init(
                         mode: .create,
-                        existingNames: existingItemNames(in: activeList)
+                        existingNames: existingItemNames(in: activeList),
+                        suggestionNames: allItemNames()
                     ),
                     onCancel: {
                         router.presentedModal = nil
@@ -114,7 +144,8 @@ struct ContentView: View {
                         name: item.name,
                         quantity: String(item.quantity),
                         unit: item.unit,
-                        existingNames: existingItemNames(in: activeList, excluding: item.id)
+                        existingNames: existingItemNames(in: activeList, excluding: item.id),
+                        suggestionNames: allItemNames(excluding: item.id)
                     ),
                     onCancel: {
                         router.presentedModal = nil
@@ -134,13 +165,36 @@ struct ContentView: View {
                 )
             }
         }
+        .alert(
+            pendingDeletion.map { Text($0.title) } ?? Text(""),
+            isPresented: Binding(
+                get: { pendingDeletion != nil },
+                set: { if !$0 { pendingDeletion = nil } }
+            ),
+            presenting: pendingDeletion
+        ) { confirmation in
+            Button("Отменить", role: .cancel) {}
+            Button("Удалить", role: .destructive) {
+                handleDeletingConfirmation(confirmation)
+            }
+        } message: { confirmation in
+            Text(confirmation.message)
+        }
         .task {
             if repository == nil {
                 repository = Repository(context: context)
             }
         }
+        
     }
     
+    private func allItemNames(excluding id: UUID? = nil) -> [String] {
+        sdList
+            .flatMap(\.items)
+            .filter { $0.id != id }
+            .map(\.name)
+    }
+
     private func existingItemNames(
         in list: SDShoppingList?,
         excluding id: UUID? = nil
@@ -150,6 +204,23 @@ struct ContentView: View {
                 .filter { $0.id != id }
                 .map { $0.name }
         )
+    }
+    
+    private func handleDeletingConfirmation(_ confirmation: DeleteConfirmation) {
+        switch confirmation {
+        case .deleteList(let listItem):
+            if let sdList = sdList.first(where: { $0.id == listItem.id }) {
+                repository?.deleteList(sdList)
+            }
+        case .deleteBoughtItems:
+            if let activeList {
+                repository?.deleteBoughtItems(in: activeList)
+            }
+        case .deleteItem(let shoppingItem):
+            if let activeList {
+                repository?.deleteItem(with: shoppingItem.id, from: activeList)
+            }
+        }
     }
 }
 

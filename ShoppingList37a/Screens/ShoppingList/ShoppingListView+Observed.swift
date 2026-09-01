@@ -31,5 +31,15 @@ extension ShoppingListView {
             self.items = items
             self.searchText = searchText
         }
+
+        /// Переключает отметку о покупке у товара.
+        func toggleBought(_ item: ShoppingItem) {
+            guard let index = items.firstIndex(where: { $0.id == item.id }) else { return }
+            items[index].isBought.toggle()
+        }
+
+        func sortAlphabetically() {
+            items.sort { $0.name.localizedCompare($1.name) == .orderedAscending }
+        }
     }
 }

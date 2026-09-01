@@ -13,6 +13,11 @@ private enum Constants {
     static let namePlaceholder: LocalizedStringKey = "Название"
     static let quantityPlaceholder: LocalizedStringKey = "Количество"
     static let unitLabel: LocalizedStringKey = "Ед.изм.:"
+    static let spacing: CGFloat = 16
+    static let unitValueSpacing: CGFloat = 4
+    static let fieldHeight: CGFloat = 54
+    static let fieldCornerRadius: CGFloat = 12
+    static let suggestionRowHeight: CGFloat = 44
 }
 
 struct ItemEditView: View {
@@ -21,7 +26,9 @@ struct ItemEditView: View {
     var onDone: (String, Int, ShoppingItemUnit) -> Void = { _, _, _ in }
 
     var body: some View {
-        VStack(spacing: 16) {
+        let suggestions = observed.suggestions
+
+        VStack(spacing: Constants.spacing) {
             header
             TextFieldView(
                 placeholder: Constants.namePlaceholder,
@@ -29,7 +36,10 @@ struct ItemEditView: View {
                 isError: observed.isNameDuplicate,
                 errorMessage: observed.nameError
             )
-            HStack(spacing: 16) {
+            if !suggestions.isEmpty {
+                suggestionsList(suggestions)
+            }
+            HStack(spacing: Constants.spacing) {
                 TextFieldView(
                     placeholder: Constants.quantityPlaceholder,
                     text: $observed.quantity,
@@ -44,6 +54,29 @@ struct ItemEditView: View {
         }
         .padding(16)
         .background(.slBackgroundPrimary)
+    }
+
+    private func suggestionsList(_ suggestions: [String]) -> some View {
+        VStack(spacing: 0) {
+            ForEach(suggestions, id: \.self) { suggestion in
+                Button {
+                    observed.selectSuggestion(suggestion)
+                } label: {
+                    Text(suggestion)
+                        .font(AppFont.bodyRegular)
+                        .foregroundStyle(.slTextPrimary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(height: Constants.suggestionRowHeight)
+                }
+
+                if suggestion != suggestions.last {
+                    Divider()
+                }
+            }
+        }
+        .padding(.horizontal)
+        .background(.slBackgroundElevated)
+        .cornerRadius(Constants.fieldCornerRadius)
     }
 
     private var unitPicker: some View {
@@ -120,6 +153,16 @@ struct ItemEditView: View {
         )
     )
     .preferredColorScheme(.dark)
+}
+
+#Preview("suggestions") {
+    ItemEditView(
+        observed: ItemEditView.Observed(
+            name: "Ча",
+            suggestionNames: ["Чашка", "Чай", "Чайник", "Чабрец", "Молоко"]
+        )
+    )
+    .preferredColorScheme(.light)
 }
 
 #Preview("duplicate") {

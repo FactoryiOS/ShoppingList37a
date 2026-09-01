@@ -287,12 +287,12 @@ private struct SwipeableRow<Content: View>: View {
 
 #if DEBUG
 #Preview("Empty") {
-    ListsView(observed: .init(lists: []))
+    ListsView(observed: .init(lists: []), onDelete: {_ in })
         .environment(Router())
 }
 
 #Preview("Data") {
-    ListsView(observed: .init(lists: ListItem.mocks))
+    ListsView(observed: .init(lists: ListItem.mocks), onDelete: {_ in})
         .environment(Router())
 }
 #endif
