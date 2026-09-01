@@ -292,7 +292,37 @@ private struct SwipeableRow<Content: View>: View {
 }
 
 #Preview("Data") {
-    ListsView(observed: .init(lists: ListItem.mocks), onDelete: {_ in})
-        .environment(Router())
+    ListsView(
+        observed: .init(
+            lists: [
+                ListItem(
+                    id: UUID(),
+                    title: "Новый год",
+                    icon: .calendar,
+                    color: .blue,
+                    boughtCount: 10,
+                    totalCount: 20
+                ),
+                ListItem(
+                    id: UUID(),
+                    title: "Кошке",
+                    icon: .paw,
+                    color: .green,
+                    boughtCount: 1,
+                    totalCount: 4
+                ),
+                ListItem(
+                    id: UUID(),
+                    title: "Вечеринка малого",
+                    icon: .controller,
+                    color: .yellow,
+                    boughtCount: 9,
+                    totalCount: 20
+                )
+            ]
+        ),
+        onDelete: { _ in }
+    )
+    .environment(Router())
 }
 #endif

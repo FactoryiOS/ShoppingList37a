@@ -57,8 +57,17 @@ struct ListItemCell: View {
         Color(.slBackgroundPrimary)
             .ignoresSafeArea()
         
-        ListItemCell(item: .mock)
-            .background(Color(.slBackgroundElevated))
+        ListItemCell(
+            item: ListItem(
+                id: UUID(),
+                title: "Новый год",
+                icon: .calendar,
+                color: .blue,
+                boughtCount: 10,
+                totalCount: 20
+            )
+        )
+        .background(Color(.slBackgroundElevated))
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .padding()
     }

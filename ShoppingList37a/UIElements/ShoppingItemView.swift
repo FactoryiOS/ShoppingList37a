@@ -55,7 +55,7 @@ struct ShoppingItemView: View {
             .ignoresSafeArea()
 
         VStack(spacing: 0) {
-            ShoppingItemView(item: .mock)
+            ShoppingItemView(item: ShoppingItem(name: "Чайник", quantity: 2))
 
             Divider()
 
