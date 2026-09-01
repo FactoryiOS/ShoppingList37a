@@ -3,7 +3,12 @@ import SwiftUI
 private enum Constants {
     static let title: LocalizedStringKey = "Мои списки"
     static let createButtonTitle: LocalizedStringKey = "Создать список"
+    static let themeMenuTitle: LocalizedStringKey = "Установить тему"
+    static let themeIcon = "circle.lefthalf.filled"
+    static let sortTitle: LocalizedStringKey = "Сортировать по Алфавиту"
+    static let sortIcon = "arrow.up.arrow.down"
     static let editIcon = "square.and.pencil"
+    static let sortStorageKey = "lists_sorted_alphabetically"
 }
 
 struct ListsView: View {
@@ -13,49 +18,17 @@ struct ListsView: View {
     let observed: Observed
     
     @AppStorage(AppTheme.storageKey) private var selectedTheme: AppTheme = .system
-    
-    @State private var isMenuPresented = false
-    @State private var isThemeExpanded = false
+    @AppStorage(Constants.sortStorageKey) private var sortAlphabetically = false
 
     var body: some View {
         ZStack {
             Color(.slBackgroundPrimary)
                 .ignoresSafeArea()
-            
+
             VStack(spacing: 0) {
                 header
                 content
                 createButton
-            }
-        }
-        .overlay {
-            if isMenuPresented {
-                Color.clear
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        dismissMenu()
-                    }
-            }
-        }
-        .overlay {
-            if isMenuPresented {
-                ZStack(alignment: .topTrailing) {
-                    DropdownMenuView(
-                        selectedTheme: $selectedTheme,
-                        isThemeExpanded: $isThemeExpanded,
-                        onDismiss: {
-                            dismissMenu()
-                        }
-                    )
-                    .padding(.top, 44)
-                    .padding(.trailing, 16)
-                    .zIndex(1)
-                }
-                .frame(
-                    maxWidth: .infinity,
-                    maxHeight: .infinity,
-                    alignment: .topTrailing
-                )
             }
         }
     }
@@ -75,20 +48,31 @@ struct ListsView: View {
     }
     
     private var menuButton: some View {
-        Button(
-            action: {
-                withAnimation(.easeInOut(duration: 0.15)) {
-                    isMenuPresented.toggle()
-                    if !isMenuPresented { isThemeExpanded = false }
+        Menu {
+            Section {
+                Menu {
+                    Picker(selection: $selectedTheme) {
+                        ForEach(AppTheme.allCases) { theme in
+                            Text(theme.title).tag(theme)
+                        }
+                    } label: {
+                        Text(Constants.themeMenuTitle)
+                    }
+                } label: {
+                    Label(Constants.themeMenuTitle, systemImage: Constants.themeIcon)
                 }
-            },
-            label: {
-                Image(.icEllipsis)
-                    .renderingMode(.template)
-                    .foregroundStyle(Color(.slTextPrimary))
-                    .frame(width: 44, height: 44)
             }
-        )
+            Section {
+                Toggle(isOn: $sortAlphabetically) {
+                    Label(Constants.sortTitle, systemImage: Constants.sortIcon)
+                }
+            }
+        } label: {
+            Image(.icEllipsis)
+                .renderingMode(.template)
+                .foregroundStyle(Color(.slTextPrimary))
+                .frame(width: 44, height: 44)
+        }
     }
     
     @ViewBuilder
@@ -101,9 +85,16 @@ struct ListsView: View {
         }
     }
     
+    private var displayedLists: [ListItem] {
+        guard sortAlphabetically else { return observed.lists }
+        return observed.lists.sorted {
+            $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending
+        }
+    }
+
     private var listView: some View {
         List {
-            ForEach(observed.lists) { item in
+            ForEach(displayedLists) { item in
                 ListItemCell(item: item)
                     .onTapGesture {
                         router.push(.shoppingList(item))
@@ -134,15 +125,6 @@ struct ListsView: View {
         )
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
-    }
-    
-    private func dismissMenu() {
-        if isMenuPresented {
-            withAnimation(.easeInOut(duration: 0.15)) {
-                isMenuPresented = false
-                isThemeExpanded = false
-            }
-        }
     }
 }
 

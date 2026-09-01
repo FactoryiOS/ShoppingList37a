@@ -4,6 +4,7 @@
 //
 //  Created by Kirill Maidanovich on 28.08.2026.
 //
+
 import SwiftUI
 import SwiftData
 
@@ -13,6 +14,7 @@ final class SDShoppingList {
     var title: String
     var iconRawValue: String
     var colorRawValue: String
+    var createdAt: Date = Date.now
     var boughtCount: Int { items.filter(\.isBought).count }
     var totalCount: Int { items.count }
     

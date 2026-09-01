@@ -3,7 +3,7 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var context
-    @Query(sort: \SDShoppingList.title) private var sdList: [SDShoppingList]
+    @Query(sort: \SDShoppingList.createdAt) private var sdList: [SDShoppingList]
     @State private var repository: Repository?
     @State private var activeList: SDShoppingList?
     
