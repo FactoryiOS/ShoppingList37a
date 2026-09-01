@@ -16,7 +16,7 @@ struct ButtonView: View {
             action()
         } label: {
             Text(title)
-                .foregroundStyle(isActive ? .white : .slTextSecondary)
+                .foregroundStyle(isActive ? .slTextOnAccent : .slTextSecondary)
                 .font(AppFont.headline)
                 .frame(maxWidth: .infinity)
                 .frame(height: 44)
