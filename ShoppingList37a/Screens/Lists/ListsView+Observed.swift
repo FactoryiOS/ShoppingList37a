@@ -9,7 +9,6 @@ import SwiftUI
 
 extension ListsView {
 
-    /// Источник данных - моки, позже заменятся на запросы к SwiftData
     @MainActor
     @Observable
     final class Observed {
