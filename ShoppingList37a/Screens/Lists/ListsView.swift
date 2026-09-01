@@ -1,5 +1,11 @@
 import SwiftUI
 
+private enum Constants {
+    static let title: LocalizedStringKey = "Мои списки"
+    static let createButtonTitle: LocalizedStringKey = "Создать список"
+    static let editIcon = "square.and.pencil"
+}
+
 struct ListsView: View {
     
     @Environment(Router.self) private var router
@@ -10,13 +16,7 @@ struct ListsView: View {
     
     @State private var isMenuPresented = false
     @State private var isThemeExpanded = false
-    
-    private enum Constants {
-        static let title: LocalizedStringKey = "Мои списки"
-        static let createButtonTitle: LocalizedStringKey = "Создать список"
-        static let editIcon = "square.and.pencil"
-    }
-    
+
     var body: some View {
         ZStack {
             Color(.slBackgroundPrimary)

@@ -7,26 +7,26 @@
 
 import SwiftUI
 
+private enum Constants {
+    static let title: LocalizedStringKey = "Добро пожаловать!"
+    static let headline: LocalizedStringKey = "Никогда не забывайте,\nчто нужно купить"
+    static let supportingText: LocalizedStringKey = "Создавайте списки\nи не переживайте о покупках"
+    static let buttonTitle: LocalizedStringKey = "Начать"
+
+    static let topPadding: CGFloat = 39.3
+    static let titleToImageSpacing: CGFloat = 48
+    static let imageToTextSpacing: CGFloat = 48
+    static let textSpacing: CGFloat = 12
+    static let textToButtonSpacing: CGFloat = 90.3
+    static let bottomPadding: CGFloat = 20
+    static let horizontalPadding: CGFloat = 49
+    static let buttonHorizontalPadding: CGFloat = 16
+}
+
 struct WelcomeScreen: View {
-    
+
     let onStart: () -> Void
-    
-    private enum Constants {
-        static let title: LocalizedStringKey = "Добро пожаловать!"
-        static let headline: LocalizedStringKey = "Никогда не забывайте,\nчто нужно купить"
-        static let supportingText: LocalizedStringKey = "Создавайте списки\nи не переживайте о покупках"
-        static let buttonTitle: LocalizedStringKey = "Начать"
-        
-        static let topPadding: CGFloat = 39.3
-        static let titleToImageSpacing: CGFloat = 48
-        static let imageToTextSpacing: CGFloat = 48
-        static let textSpacing: CGFloat = 12
-        static let textToButtonSpacing: CGFloat = 90.3
-        static let bottomPadding: CGFloat = 20
-        static let horizontalPadding: CGFloat = 49
-        static let buttonHorizontalPadding: CGFloat = 16
-    }
-    
+
     var body: some View {
         ZStack {
             Color.slBackgroundPrimary
