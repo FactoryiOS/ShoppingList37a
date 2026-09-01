@@ -99,13 +99,10 @@ struct ListsView: View {
     private var listView: some View {
         List {
             ForEach(displayedLists) { item in
-                Section {
-                    listRow(item)
-                }
+                listRow(item)
             }
         }
-        .listStyle(.insetGrouped)
-        .listSectionSpacing(12)
+        .listStyle(.plain)
         .scrollContentBackground(.hidden)
     }
 
@@ -137,27 +134,14 @@ struct ListsView: View {
                 .tint(.slSwipeEdit)
             }
             .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets())
-            .listRowBackground(rowBackground)
+            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+            .listRowBackground(Color.clear)
     }
 
-    @ViewBuilder
     private func cardCell(_ item: ListItem) -> some View {
-        if #available(iOS 26.0, *) {
-            ListItemCell(item: item)
-                .background(Color(.slBackgroundElevated))
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-        } else {
-            ListItemCell(item: item)
-        }
-    }
-
-    private var rowBackground: Color {
-        if #available(iOS 26.0, *) {
-            Color.clear
-        } else {
-            Color(.slBackgroundElevated)
-        }
+        ListItemCell(item: item)
+            .background(Color(.slBackgroundElevated))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
     }
     
     private var createButton: some View {
