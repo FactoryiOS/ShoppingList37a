@@ -43,7 +43,7 @@ struct TextFieldView: View {
             .cornerRadius(Constants.cornerRadius)
             .overlay {
                 RoundedRectangle(cornerRadius: Constants.cornerRadius)
-                    .stroke( isError ? .slDestructive : .clear, lineWidth: Constants.lineWidth)
+                    .stroke(isError ? .slDestructive : .clear, lineWidth: Constants.lineWidth)
             }
             
             if isError, let errorMessage {

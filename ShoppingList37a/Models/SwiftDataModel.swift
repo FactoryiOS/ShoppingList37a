@@ -24,7 +24,6 @@ final class SDShoppingList {
         self.title = title
         self.iconRawValue = icon.rawValue
         self.colorRawValue = color.rawValue
-
     }
     
     var icon: SelectableIcon {
@@ -56,7 +55,7 @@ final class SDShoppingItem {
     }
     
     var unit: ShoppingItemUnit {
-        get { ShoppingItemUnit(rawValue: unitRawValue) ?? .pieces}
-        set { unitRawValue = newValue.rawValue}
+        get { ShoppingItemUnit(rawValue: unitRawValue) ?? .pieces }
+        set { unitRawValue = newValue.rawValue }
     }
 }

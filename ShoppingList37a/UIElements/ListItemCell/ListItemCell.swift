@@ -50,7 +50,6 @@ struct ListItemCell: View {
         )
         .monospacedDigit()
     }
-    
 }
 
 #Preview {
