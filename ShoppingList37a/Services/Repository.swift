@@ -18,13 +18,22 @@ final class Repository {
     
     // MARK: - Shopping Lists Methods
     
-    func createList(title: String, icon: SelectableIcon, color: SelectableColor) {
+    func createList(
+        title: String,
+        icon: SelectableIcon,
+        color: SelectableColor
+    ) {
         let list = SDShoppingList(title: title, icon: icon, color: color)
         context.insert(list)
         save()
     }
     
-    func updateList(_ list: SDShoppingList, title: String, icon: SelectableIcon, color: SelectableColor) {
+    func updateList(
+        _ list: SDShoppingList,
+        title: String,
+        icon: SelectableIcon,
+        color: SelectableColor
+    ) {
         list.title = title
         list.icon = icon
         list.color = color
@@ -47,21 +56,37 @@ final class Repository {
     
     // MARK: - Shopping Items
     
-    func addItem(to shoppingList: SDShoppingList, name: String, quantity: Int, unit: ShoppingItemUnit) {
+    func addItem(
+        to shoppingList: SDShoppingList,
+        name: String,
+        quantity: Int,
+        unit: ShoppingItemUnit
+    ) {
         let item = SDShoppingItem(name: name, quantity: quantity, unit: unit)
         item.list = shoppingList
         context.insert(item)
         save()
     }
     
-    func updateItem(_ item: SDShoppingItem, name: String, quantity: Int, unit: ShoppingItemUnit) {
+    func updateItem(
+        _ item: SDShoppingItem,
+        name: String,
+        quantity: Int,
+        unit: ShoppingItemUnit
+    ) {
         item.name = name
         item.quantity = quantity
         item.unit = unit
         save()
     }
     
-    func updateItem(with id: UUID, in list: SDShoppingList, name: String, quantity: Int, unit: ShoppingItemUnit) {
+    func updateItem(
+        with id: UUID,
+        in list: SDShoppingList,
+        name: String,
+        quantity: Int,
+        unit: ShoppingItemUnit
+    ) {
         guard let item = list.items.first(where: { $0.id == id }) else { return }
         updateItem(item, name: name, quantity: quantity, unit: unit)
     }
