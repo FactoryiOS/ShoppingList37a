@@ -19,7 +19,11 @@ struct ContentView: View {
                     switch route {
                     case .createList:
                         CreateListView(observed: .init(mode: .create)) { title, color, icon in
-                            repository?.createList(title: title, icon: icon, color: color)
+                            repository?.createList(
+                                title: title,
+                                icon: icon,
+                                color: color
+                            )
                         }
                         
                     case .editList(let list):
@@ -31,7 +35,12 @@ struct ContentView: View {
                                 selectedIcon: list.icon
                             )) { title, color, icon in
                                 if let sdList = sdList.first(where: { $0.id == list.id }) {
-                                    repository?.updateList(sdList, title: title, icon: icon, color: color)
+                                    repository?.updateList(
+                                        sdList,
+                                        title: title,
+                                        icon: icon,
+                                        color: color
+                                    )
                                 }
                             }
                         
@@ -52,11 +61,9 @@ struct ContentView: View {
                                 onDelete: { item in
                                     repository?.deleteItem(with: item.id, from: shoppingListItem)
                                 },
-                                
                                 onToggleBought: { item in
                                     repository?.toggleBought(with: item.id, from: shoppingListItem)
                                 },
-                                
                                 onBack: {
                                     router.pop()
                                 }
@@ -71,17 +78,20 @@ struct ContentView: View {
                 ItemEditView(
                     observed: .init(
                         mode: .create,
-                        existingNames: existingItemNames(in: activeList)),
+                        existingNames: existingItemNames(in: activeList)
+                    ),
                     onCancel: {
                         router.presentedModal = nil
                     },
-                    
                     onDone: { name, quantity, unit in
-                        if let activeList { repository?.addItem(
-                            to: activeList,
-                            name: name,
-                            quantity: quantity,
-                            unit: unit)}
+                        if let activeList {
+                            repository?.addItem(
+                                to: activeList,
+                                name: name,
+                                quantity: quantity,
+                                unit: unit
+                            )
+                        }
                         router.presentedModal = nil
                     }
                 )
@@ -98,10 +108,15 @@ struct ContentView: View {
                     onCancel: {
                         router.presentedModal = nil
                     },
-                    
                     onDone: { name, quantity, unit in
                         if let activeList {
-                            repository?.updateItem(with: item.id, in: activeList, name: name, quantity: quantity, unit: unit)
+                            repository?.updateItem(
+                                with: item.id,
+                                in: activeList,
+                                name: name,
+                                quantity: quantity,
+                                unit: unit
+                            )
                         }
                         router.presentedModal = nil
                     }
