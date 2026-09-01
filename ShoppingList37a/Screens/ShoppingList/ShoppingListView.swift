@@ -87,11 +87,8 @@ struct ShoppingListView: View {
                 .contentShape(Rectangle())
                 .onTapGesture { onToggleBought(item) }
                 .listRowInsets(EdgeInsets())
-                .listRowSeparator(
-                    item.id == observed.filteredItems.first?.id ? .hidden : .visible,
-                    edges: .top
-                )
                 .listRowBackground(Color.slBackgroundPrimary)
+                .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button {
                         onDelete(item)
