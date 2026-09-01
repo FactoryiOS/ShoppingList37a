@@ -35,6 +35,7 @@ struct ListItemCell: View {
             .padding(16)
             .background(item.color.color)
             .clipShape(Circle())
+            .drawingGroup()
     }
     
     private var counter: some View {

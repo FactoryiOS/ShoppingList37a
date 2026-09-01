@@ -18,20 +18,27 @@ struct MenuActionViewRow: View {
     var title: String
     var icon: String
     var isDestractive: Bool
+    var isSelected: Bool = false
     let action: () -> Void
-    
+
     var body: some View {
         Button(action: action) {
             HStack(spacing: Constants.spacing) {
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .font(AppFont.bodyRegular)
                     .foregroundStyle(isDestractive ? .slDestructive : .slTextPrimary)
                     .padding(Constants.padding)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
-                
+
+                if isSelected {
+                    Image(systemName: "checkmark")
+                        .font(Constants.iconSize)
+                        .foregroundStyle(.slAccent)
+                }
+
                 Spacer()
-                
+
                 Image(systemName: icon)
                     .font(Constants.iconSize)
                     .foregroundStyle(isDestractive ? .slDestructive : .slTextPrimary)

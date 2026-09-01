@@ -166,7 +166,7 @@ struct ContentView: View {
             }
         }
         .alert(
-            pendingDeletion.map { Text($0.title) } ?? Text(""),
+            pendingDeletion.map { Text($0.title) } ?? Text(verbatim: ""),
             isPresented: Binding(
                 get: { pendingDeletion != nil },
                 set: { if !$0 { pendingDeletion = nil } }

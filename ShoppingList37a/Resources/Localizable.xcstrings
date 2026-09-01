@@ -11,12 +11,52 @@
         }
       }
     },
+    "Вы действительно хотите удалить все купленные товары?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Are you sure you want to delete all purchased items?"
+          }
+        }
+      }
+    },
+    "Вы действительно хотите удалить список?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Are you sure you want to delete this list?"
+          }
+        }
+      }
+    },
+    "Вы действительно хотите удалить товар?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Are you sure you want to delete this item?"
+          }
+        }
+      }
+    },
     "Выберите дизайн": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Choose a Design"
+          }
+        }
+      }
+    },
+    "Выберите цвет": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a Color"
           }
         }
       }
@@ -141,6 +181,17 @@
         }
       }
     },
+    "Поделиться": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share"
+          }
+        }
+      }
+    },
     "Поиск": {
       "localizations": {
         "en": {
@@ -187,6 +238,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "System"
+          }
+        }
+      }
+    },
+    "Снять отметки со всех товаров": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uncheck all items"
           }
         }
       }
@@ -271,6 +333,57 @@
         }
       }
     },
+    "Удаление купленных товаров": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete purchased items"
+          }
+        }
+      }
+    },
+    "Удаление списка": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete list"
+          }
+        }
+      }
+    },
+    "Удаление товара": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete item"
+          }
+        }
+      }
+    },
+    "Удалить": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        }
+      }
+    },
+    "Удалить купленные товары": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete purchased items"
+          }
+        }
+      }
+    },
     "Установить тему": {
       "localizations": {
         "en": {
@@ -332,7 +445,6 @@
       }
     },
     "копия": {
-      "comment": "Suffix appended to a duplicated list title",
       "localizations": {
         "en": {
           "stringUnit": {

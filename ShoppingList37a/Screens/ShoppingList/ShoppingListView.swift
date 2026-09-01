@@ -62,14 +62,17 @@ struct ShoppingListView: View {
         .overlay {
             if isMenuPresented {
                 ZStack(alignment: .topTrailing) {
-                    ActionMenuView(onAction: { action in
-                        isMenuPresented = false
-                        if action == .sort {
-                            observed.sortAlphabetically()
-                        } else {
-                            onMenuAction(action)
-                        }
-                    })
+                    ActionMenuView(
+                        onAction: { action in
+                            isMenuPresented = false
+                            if action == .sort {
+                                observed.toggleAlphabeticalSort()
+                            } else {
+                                onMenuAction(action)
+                            }
+                        },
+                        isSortActive: observed.isSortedAlphabetically
+                    )
                     .padding(.trailing, Constants.spacing)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)

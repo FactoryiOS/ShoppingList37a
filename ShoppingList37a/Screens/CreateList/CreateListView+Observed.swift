@@ -22,7 +22,7 @@ extension CreateListView {
 
 		var colorSectionTitle: LocalizedStringKey {
 			switch self {
-			case .create: "Выберите дизайн"
+			case .create: "Выберите цвет"
 			case .edit: "Цвет"
 			}
 		}

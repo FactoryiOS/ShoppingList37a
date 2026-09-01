@@ -30,7 +30,7 @@ enum MenuAction: String, CaseIterable {
         switch self {
         case .sort: "arrow.up.arrow.down"
         case .share: "square.and.arrow.up"
-        case .uncheck: "arrow.trianglehead.2.clockwise.rotate.90"
+        case .uncheck: "arrow.triangle.2.circlepath"
         case .deleteItems: "trash"
         }
     }
@@ -41,8 +41,10 @@ enum MenuAction: String, CaseIterable {
 }
 
 struct ActionMenuView: View {
-    
+
     let onAction: (MenuAction) -> Void
+    var isSortActive: Bool = false
+
     var body: some View {
         VStack(spacing: Constants.spacing) {
             menu
@@ -61,6 +63,7 @@ struct ActionMenuView: View {
                     title: action.title,
                     icon: action.icon,
                     isDestractive: action.isDestractive,
+                    isSelected: action == .sort && isSortActive,
                     action: { onAction(action) }
                 )
                 if action != MenuAction.allCases.last {

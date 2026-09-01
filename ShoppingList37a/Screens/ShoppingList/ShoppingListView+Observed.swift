@@ -15,11 +15,15 @@ extension ShoppingListView {
         let listTitle: String
         var items: [ShoppingItem]
         var searchText: String
+        var isSortedAlphabetically = false
 
         var filteredItems: [ShoppingItem] {
             let query = searchText.trimmingCharacters(in: .whitespaces)
-            guard !query.isEmpty else { return items }
-            return items.filter { $0.name.localizedCaseInsensitiveContains(query) }
+            let base = query.isEmpty
+                ? items
+                : items.filter { $0.name.localizedCaseInsensitiveContains(query) }
+            guard isSortedAlphabetically else { return base }
+            return base.sorted { $0.name.localizedCompare($1.name) == .orderedAscending }
         }
 
         init(
@@ -32,14 +36,13 @@ extension ShoppingListView {
             self.searchText = searchText
         }
 
-        /// Переключает отметку о покупке у товара.
         func toggleBought(_ item: ShoppingItem) {
             guard let index = items.firstIndex(where: { $0.id == item.id }) else { return }
             items[index].isBought.toggle()
         }
 
-        func sortAlphabetically() {
-            items.sort { $0.name.localizedCompare($1.name) == .orderedAscending }
+        func toggleAlphabeticalSort() {
+            isSortedAlphabetically.toggle()
         }
     }
 }
