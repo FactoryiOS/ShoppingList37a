@@ -8,6 +8,8 @@ private enum Constants {
     static let sortTitle: LocalizedStringKey = "Сортировать по Алфавиту"
     static let sortIcon = "arrow.up.arrow.down"
     static let editIcon = "square.and.pencil"
+    static let duplicateIcon = "plus.square.on.square"
+    static let deleteIcon = "trash"
     static let sortStorageKey = "lists_sorted_alphabetically"
 }
 
@@ -16,7 +18,9 @@ struct ListsView: View {
     @Environment(Router.self) private var router
     
     let observed: Observed
-    
+    var onDuplicate: (ListItem) -> Void = { _ in }
+    var onDelete: (ListItem) -> Void = { _ in }
+
     @AppStorage(AppTheme.storageKey) private var selectedTheme: AppTheme = .system
     @AppStorage(Constants.sortStorageKey) private var sortAlphabetically = false
 
@@ -95,24 +99,65 @@ struct ListsView: View {
     private var listView: some View {
         List {
             ForEach(displayedLists) { item in
-                ListItemCell(item: item)
-                    .onTapGesture {
-                        router.push(.shoppingList(item))
-                    }
-                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                        Button {
-                            router.push(.editList(item))
-                        } label: {
-                            Image(systemName: Constants.editIcon)
-                        }
-                    }
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                    .listRowBackground(Color.clear)
+                Section {
+                    listRow(item)
+                }
             }
         }
-        .listStyle(.plain)
+        .listStyle(.insetGrouped)
+        .listSectionSpacing(12)
         .scrollContentBackground(.hidden)
+    }
+
+    private func listRow(_ item: ListItem) -> some View {
+        cardCell(item)
+            .onTapGesture {
+                router.push(.shoppingList(item))
+            }
+            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                Button {
+                    onDelete(item)
+                } label: {
+                    Image(systemName: Constants.deleteIcon)
+                }
+                .tint(.slDestructive)
+
+                Button {
+                    onDuplicate(item)
+                } label: {
+                    Image(systemName: Constants.duplicateIcon)
+                }
+                .tint(.slSwipeDuplicate)
+
+                Button {
+                    router.push(.editList(item))
+                } label: {
+                    Image(systemName: Constants.editIcon)
+                }
+                .tint(.slSwipeEdit)
+            }
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(rowBackground)
+    }
+
+    @ViewBuilder
+    private func cardCell(_ item: ListItem) -> some View {
+        if #available(iOS 26.0, *) {
+            ListItemCell(item: item)
+                .background(Color(.slBackgroundElevated))
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+        } else {
+            ListItemCell(item: item)
+        }
+    }
+
+    private var rowBackground: Color {
+        if #available(iOS 26.0, *) {
+            Color.clear
+        } else {
+            Color(.slBackgroundElevated)
+        }
     }
     
     private var createButton: some View {

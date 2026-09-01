@@ -23,8 +23,6 @@ struct ListItemCell: View {
                 .fixedSize()
         }
         .padding(16)
-        .background(Color(.slBackgroundElevated))
-        .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 
     private var icon: some View {
@@ -58,6 +56,8 @@ struct ListItemCell: View {
             .ignoresSafeArea()
         
         ListItemCell(item: .mock)
+            .background(Color(.slBackgroundElevated))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
             .padding()
     }
 }

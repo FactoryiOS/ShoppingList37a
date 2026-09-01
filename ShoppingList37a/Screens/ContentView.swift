@@ -13,7 +13,19 @@ struct ContentView: View {
         @Bindable var router = router
         
         NavigationStack(path: $router.navigationPath) {
-            ListsView(observed: .init(lists: sdList.map { ListItem(from: $0)}))
+            ListsView(
+                observed: .init(lists: sdList.map { ListItem(from: $0) }),
+                onDuplicate: { item in
+                    if let sdItem = sdList.first(where: { $0.id == item.id }) {
+                        repository?.duplicateList(sdItem)
+                    }
+                },
+                onDelete: { item in
+                    if let sdItem = sdList.first(where: { $0.id == item.id }) {
+                        repository?.deleteList(sdItem)
+                    }
+                }
+            )
                 .navigationDestination(for: Route.self) { route in
                     switch route {
                     case .createList:
