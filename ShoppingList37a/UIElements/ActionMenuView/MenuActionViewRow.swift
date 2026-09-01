@@ -9,7 +9,7 @@ import SwiftUI
 
 private enum Constants {
     static let spacing: CGFloat = 0
-    static let padding: CGFloat = 16
+    static let padding: CGFloat = 8
     static let iconSize: Font = .system(size: 16)
     static let frameHeight: CGFloat = 52
 }
@@ -27,12 +27,23 @@ struct MenuActionViewRow: View {
                     .font(AppFont.bodyRegular)
                     .foregroundStyle(isDestractive ? .slDestructive : .slTextPrimary)
                     .padding(Constants.padding)
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
+                
+                Spacer()
+                
                 Image(systemName: icon)
                     .font(Constants.iconSize)
                     .foregroundStyle(isDestractive ? .slDestructive : .slTextPrimary)
+                    .frame(width: 20)
                     .padding(.trailing, Constants.padding)
             }
-            .frame(height: Constants.frameHeight)
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
+}
+
+#Preview {
+    MenuActionViewRow(title: "Сортировка по Алфавиту", icon: "arrow.up.arrow.down", isDestractive: false, action: {})
 }

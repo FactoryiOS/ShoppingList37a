@@ -13,10 +13,14 @@ extension ListsView {
     @MainActor
     @Observable
     final class Observed {
-        let lists: [ListItem]
+        var lists: [ListItem]
 
         init(lists: [ListItem]) {
             self.lists = lists
+        }
+        
+        func sortAlphabetically() {
+            lists.sort { $0.title.localizedCompare($1.title) == .orderedAscending }
         }
     }
 }

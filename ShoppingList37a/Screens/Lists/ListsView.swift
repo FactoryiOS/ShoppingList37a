@@ -5,6 +5,7 @@ struct ListsView: View {
     @Environment(Router.self) private var router
     
     let observed: Observed
+    let onDelete: (ListItem) -> Void
     
     @AppStorage("selected_app_theme") private var selectedTheme: AppTheme = .system
     
@@ -15,6 +16,7 @@ struct ListsView: View {
         static let title = "Мои списки"
         static let createButtonTitle = "Создать список"
         static let editIcon = "square.and.pencil"
+        static let trashBin = "trash"
     }
     
     var body: some View {
@@ -43,9 +45,8 @@ struct ListsView: View {
                     DropdownMenuView(
                         selectedTheme: $selectedTheme,
                         isThemeExpanded: $isThemeExpanded,
-                        onDismiss: {
-                            dismissMenu()
-                        }
+                        onSort: { observed.sortAlphabetically() },
+                        onDismiss: { dismissMenu() }
                     )
                     .padding(.top, 44)
                     .padding(.trailing, 16)
@@ -115,6 +116,13 @@ struct ListsView: View {
                         } label: {
                             Image(systemName: Constants.editIcon)
                         }
+                        Button(
+                            role: .destructive) {
+                                onDelete(item)
+                            } label: {
+                                Image(systemName: Constants.trashBin)
+                            }
+
                     }
                     .listRowSeparator(.hidden)
                     .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
@@ -148,11 +156,11 @@ struct ListsView: View {
 }
 
 #Preview("Empty") {
-    ListsView(observed: .init(lists: []))
+    ListsView(observed: .init(lists: []), onDelete: {_ in })
         .environment(Router())
 }
 
 #Preview("Data") {
-    ListsView(observed: .init(lists: ListItem.mocks))
+    ListsView(observed: .init(lists: ListItem.mocks), onDelete: {_ in})
         .environment(Router())
 }

@@ -7,8 +7,19 @@
 
 import SwiftUI
 
+private enum Constants {
+    static let spacing: CGFloat = 0
+    static let frameWidth: CGFloat = 250
+    static let cornerRadius: CGFloat = 12
+    static let opacity = 0.12
+    static let shadowRadius: CGFloat = 8
+    static let xArg: CGFloat = 0
+    static let yArg: CGFloat = 4
+    static let shadowScale = 0.98
+}
+
 enum MenuAction: String, CaseIterable {
-    case sort = "Сортировка по Алфавиту"
+    case sort = "Сортировать по Алфавиту"
     case share = "Поделиться"
     case uncheck = "Снять отметки со всех товаров"
     case deleteItems = "Удалить купленные товары"
@@ -33,18 +44,18 @@ struct ActionMenuView: View {
     
     let onAction: (MenuAction) -> Void
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: Constants.spacing) {
             menu
         }
-        .frame(width: 250)
+        .frame(width: Constants.frameWidth)
         .background(Color(.slBackgroundElevated))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .shadow(color: Color.black.opacity(0.12), radius: 8, x: 0, y: 4)
-        .transition(.opacity.combined(with: .scale(scale: 0.95, anchor: .topTrailing)))
+        .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius))
+        .shadow(color: Color.black.opacity(Constants.opacity), radius: Constants.shadowRadius, x: Constants.xArg, y: Constants.yArg)
+        .transition(.opacity.combined(with: .scale(scale: Constants.shadowScale, anchor: .topTrailing)))
     }
     
     private var menu: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: Constants.spacing) {
             ForEach(MenuAction.allCases, id: \.self) { action in
                 MenuActionViewRow(
                     title: action.title,
@@ -58,13 +69,8 @@ struct ActionMenuView: View {
             }
         }
     }
-    
-//    private func handle(_ action: MenuAction) {
-//        switch action {
-//        case .sort:
-//        case .share:
-//        case .uncheck:
-//        case .deleteItems:
-//        }
-//    }
+}
+
+#Preview {
+    ActionMenuView(onAction: {_ in })
 }

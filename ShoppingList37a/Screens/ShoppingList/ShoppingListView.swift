@@ -16,7 +16,7 @@ private enum Constants {
     static let spacing: CGFloat = 16
     static let titleSpacing: CGFloat = 8
     static let searchVerticalPadding: CGFloat = 8
-    static let menuButtonHeight: CGFloat = 44
+    static let animationDuration = 0.3
 }
 
 struct ShoppingListView: View {
@@ -69,7 +69,6 @@ struct ShoppingListView: View {
                             onMenuAction(action)
                         }
                     })
-                    .padding(.top, Constants.menuButtonHeight)
                     .padding(.trailing, Constants.spacing)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
@@ -89,11 +88,13 @@ struct ShoppingListView: View {
             .foregroundStyle(.slTextPrimary)
         }
     }
-
+    
     private var menuButton: some View {
-        Button(action: {
-            isMenuPresented.toggle()
-        }) {
+        Button {
+            withAnimation(.easeInOut(duration: Constants.animationDuration)) {
+                isMenuPresented.toggle()
+            }
+        } label: {
             Image(systemName: Constants.menuIcon)
                 .foregroundStyle(.slTextPrimary)
         }
