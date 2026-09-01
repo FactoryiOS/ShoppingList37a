@@ -12,12 +12,6 @@ struct IconPickerView: View {
     private enum Constants {
         static let title: LocalizedStringKey = "Выберите дизайн"
         static let columnCount = 6
-        static let padding: CGFloat = 12
-        static let columnSpacing: CGFloat = 8
-        static let rowSpacing: CGFloat = 12
-        static let contentSpacing: CGFloat = 12
-        static let gridOverflow: CGFloat = 4.5
-        static let cornerRadius: CGFloat = 12
         static let selectionAnimation: Animation = .easeInOut(duration: 0.15)
     }
     
@@ -27,7 +21,7 @@ struct IconPickerView: View {
     let selectionColor: Color
     
     private let columns = Array(
-        repeating: GridItem(spacing: Constants.columnSpacing),
+        repeating: GridItem(spacing: 8),
         count: Constants.columnCount
     )
     
@@ -44,12 +38,12 @@ struct IconPickerView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: Constants.contentSpacing) {
+        VStack(alignment: .leading, spacing: 12) {
             Text(title)
                 .font(AppFont.callout)
                 .foregroundStyle(Color(.slTextCounter))
             
-            LazyVGrid(columns: columns, spacing: Constants.rowSpacing) {
+            LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(icons) { icon in
                     Button {
                         selection = icon
@@ -63,11 +57,11 @@ struct IconPickerView: View {
                     .buttonStyle(.plain)
                 }
             }
-            .padding(.horizontal, -Constants.gridOverflow) // круги выходят за паддинг карточки - как группа иконок в макете
+            .padding(.horizontal, -4.5) // круги выходят за паддинг карточки - как группа иконок в макете
         }
-        .padding(Constants.padding)
+        .padding(12)
         .background(Color(.slBackgroundElevated))
-        .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .animation(Constants.selectionAnimation, value: selection)
     }
 }

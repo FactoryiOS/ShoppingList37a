@@ -8,12 +8,7 @@
 import SwiftUI
 
 struct IconCell: View {
-    
-    private enum Constants {
-        static let iconSize: CGFloat = 24
-        static let padding: CGFloat = 12
-    }
-    
+
     let icon: SelectableIcon
     let isSelected: Bool
     let selectionColor: Color
@@ -23,9 +18,9 @@ struct IconCell: View {
             .renderingMode(.template)
             .resizable()
             .scaledToFit()
-            .frame(width: Constants.iconSize, height: Constants.iconSize)
+            .frame(width: 24, height: 24)
             .foregroundStyle(Color(.slBackgroundPrimary))
-            .padding(Constants.padding)
+            .padding(12)
             .background(isSelected ? selectionColor : Color(.slIconBackground))
             .clipShape(Circle())
     }

@@ -12,15 +12,6 @@ private enum Constants {
     static let headline: LocalizedStringKey = "Никогда не забывайте,\nчто нужно купить"
     static let supportingText: LocalizedStringKey = "Создавайте списки\nи не переживайте о покупках"
     static let buttonTitle: LocalizedStringKey = "Начать"
-
-    static let topPadding: CGFloat = 39.3
-    static let titleToImageSpacing: CGFloat = 48
-    static let imageToTextSpacing: CGFloat = 48
-    static let textSpacing: CGFloat = 12
-    static let textToButtonSpacing: CGFloat = 90.3
-    static let bottomPadding: CGFloat = 20
-    static let horizontalPadding: CGFloat = 49
-    static let buttonHorizontalPadding: CGFloat = 16
 }
 
 struct WelcomeScreen: View {
@@ -38,17 +29,17 @@ struct WelcomeScreen: View {
                     .foregroundStyle(.slTextPrimary)
                 
                 Spacer()
-                    .frame(height: Constants.titleToImageSpacing)
+                    .frame(height: 48)
                 
                 Image(.imgOnboarding)
                     .resizable()
                     .scaledToFit()
-                    .padding(.horizontal, Constants.horizontalPadding)
+                    .padding(.horizontal, 49)
                 
                 Spacer()
-                    .frame(height: Constants.imageToTextSpacing)
+                    .frame(height: 48)
                 
-                VStack(spacing: Constants.textSpacing) {
+                VStack(spacing: 12) {
                     Text(Constants.headline)
                         .font(AppFont.title2)
                         .foregroundStyle(.slTextPrimary)
@@ -61,17 +52,17 @@ struct WelcomeScreen: View {
                 }
                 
                 Spacer()
-                    .frame(height: Constants.textToButtonSpacing)
+                    .frame(height: 90.3)
                 
                 ButtonView(
                     isActive: true,
                     title: Constants.buttonTitle,
                     action: onStart
                 )
-                .padding(.horizontal, Constants.buttonHorizontalPadding)
+                .padding(.horizontal, 16)
             }
-            .padding(.top, Constants.topPadding)
-            .padding(.bottom, Constants.bottomPadding)
+            .padding(.top, 39.3)
+            .padding(.bottom, 20)
         }
     }
 }

@@ -6,12 +6,6 @@
 //
 import SwiftUI
 
-private enum Constants {
-    static let lineWidth: CGFloat = 2
-    static let strokeFrame: CGFloat = 48
-    static let circleFrame: CGFloat = 40
-}
-
 struct ColorCell: View {
     
     let color: Color
@@ -20,13 +14,13 @@ struct ColorCell: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(isSelected ? .slAccent : .clear, lineWidth: Constants.lineWidth)
-                .frame(width: Constants.strokeFrame, height: Constants.strokeFrame)
+                .stroke(isSelected ? .slAccent : .clear, lineWidth: 2)
+                .frame(width: 48, height: 48)
             Circle()
                 .fill(color)
-                .frame(width: Constants.circleFrame, height: Constants.circleFrame)
+                .frame(width: 40, height: 40)
         }
-        .frame(width: Constants.strokeFrame, height: Constants.strokeFrame, alignment: .center)
+        .frame(width: 48, height: 48, alignment: .center)
         .contentShape(Circle())
     }
 }

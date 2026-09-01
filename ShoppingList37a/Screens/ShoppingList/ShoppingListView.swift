@@ -13,9 +13,6 @@ private enum Constants {
     static let menuIcon = "ellipsis.circle"
     static let editIcon = "square.and.pencil"
     static let deleteIcon = "trash"
-    static let spacing: CGFloat = 16
-    static let titleSpacing: CGFloat = 8
-    static let searchVerticalPadding: CGFloat = 8
 }
 
 struct ShoppingListView: View {
@@ -30,11 +27,11 @@ struct ShoppingListView: View {
     var body: some View {
         VStack(spacing: 0) {
             SearchFieldView(placeholder: Constants.searchPrompt, text: $observed.searchText)
-                .padding(.horizontal, Constants.spacing)
-                .padding(.vertical, Constants.searchVerticalPadding)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
             content
             ButtonView(isActive: true, title: Constants.addTitle, action: onAdd)
-                .padding(Constants.spacing)
+                .padding(16)
         }
         .background(.slBackgroundPrimary)
         .navigationBarBackButtonHidden(true)
@@ -53,7 +50,7 @@ struct ShoppingListView: View {
 
     private var backTitle: some View {
         Button(action: onBack) {
-            HStack(spacing: Constants.titleSpacing) {
+            HStack(spacing: 8) {
                 Image(systemName: Constants.backIcon)
                     .font(AppFont.bodySemiBold)
 
@@ -76,7 +73,7 @@ struct ShoppingListView: View {
         if observed.filteredItems.isEmpty {
             Spacer()
             EmptyStateView(state: .shoppingItems)
-                .padding(.horizontal, Constants.spacing)
+                .padding(.horizontal, 16)
             Spacer()
         } else {
             itemsList

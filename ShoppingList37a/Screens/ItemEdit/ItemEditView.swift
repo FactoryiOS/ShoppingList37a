@@ -12,10 +12,6 @@ private enum Constants {
     static let namePlaceholder: LocalizedStringKey = "Название"
     static let quantityPlaceholder: LocalizedStringKey = "Количество"
     static let unitLabel: LocalizedStringKey = "Ед.изм.:"
-    static let spacing: CGFloat = 16
-    static let unitValueSpacing: CGFloat = 4
-    static let fieldHeight: CGFloat = 54
-    static let fieldCornerRadius: CGFloat = 12
 }
 
 struct ItemEditView: View {
@@ -24,7 +20,7 @@ struct ItemEditView: View {
     var onDone: (String, Int, ShoppingItemUnit) -> Void = { _, _, _ in }
 
     var body: some View {
-        VStack(spacing: Constants.spacing) {
+        VStack(spacing: 16) {
             header
             TextFieldView(
                 placeholder: Constants.namePlaceholder,
@@ -32,7 +28,7 @@ struct ItemEditView: View {
                 isError: observed.isNameDuplicate,
                 errorMessage: observed.nameError
             )
-            HStack(spacing: Constants.spacing) {
+            HStack(spacing: 16) {
                 TextFieldView(
                     placeholder: Constants.quantityPlaceholder,
                     text: $observed.quantity,
@@ -45,7 +41,7 @@ struct ItemEditView: View {
             }
             Spacer()
         }
-        .padding(Constants.spacing)
+        .padding(16)
         .background(.slBackgroundPrimary)
     }
 
@@ -65,7 +61,7 @@ struct ItemEditView: View {
 
                 Spacer()
 
-                HStack(spacing: Constants.unitValueSpacing) {
+                HStack(spacing: 4) {
                     Text(observed.unit.title)
 
                     Image(systemName: "chevron.up.chevron.down")
@@ -75,9 +71,9 @@ struct ItemEditView: View {
             .font(AppFont.bodyRegular)
             .padding(.horizontal)
             .frame(maxWidth: .infinity)
-            .frame(height: Constants.fieldHeight)
+            .frame(height: 54)
             .background(.slBackgroundElevated)
-            .cornerRadius(Constants.fieldCornerRadius)
+            .cornerRadius(12)
         }
     }
 

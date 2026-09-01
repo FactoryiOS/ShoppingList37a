@@ -6,11 +6,6 @@
 //
 import SwiftUI
 
-private enum Constants {
-    static let height: CGFloat = 44
-    static let cornerRadius: CGFloat = 100
-}
-
 struct ButtonView: View {
     var isActive: Bool
     var title: LocalizedStringKey
@@ -24,9 +19,9 @@ struct ButtonView: View {
                 .foregroundStyle(isActive ? .white : .slTextSecondary)
                 .font(AppFont.headline)
                 .frame(maxWidth: .infinity)
-                .frame(height: Constants.height)
+                .frame(height: 44)
                 .background(isActive ? .slAccent : .slButtonDisabled)
-                .cornerRadius(Constants.cornerRadius)
+                .cornerRadius(100)
         }
         .disabled(!isActive)
     }

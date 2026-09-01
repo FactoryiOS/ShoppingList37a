@@ -9,9 +9,6 @@ import SwiftUI
 private enum Constants {
     static let searchIcon = "magnifyingglass"
     static let clearIcon = "xmark.circle.fill"
-    static let spacing: CGFloat = 8
-    static let cornerRadius: CGFloat = 10
-    static let height: CGFloat = 36
 }
 
 struct SearchFieldView: View {
@@ -22,7 +19,7 @@ struct SearchFieldView: View {
     @FocusState private var isFocused: Bool
 
     var body: some View {
-        HStack(spacing: Constants.spacing) {
+        HStack(spacing: 8) {
             Image(systemName: Constants.searchIcon)
                 .foregroundStyle(.slTextSecondary)
 
@@ -49,10 +46,10 @@ struct SearchFieldView: View {
                 }
             }
         }
-        .padding(.horizontal, Constants.spacing)
-        .frame(height: Constants.height)
+        .padding(.horizontal, 8)
+        .frame(height: 36)
         .background(.slBackgroundElevated)
-        .cornerRadius(Constants.cornerRadius)
+        .cornerRadius(10)
         .contentShape(Rectangle())
         .onTapGesture { isFocused = true }
     }
