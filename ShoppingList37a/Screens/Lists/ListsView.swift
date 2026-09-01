@@ -11,6 +11,14 @@ private enum Constants {
     static let duplicateIcon = "plus.square.on.square"
     static let deleteIcon = "trash"
     static let sortStorageKey = "lists_sorted_alphabetically"
+    static let cardCornerRadius: CGFloat = 20
+}
+
+struct SwipeAction: Identifiable {
+    let id = UUID()
+    let icon: String
+    let tint: Color
+    let perform: () -> Void
 }
 
 struct ListsView: View {
@@ -96,54 +104,79 @@ struct ListsView: View {
         }
     }
 
+    @ViewBuilder
     private var listView: some View {
+        if #available(iOS 26.0, *) {
+            nativeListView
+        } else {
+            legacyListView
+        }
+    }
+
+    private func swipeActions(for item: ListItem) -> [SwipeAction] {
+        [
+            SwipeAction(icon: Constants.editIcon, tint: .slSwipeEdit) {
+                router.push(.editList(item))
+            },
+            SwipeAction(icon: Constants.duplicateIcon, tint: .slSwipeDuplicate) {
+                onDuplicate(item)
+            },
+            SwipeAction(icon: Constants.deleteIcon, tint: .slDestructive) {
+                onDelete(item)
+            }
+        ]
+    }
+
+    private func card(_ item: ListItem) -> some View {
+        ListItemCell(item: item)
+            .background(Color(.slBackgroundElevated))
+    }
+
+    @available(iOS 26.0, *)
+    private var nativeListView: some View {
         List {
             ForEach(displayedLists) { item in
-                listRow(item)
+                card(item)
+                    .clipShape(RoundedRectangle(cornerRadius: Constants.cardCornerRadius))
+                    .onTapGesture {
+                        router.push(.shoppingList(item))
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        ForEach(swipeActions(for: item)) { action in
+                            Button {
+                                action.perform()
+                            } label: {
+                                Image(systemName: action.icon)
+                            }
+                            .tint(action.tint)
+                        }
+                    }
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                    .listRowBackground(Color.clear)
             }
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
     }
 
-    private func listRow(_ item: ListItem) -> some View {
-        cardCell(item)
-            .onTapGesture {
-                router.push(.shoppingList(item))
+    private var legacyListView: some View {
+        ScrollView {
+            LazyVStack(spacing: 12) {
+                ForEach(displayedLists) { item in
+                    SwipeableRow(
+                        actions: swipeActions(for: item),
+                        cornerRadius: Constants.cardCornerRadius,
+                        onTap: { router.push(.shoppingList(item)) },
+                        content: { card(item) }
+                    )
+                }
             }
-            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                Button {
-                    onDelete(item)
-                } label: {
-                    Image(systemName: Constants.deleteIcon)
-                }
-                .tint(.slDestructive)
-
-                Button {
-                    onDuplicate(item)
-                } label: {
-                    Image(systemName: Constants.duplicateIcon)
-                }
-                .tint(.slSwipeDuplicate)
-
-                Button {
-                    router.push(.editList(item))
-                } label: {
-                    Image(systemName: Constants.editIcon)
-                }
-                .tint(.slSwipeEdit)
-            }
-            .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-            .listRowBackground(Color.clear)
+            .padding(.trailing, 16)
+            .padding(.vertical, 6)
+        }
     }
 
-    private func cardCell(_ item: ListItem) -> some View {
-        ListItemCell(item: item)
-            .background(Color(.slBackgroundElevated))
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-    }
-    
     private var createButton: some View {
         ButtonView(
             isActive: true,
@@ -154,6 +187,101 @@ struct ListsView: View {
         )
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
+    }
+}
+
+private enum SwipeableRowLayout {
+    static let buttonWidth: CGFloat = 72
+    static let openThresholdRatio: CGFloat = 0.5
+    static let horizontalInset: CGFloat = 16
+}
+
+private struct SwipeableRow<Content: View>: View {
+
+    let actions: [SwipeAction]
+    let cornerRadius: CGFloat
+    let onTap: () -> Void
+    @ViewBuilder let content: () -> Content
+
+    @State private var offset: CGFloat = 0
+    @State private var committedOffset: CGFloat = 0
+
+    private var actionsWidth: CGFloat {
+        CGFloat(actions.count) * SwipeableRowLayout.buttonWidth
+    }
+
+    private var trailingRadius: CGFloat {
+        offset < 0 ? 0 : cornerRadius
+    }
+
+    var body: some View {
+        ZStack(alignment: .trailing) {
+            actionsView
+
+            content()
+                .frame(maxWidth: .infinity)
+                .clipShape(
+                    .rect(
+                        topLeadingRadius: cornerRadius,
+                        bottomLeadingRadius: cornerRadius,
+                        bottomTrailingRadius: trailingRadius,
+                        topTrailingRadius: trailingRadius
+                    )
+                )
+                .padding(.leading, SwipeableRowLayout.horizontalInset)
+                .contentShape(Rectangle())
+                .offset(x: offset)
+                .gesture(dragGesture)
+                .onTapGesture {
+                    if offset == 0 {
+                        onTap()
+                    } else {
+                        close()
+                    }
+                }
+        }
+    }
+
+    private var actionsView: some View {
+        HStack(spacing: 0) {
+            ForEach(actions) { action in
+                Button {
+                    action.perform()
+                    close()
+                } label: {
+                    Image(systemName: action.icon)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(action.tint)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .frame(width: actionsWidth)
+        .clipShape(
+            .rect(
+                bottomTrailingRadius: cornerRadius,
+                topTrailingRadius: cornerRadius
+            )
+        )
+    }
+
+    private var dragGesture: some Gesture {
+        DragGesture(minimumDistance: 12)
+            .onChanged { value in
+                guard abs(value.translation.width) > abs(value.translation.height) else { return }
+                offset = min(0, max(-actionsWidth, committedOffset + value.translation.width))
+            }
+            .onEnded { _ in
+                let isOpen = offset < -actionsWidth * SwipeableRowLayout.openThresholdRatio
+                committedOffset = isOpen ? -actionsWidth : 0
+                withAnimation(.snappy) { offset = committedOffset }
+            }
+    }
+
+    private func close() {
+        committedOffset = 0
+        withAnimation(.snappy) { offset = 0 }
     }
 }
 
