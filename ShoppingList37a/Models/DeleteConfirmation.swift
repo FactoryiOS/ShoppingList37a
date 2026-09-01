@@ -14,33 +14,33 @@ enum DeleteConfirmation: Identifiable {
     
     var id: String {
         switch self {
-        case .deleteList(let listItem):
-            "\(listItem)"
+        case .deleteList:
+            "deleteList"
         case .deleteBoughtItems:
-            "Bought"
-        case .deleteItem(let shoppingItem):
-            "\(shoppingItem)"
+            "deleteBoughtItems"
+        case .deleteItem:
+            "deleteShoppingItems"
         }
     }
     
-    var title: String {
+    var title: LocalizedStringResource {
         switch self {
-        case .deleteList(let listItem):
+        case .deleteList:
             "Удаление списка"
         case .deleteBoughtItems:
             "Удаление купленных товаров"
-        case .deleteItem(let shoppingItem):
+        case .deleteItem:
             "Удаление товара"
         }
     }
     
-    var message: String {
+    var message: LocalizedStringResource {
         switch self {
-        case .deleteList(let listItem):
+        case .deleteList:
             "Вы действительно хотите удалить список?"
         case .deleteBoughtItems:
             "Вы действительно хотите удалить все купленные товары?"
-        case .deleteItem(let shoppingItem):
+        case .deleteItem:
             "Вы действительно хотите удалить товар?"
         }
     }

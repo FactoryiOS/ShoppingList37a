@@ -142,15 +142,20 @@ struct ContentView: View {
                 )
             }
         }
-        
-        .alert(item: $pendingDeletion) { confirmation in
-            Alert(
-                title: Text(confirmation.title),
-                message: Text(confirmation.message),
-                primaryButton: .cancel(Text("Отменить ")),
-                secondaryButton: .destructive(Text("Удалить")) {
-                    handleDeletingConfirmation(confirmation)
-                })
+        .alert(
+            pendingDeletion.map { Text($0.title) } ?? Text(""),
+            isPresented: Binding(
+                get: { pendingDeletion != nil },
+                set: { if !$0 { pendingDeletion = nil } }
+            ),
+            presenting: pendingDeletion
+        ) { confirmation in
+            Button("Отменить", role: .cancel) {}
+            Button("Удалить", role: .destructive) {
+                handleDeletingConfirmation(confirmation)
+            }
+        } message: { confirmation in
+            Text(confirmation.message)
         }
         
         .preferredColorScheme(selectedTheme.colorScheme)
