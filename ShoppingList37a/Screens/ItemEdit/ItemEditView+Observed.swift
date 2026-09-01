@@ -6,6 +6,10 @@
 //
 import SwiftUI
 
+private enum Constants {
+    static let maxSuggestions = 3
+}
+
 extension ItemEditView {
 
     /// Состояние экрана: создание нового товара или редактирование существующего.
@@ -31,6 +35,7 @@ extension ItemEditView {
         var unit: ShoppingItemUnit
 
         let existingNames: Set<String>
+        let suggestionNames: [String]
 
         private static func normalized(_ string: String) -> String {
             string.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
@@ -52,18 +57,49 @@ extension ItemEditView {
             !name.isEmpty && !quantity.isEmpty && !isNameDuplicate
         }
 
+        /// Название, для которого подсказки не показываются: исходное при открытии или уже принятое.
+        private var acceptedName: String?
+
+        /// Подсказки названий по введённому префиксу — без точного совпадения и товаров текущего списка.
+        var suggestions: [String] {
+            let query = normalizedName
+            guard !query.isEmpty, name != acceptedName else { return [] }
+
+            var seenNames = Set<String>()
+            let matches = suggestionNames
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
+                .filter { name in
+                    let normalized = name.lowercased()
+                    return normalized.hasPrefix(query)
+                        && normalized != query
+                        && !existingNames.contains(normalized)
+                        && seenNames.insert(normalized).inserted
+                }
+
+            return Array(matches.prefix(Constants.maxSuggestions))
+        }
+
+        func selectSuggestion(_ suggestion: String) {
+            name = suggestion
+            acceptedName = suggestion
+        }
+
         init(
             mode: Mode = .create,
             name: String = "",
             quantity: String = "",
             unit: ShoppingItemUnit = .pieces,
-            existingNames: Set<String> = []
+            existingNames: Set<String> = [],
+            suggestionNames: [String] = []
         ) {
             self.mode = mode
             self.name = name
             self.quantity = quantity
             self.unit = unit
             self.existingNames = Set(existingNames.map(Self.normalized))
+            self.suggestionNames = suggestionNames
+            self.acceptedName = mode == .edit ? name : nil
         }
     }
 }

@@ -16,6 +16,7 @@ private enum Constants {
     static let unitValueSpacing: CGFloat = 4
     static let fieldHeight: CGFloat = 54
     static let fieldCornerRadius: CGFloat = 12
+    static let suggestionRowHeight: CGFloat = 44
 }
 
 struct ItemEditView: View {
@@ -24,6 +25,8 @@ struct ItemEditView: View {
     var onDone: (String, Int, ShoppingItemUnit) -> Void = { _, _, _ in }
 
     var body: some View {
+        let suggestions = observed.suggestions
+
         VStack(spacing: Constants.spacing) {
             header
             TextFieldView(
@@ -32,6 +35,9 @@ struct ItemEditView: View {
                 isError: observed.isNameDuplicate,
                 errorMessage: observed.nameError
             )
+            if !suggestions.isEmpty {
+                suggestionsList(suggestions)
+            }
             HStack(spacing: Constants.spacing) {
                 TextFieldView(
                     placeholder: Constants.quantityPlaceholder,
@@ -47,6 +53,29 @@ struct ItemEditView: View {
         }
         .padding(Constants.spacing)
         .background(.slBackgroundPrimary)
+    }
+
+    private func suggestionsList(_ suggestions: [String]) -> some View {
+        VStack(spacing: 0) {
+            ForEach(suggestions, id: \.self) { suggestion in
+                Button {
+                    observed.selectSuggestion(suggestion)
+                } label: {
+                    Text(suggestion)
+                        .font(AppFont.bodyRegular)
+                        .foregroundStyle(.slTextPrimary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(height: Constants.suggestionRowHeight)
+                }
+
+                if suggestion != suggestions.last {
+                    Divider()
+                }
+            }
+        }
+        .padding(.horizontal)
+        .background(.slBackgroundElevated)
+        .cornerRadius(Constants.fieldCornerRadius)
     }
 
     private var unitPicker: some View {
@@ -123,6 +152,16 @@ struct ItemEditView: View {
         )
     )
     .preferredColorScheme(.dark)
+}
+
+#Preview("suggestions") {
+    ItemEditView(
+        observed: ItemEditView.Observed(
+            name: "Ча",
+            suggestionNames: ["Чашка", "Чай", "Чайник", "Чабрец", "Молоко"]
+        )
+    )
+    .preferredColorScheme(.light)
 }
 
 #Preview("duplicate") {
