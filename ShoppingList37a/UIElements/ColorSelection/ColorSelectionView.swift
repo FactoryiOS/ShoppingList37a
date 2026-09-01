@@ -4,6 +4,7 @@
 //
 //  Created by Kirill Maidanovich on 16.08.2026.
 //
+
 import SwiftUI
 
 struct ColorSelectionView: View {
@@ -39,7 +40,7 @@ struct ColorSelectionView: View {
     }
 }
 
-#Preview("light") {
+#Preview() {
     struct PreviewWrapper: View {
         @State var selectedColor: SelectableColor?
         var body: some View {
@@ -47,21 +48,6 @@ struct ColorSelectionView: View {
                 Color.slBackgroundPrimary
                 ColorSelectionView(selectedColor: $selectedColor, title: "Выберите цвет")
             }
-            .preferredColorScheme(.light)
-        }
-    }
-    return PreviewWrapper()
-}
-
-#Preview("dark") {
-    struct PreviewWrapper: View {
-        @State var selectedColor: SelectableColor?
-        var body: some View {
-            ZStack {
-                Color.slBackgroundPrimary
-                ColorSelectionView(selectedColor: $selectedColor, title: "Выберите цвет")
-            }
-            .preferredColorScheme(.dark)
         }
     }
     return PreviewWrapper()

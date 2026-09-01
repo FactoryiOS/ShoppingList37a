@@ -7,6 +7,7 @@
 
 import Foundation
 
+#if DEBUG
 extension ListItem {
     static let mocks: [ListItem] = [
         ListItem(
@@ -37,3 +38,4 @@ extension ListItem {
 
     static let mock = mocks[0]
 }
+#endif

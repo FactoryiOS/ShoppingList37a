@@ -50,6 +50,7 @@ struct ListItemCell: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ZStack {
         Color(.slBackgroundPrimary)
@@ -61,3 +62,4 @@ struct ListItemCell: View {
             .padding()
     }
 }
+#endif

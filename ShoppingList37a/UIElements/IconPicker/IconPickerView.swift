@@ -57,7 +57,7 @@ struct IconPickerView: View {
                     .buttonStyle(.plain)
                 }
             }
-            .padding(.horizontal, -4.5) // круги выходят за паддинг карточки - как группа иконок в макете
+            .padding(.horizontal, -4.5)
         }
         .padding(12)
         .background(Color(.slBackgroundElevated))
@@ -66,7 +66,7 @@ struct IconPickerView: View {
     }
 }
 
-#Preview("Light") {
+#Preview() {
     @Previewable @State var selection: SelectableIcon? = .snow
 
     ZStack {
@@ -76,18 +76,4 @@ struct IconPickerView: View {
         IconPickerView(selection: $selection, selectionColor: Color(.slCategoryBlue))
             .padding()
     }
-    .preferredColorScheme(.light)
-}
-
-#Preview("Dark") {
-    @Previewable @State var selection: SelectableIcon? = .snow
-
-    ZStack {
-        Color(.slBackgroundPrimary)
-            .ignoresSafeArea()
-
-        IconPickerView(selection: $selection, selectionColor: Color(.slCategoryBlue))
-            .padding()
-    }
-    .preferredColorScheme(.dark)
 }

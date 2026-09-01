@@ -67,12 +67,6 @@ struct WelcomeScreen: View {
     }
 }
 
-#Preview("Light") {
+#Preview() {
     WelcomeScreen(onStart: {})
-        .preferredColorScheme(.light)
-}
-
-#Preview("Dark") {
-    WelcomeScreen(onStart: {})
-        .preferredColorScheme(.dark)
 }

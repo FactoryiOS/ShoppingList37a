@@ -26,22 +26,11 @@ struct IconCell: View {
     }
 }
 
-#Preview("Light") {
+#Preview() {
     HStack(spacing: 8) {
         IconCell(icon: .snow, isSelected: true, selectionColor: Color(.slCategoryBlue))
         IconCell(icon: .airplane, isSelected: false, selectionColor: Color(.slCategoryBlue))
     }
     .frame(width: 160)
     .padding()
-    .preferredColorScheme(.light)
-}
-
-#Preview("Dark") {
-    HStack(spacing: 8) {
-        IconCell(icon: .snow, isSelected: true, selectionColor: Color(.slCategoryBlue))
-        IconCell(icon: .airplane, isSelected: false, selectionColor: Color(.slCategoryBlue))
-    }
-    .frame(width: 160)
-    .padding()
-    .preferredColorScheme(.dark)
 }

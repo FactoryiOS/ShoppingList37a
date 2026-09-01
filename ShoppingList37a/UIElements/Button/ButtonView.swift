@@ -4,6 +4,7 @@
 //
 //  Created by Kirill Maidanovich on 2026/8/16.
 //
+
 import SwiftUI
 
 struct ButtonView: View {
@@ -27,7 +28,7 @@ struct ButtonView: View {
     }
 }
 
-#Preview("light") {
+#Preview() {
     ZStack {
         Color.slBackgroundPrimary.ignoresSafeArea()
         VStack {
@@ -36,17 +37,4 @@ struct ButtonView: View {
         }
         .padding(16)
     }
-    .preferredColorScheme(.light)
-}
-
-#Preview("dark") {
-    ZStack {
-        Color.slBackgroundPrimary.ignoresSafeArea()
-        VStack {
-            Spacer()
-            ButtonView(isActive: false, title: "Создать", action: { })
-        }
-        .padding(16)
-    }
-    .preferredColorScheme(.dark)
 }

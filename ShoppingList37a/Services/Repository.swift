@@ -16,8 +16,6 @@ final class Repository {
         self.context = context
     }
     
-    // MARK: - Shopping Lists Methods
-    
     func createList(
         title: String,
         icon: SelectableIcon,
@@ -53,9 +51,7 @@ final class Repository {
         context.delete(list)
         save()
     }
-    
-    // MARK: - Shopping Items
-    
+
     func addItem(
         to shoppingList: SDShoppingList,
         name: String,
@@ -110,8 +106,6 @@ final class Repository {
         guard let item = list.items.first(where: { $0.id == id }) else { return }
         toggleBought(item)
     }
-    
-    // MARK: - Private
     
     private func save() {
         do {

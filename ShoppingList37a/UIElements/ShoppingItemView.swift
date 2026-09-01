@@ -48,6 +48,7 @@ struct ShoppingItemView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ZStack {
         Color.slBackgroundPrimary
@@ -64,3 +65,4 @@ struct ShoppingItemView: View {
         }
     }
 }
+#endif

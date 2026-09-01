@@ -4,6 +4,7 @@
 //
 //  Created by Kirill Maidanovich on 17.08.2026.
 //
+
 import SwiftUI
 
 struct ColorCell: View {

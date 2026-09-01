@@ -173,6 +173,7 @@ struct ListsView: View {
     }
 }
 
+#if DEBUG
 #Preview("Empty") {
     ListsView(observed: .init(lists: []))
         .environment(Router())
@@ -182,3 +183,4 @@ struct ListsView: View {
     ListsView(observed: .init(lists: ListItem.mocks))
         .environment(Router())
 }
+#endif

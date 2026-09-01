@@ -4,11 +4,11 @@
 //
 //  Created by Ignat Klimenko on 20.08.2026.
 //
+
 import SwiftUI
 
 extension ItemEditView {
 
-    /// Состояние экрана: создание нового товара или редактирование существующего.
     enum Mode {
         case create
         case edit
@@ -21,7 +21,6 @@ extension ItemEditView {
         }
     }
 
-    /// Логика экрана создания/редактирования товара.
     @MainActor
     @Observable
     final class Observed {
