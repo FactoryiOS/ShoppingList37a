@@ -24,7 +24,7 @@ struct RootView: View {
             WelcomeScreen(onStart: appState.completeWelcome)
 
         case .main:
-            ContentView()
+            MainView()
         }
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct ContentView: View {
+struct MainView: View {
     @Environment(\.modelContext) private var context
     @Environment(Router.self) private var router
     @Query(sort: \SDShoppingList.createdAt) private var sdList: [SDShoppingList]
@@ -197,6 +197,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    MainView()
         .environment(Router())
 }
