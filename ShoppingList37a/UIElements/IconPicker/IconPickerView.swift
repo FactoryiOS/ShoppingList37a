@@ -20,10 +20,16 @@ struct IconPickerView: View {
     @Binding var selection: SelectableIcon?
     let selectionColor: Color
     
-    private let columns = Array(
-        repeating: GridItem(spacing: 8),
-        count: Constants.columnCount
-    )
+    private var columns: [GridItem] {
+        let count = Constants.columnCount
+        return (0..<count).map { index in
+            let alignment: Alignment =
+                index == 0 ? .leading
+                : index == count - 1 ? .trailing
+                : .center
+            return GridItem(.flexible(), spacing: 8, alignment: alignment)
+        }
+    }
     
     init(
         title: LocalizedStringKey = Constants.title,
@@ -57,7 +63,6 @@ struct IconPickerView: View {
                     .buttonStyle(.plain)
                 }
             }
-            .padding(.horizontal, -4.5)
         }
         .padding(12)
         .background(Color(.slBackgroundElevated))
