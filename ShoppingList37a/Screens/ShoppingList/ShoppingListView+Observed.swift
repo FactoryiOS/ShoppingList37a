@@ -13,7 +13,7 @@ extension ShoppingListView {
     @Observable
     final class Observed {
         let listTitle: String
-        var items: [ShoppingItem]
+        let items: [ShoppingItem]
         var searchText: String
         var isSortedAlphabetically = false
 
@@ -34,11 +34,6 @@ extension ShoppingListView {
             self.listTitle = listTitle
             self.items = items
             self.searchText = searchText
-        }
-
-        func toggleBought(_ item: ShoppingItem) {
-            guard let index = items.firstIndex(where: { $0.id == item.id }) else { return }
-            items[index].isBought.toggle()
         }
 
         func toggleAlphabeticalSort() {

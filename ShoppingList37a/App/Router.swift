@@ -41,11 +41,7 @@ final class Router {
         guard !navigationPath.isEmpty else { return }
         navigationPath.removeLast()
     }
-    
-    func popToRoot() {
-        navigationPath.removeAll()
-    }
-    
+
     func showModal(_ modal: Modal) {
         presentedModal = modal
     }
