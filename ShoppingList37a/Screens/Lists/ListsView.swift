@@ -142,7 +142,7 @@ struct ListsView: View {
                         router.push(.shoppingList(item))
                     }
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                        ForEach(swipeActions(for: item)) { action in
+                        ForEach(swipeActions(for: item).reversed()) { action in
                             Button {
                                 action.perform()
                             } label: {
