@@ -18,14 +18,21 @@ private enum Constants {
     static let shadowScale = 0.98
 }
 
-enum MenuAction: String, CaseIterable {
-    case sort = "Сортировать по Алфавиту"
-    case share = "Поделиться"
-    case uncheck = "Снять отметки со всех товаров"
-    case deleteItems = "Удалить купленные товары"
-    
-    var title: String { rawValue }
-    
+enum MenuAction: CaseIterable {
+    case sort
+    case share
+    case uncheck
+    case deleteItems
+
+    var title: LocalizedStringKey {
+        switch self {
+        case .sort: "Сортировать по Алфавиту"
+        case .share: "Поделиться"
+        case .uncheck: "Снять отметки со всех товаров"
+        case .deleteItems: "Удалить купленные товары"
+        }
+    }
+
     var icon: String {
         switch self {
         case .sort: "arrow.up.arrow.down"

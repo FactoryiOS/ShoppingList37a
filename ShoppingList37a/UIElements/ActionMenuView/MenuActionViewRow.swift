@@ -15,7 +15,7 @@ private enum Constants {
 }
 
 struct MenuActionViewRow: View {
-    var title: String
+    var title: LocalizedStringKey
     var icon: String
     var isDestractive: Bool
     var isSelected: Bool = false
@@ -24,7 +24,7 @@ struct MenuActionViewRow: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: Constants.spacing) {
-                Text(LocalizedStringKey(title))
+                Text(title)
                     .font(AppFont.bodyRegular)
                     .foregroundStyle(isDestractive ? .slDestructive : .slTextPrimary)
                     .padding(Constants.padding)
