@@ -68,7 +68,7 @@ final class Repository {
         save()
     }
     
-    func updateItem(
+    private func updateItem(
         _ item: SDShoppingItem,
         name: String,
         quantity: Int,
@@ -101,7 +101,7 @@ final class Repository {
         save()
     }
     
-    func deleteItem(_ item: SDShoppingItem) {
+    private func deleteItem(_ item: SDShoppingItem) {
         context.delete(item)
         save()
     }
@@ -111,7 +111,7 @@ final class Repository {
         deleteItem(item)
     }
     
-    func toggleBought(_ item: SDShoppingItem) {
+    private func toggleBought(_ item: SDShoppingItem) {
         item.isBought.toggle()
         save()
     }
