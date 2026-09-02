@@ -42,6 +42,9 @@ struct ItemEditView: View {
                     errorMessage: nil
                 )
                 .keyboardType(.numberPad)
+                .onChange(of: observed.quantity) { _, _ in
+                    observed.sanitizeQuantity()
+                }
 
                 unitPicker
             }

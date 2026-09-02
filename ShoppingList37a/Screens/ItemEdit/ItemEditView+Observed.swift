@@ -84,6 +84,13 @@ extension ItemEditView {
             acceptedName = suggestion
         }
 
+        func sanitizeQuantity() {
+            let digits = quantity.filter(\.isNumber)
+            if digits != quantity {
+                quantity = digits
+            }
+        }
+
         init(
             mode: Mode = .create,
             name: String = "",
@@ -94,7 +101,7 @@ extension ItemEditView {
         ) {
             self.mode = mode
             self.name = name
-            self.quantity = quantity
+            self.quantity = quantity.filter(\.isNumber)
             self.unit = unit
             self.existingNames = Set(existingNames.map(Self.normalized))
             self.suggestionNames = suggestionNames
