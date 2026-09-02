@@ -70,6 +70,8 @@ struct ActionMenuView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ActionMenuView(onAction: {_ in })
 }
+#endif

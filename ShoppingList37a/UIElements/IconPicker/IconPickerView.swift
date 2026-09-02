@@ -71,6 +71,7 @@ struct IconPickerView: View {
     }
 }
 
+#if DEBUG
 #Preview() {
     @Previewable @State var selection: SelectableIcon? = .snow
 
@@ -82,3 +83,4 @@ struct IconPickerView: View {
             .padding()
     }
 }
+#endif

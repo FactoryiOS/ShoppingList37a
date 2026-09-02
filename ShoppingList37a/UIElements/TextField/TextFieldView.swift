@@ -54,6 +54,7 @@ struct TextFieldView: View {
     }
 }
 
+#if DEBUG
 #Preview("light") {
     ZStack {
         Color.slBackgroundPrimary.ignoresSafeArea()
@@ -87,3 +88,4 @@ struct TextFieldView: View {
     }
     .preferredColorScheme(.dark)
 }
+#endif

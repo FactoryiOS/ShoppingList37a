@@ -133,6 +133,7 @@ struct ItemEditView: View {
     }
 }
 
+#if DEBUG
 #Preview("create") {
     ItemEditView(observed: ItemEditView.Observed())
         .preferredColorScheme(.light)
@@ -169,3 +170,4 @@ struct ItemEditView: View {
     )
     .preferredColorScheme(.light)
 }
+#endif

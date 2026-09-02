@@ -40,6 +40,7 @@ struct ColorSelectionView: View {
     }
 }
 
+#if DEBUG
 #Preview() {
     struct PreviewWrapper: View {
         @State var selectedColor: SelectableColor?
@@ -52,3 +53,4 @@ struct ColorSelectionView: View {
     }
     return PreviewWrapper()
 }
+#endif

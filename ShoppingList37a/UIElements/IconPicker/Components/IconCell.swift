@@ -26,6 +26,7 @@ struct IconCell: View {
     }
 }
 
+#if DEBUG
 #Preview() {
     HStack(spacing: 8) {
         IconCell(icon: .snow, isSelected: true, selectionColor: Color(.slCategoryBlue))
@@ -34,3 +35,4 @@ struct IconCell: View {
     .frame(width: 160)
     .padding()
 }
+#endif

@@ -74,6 +74,7 @@ enum EmptyState {
     }
 }
 
+#if DEBUG
 #Preview("Shopping Lists") {
     EmptyStateView(state: .shoppingLists)
 }
@@ -81,3 +82,4 @@ enum EmptyState {
 #Preview("Shopping Items") {
     EmptyStateView(state: .shoppingItems)
 }
+#endif

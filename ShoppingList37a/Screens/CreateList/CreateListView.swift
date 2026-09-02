@@ -95,6 +95,7 @@ struct CreateListView: View {
     }
 }
 
+#if DEBUG
 #Preview("Редактирование списка") {
     NavigationStack {
         CreateListView(
@@ -108,3 +109,4 @@ struct CreateListView: View {
     }
     .environment(Router())
 }
+#endif

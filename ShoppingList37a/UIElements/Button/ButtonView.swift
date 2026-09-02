@@ -28,6 +28,7 @@ struct ButtonView: View {
     }
 }
 
+#if DEBUG
 #Preview() {
     ZStack {
         Color.slBackgroundPrimary.ignoresSafeArea()
@@ -38,3 +39,4 @@ struct ButtonView: View {
         .padding(16)
     }
 }
+#endif

@@ -56,6 +56,7 @@ struct SearchFieldView: View {
     }
 }
 
+#if DEBUG
 #Preview("light") {
     ZStack {
         Color.slBackgroundPrimary.ignoresSafeArea()
@@ -79,3 +80,4 @@ struct SearchFieldView: View {
     }
     .preferredColorScheme(.dark)
 }
+#endif

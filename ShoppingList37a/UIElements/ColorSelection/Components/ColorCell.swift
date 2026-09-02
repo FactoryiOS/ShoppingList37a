@@ -26,6 +26,8 @@ struct ColorCell: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ColorCell(color: .slCategoryBlue, isSelected: true)
 }
+#endif

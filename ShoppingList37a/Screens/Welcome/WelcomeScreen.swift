@@ -66,6 +66,8 @@ struct WelcomeScreen: View {
     }
 }
 
+#if DEBUG
 #Preview() {
     WelcomeScreen(onStart: {})
 }
+#endif

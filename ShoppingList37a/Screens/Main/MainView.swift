@@ -196,7 +196,9 @@ struct MainView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     MainView()
         .environment(Router())
 }
+#endif

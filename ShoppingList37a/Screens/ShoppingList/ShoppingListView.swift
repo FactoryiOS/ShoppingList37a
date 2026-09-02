@@ -144,6 +144,7 @@ struct ShoppingListView: View {
     }
 }
 
+#if DEBUG
 #Preview("Items") {
     NavigationStack {
         ShoppingListView(
@@ -166,3 +167,4 @@ struct ShoppingListView: View {
         )
     }
 }
+#endif
