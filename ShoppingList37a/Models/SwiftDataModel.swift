@@ -42,6 +42,12 @@ final class SDShoppingList {
         get { SelectableColor(rawValue: colorRawValue) ?? .blue }
         set { colorRawValue = newValue.rawValue }
     }
+
+    var shareText: String {
+        items
+            .map { "\($0.name) — \($0.quantity) \($0.unit.shortName)" }
+            .joined(separator: "\n")
+    }
 }
 
 @Model
