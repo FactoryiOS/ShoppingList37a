@@ -98,6 +98,7 @@ final class Repository {
     
     func deleteBoughtItems(in list: SDShoppingList) {
         list.items.filter(\.isBought).forEach { context.delete($0) }
+        save()
     }
     
     func deleteItem(_ item: SDShoppingItem) {

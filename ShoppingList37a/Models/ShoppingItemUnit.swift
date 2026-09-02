@@ -23,4 +23,14 @@ enum ShoppingItemUnit: String, CaseIterable {
         case .milliliters: "мл."
         }
     }
+
+    var shortName: String {
+        switch self {
+        case .pieces: "шт."
+        case .kilograms: "кг."
+        case .grams: "г."
+        case .liters: "л."
+        case .milliliters: "мл."
+        }
+    }
 }

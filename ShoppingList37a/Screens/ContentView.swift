@@ -88,7 +88,7 @@ struct ContentView: View {
                                     case .share:
                                         shareText = shoppingListItem.items
                                             .map {
-                                                "\($0.name) \($0.quantity) \($0.isBought)/\($0.unit.title)"
+                                                "\($0.name) — \($0.quantity) \($0.unit.shortName)"
                                             }
                                             .joined(separator: "\n")
                                         isSharePresented = true
