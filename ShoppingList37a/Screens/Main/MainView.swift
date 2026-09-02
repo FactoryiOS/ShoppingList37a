@@ -1,14 +1,18 @@
 import SwiftUI
 import SwiftData
 
+private struct ShareItem: Identifiable {
+    let id = UUID()
+    let text: String
+}
+
 struct MainView: View {
     @Environment(\.modelContext) private var context
     @Environment(Router.self) private var router
     @Query(sort: \SDShoppingList.createdAt) private var sdList: [SDShoppingList]
 
     @State private var repository: Repository?
-    @State private var shareText = ""
-    @State private var isSharePresented = false
+    @State private var shareItem: ShareItem?
     @State private var pendingDeletion: DeleteConfirmation?
 
     private var activeList: SDShoppingList? {
@@ -23,8 +27,8 @@ struct MainView: View {
             listsView
                 .navigationDestination(for: Route.self) { destination(for: $0) }
         }
-        .sheet(isPresented: $isSharePresented) {
-            ActivityView(items: [shareText])
+        .sheet(item: $shareItem) { item in
+            ActivityView(items: [item.text])
         }
         .sheet(item: $router.presentedModal) { modal(for: $0) }
         .alert(
@@ -109,8 +113,7 @@ struct MainView: View {
         case .sort:
             break
         case .share:
-            shareText = list.shareText
-            isSharePresented = true
+            shareItem = ShareItem(text: list.shareText)
         case .uncheck:
             repository?.uncheckItems(in: list)
         case .deleteItems:
