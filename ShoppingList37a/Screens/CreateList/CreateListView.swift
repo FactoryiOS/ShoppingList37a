@@ -91,7 +91,7 @@ struct CreateListView: View {
             }
         )
         .padding(.horizontal, 16)
-        .padding(.bottom, 8)
+        .padding(.bottom, 20)
     }
 }
 

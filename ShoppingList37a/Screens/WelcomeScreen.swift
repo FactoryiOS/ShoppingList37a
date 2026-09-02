@@ -51,9 +51,8 @@ struct WelcomeScreen: View {
                         .multilineTextAlignment(.center)
                 }
                 
-                Spacer()
-                    .frame(height: 90.3)
-                
+                Spacer(minLength: 90.3)
+
                 ButtonView(
                     isActive: true,
                     title: Constants.buttonTitle,

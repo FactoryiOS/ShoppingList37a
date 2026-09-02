@@ -37,7 +37,9 @@ struct ShoppingListView: View {
                 .padding(.vertical, 8)
             content
             ButtonView(isActive: true, title: Constants.addTitle, action: onAdd)
-                .padding(16)
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 20)
         }
         .background(.slBackgroundPrimary)
         .navigationBarBackButtonHidden(true)
