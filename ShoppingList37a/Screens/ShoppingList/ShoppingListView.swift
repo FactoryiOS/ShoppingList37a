@@ -14,9 +14,6 @@ private enum Constants {
     static let menuIcon = "ellipsis.circle"
     static let editIcon = "square.and.pencil"
     static let deleteIcon = "trash"
-    static let spacing: CGFloat = 16
-    static let titleSpacing: CGFloat = 8
-    static let searchVerticalPadding: CGFloat = 8
     static let animationDuration = 0.3
 }
 
@@ -75,7 +72,7 @@ struct ShoppingListView: View {
                         },
                         isSortActive: observed.isSortedAlphabetically
                     )
-                    .padding(.trailing, Constants.spacing)
+                    .padding(.trailing, 16)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }

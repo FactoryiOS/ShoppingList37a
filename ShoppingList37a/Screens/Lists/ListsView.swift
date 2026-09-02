@@ -11,7 +11,6 @@ private enum Constants {
     static let duplicateIcon = "plus.square.on.square"
     static let deleteIcon = "trash"
     static let sortStorageKey = "lists_sorted_alphabetically"
-    static let cardCornerRadius: CGFloat = 20
 }
 
 struct SwipeAction: Identifiable {
@@ -137,7 +136,7 @@ struct ListsView: View {
         List {
             ForEach(displayedLists) { item in
                 card(item)
-                    .clipShape(RoundedRectangle(cornerRadius: Constants.cardCornerRadius))
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
                     .onTapGesture {
                         router.push(.shoppingList(item))
                     }
@@ -166,7 +165,7 @@ struct ListsView: View {
                 ForEach(displayedLists) { item in
                     SwipeableRow(
                         actions: swipeActions(for: item),
-                        cornerRadius: Constants.cardCornerRadius,
+                        cornerRadius: 20,
                         onTap: { router.push(.shoppingList(item)) },
                         content: { card(item) }
                     )

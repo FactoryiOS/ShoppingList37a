@@ -7,43 +7,36 @@
 
 import SwiftUI
 
-private enum Constants {
-    static let spacing: CGFloat = 0
-    static let padding: CGFloat = 8
-    static let iconSize: Font = .system(size: 16)
-    static let frameHeight: CGFloat = 52
-}
-
 struct MenuActionViewRow: View {
     var title: LocalizedStringKey
     var icon: String
-    var isDestractive: Bool
+    var isDestructive: Bool
     var isSelected: Bool = false
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: Constants.spacing) {
+            HStack(spacing: 0) {
                 Text(title)
                     .font(AppFont.bodyRegular)
-                    .foregroundStyle(isDestractive ? .slDestructive : .slTextPrimary)
-                    .padding(Constants.padding)
+                    .foregroundStyle(isDestructive ? .slDestructive : .slTextPrimary)
+                    .padding(8)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
 
                 if isSelected {
                     Image(systemName: "checkmark")
-                        .font(Constants.iconSize)
+                        .font(.system(size: 16))
                         .foregroundStyle(.slAccent)
                 }
 
                 Spacer()
 
                 Image(systemName: icon)
-                    .font(Constants.iconSize)
-                    .foregroundStyle(isDestractive ? .slDestructive : .slTextPrimary)
+                    .font(.system(size: 16))
+                    .foregroundStyle(isDestructive ? .slDestructive : .slTextPrimary)
                     .frame(width: 20)
-                    .padding(.trailing, Constants.padding)
+                    .padding(.trailing, 8)
             }
             .padding(.horizontal, 16)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -52,5 +45,5 @@ struct MenuActionViewRow: View {
 }
 
 #Preview {
-    MenuActionViewRow(title: "Сортировка по Алфавиту", icon: "arrow.up.arrow.down", isDestractive: false, action: {})
+    MenuActionViewRow(title: "Сортировка по Алфавиту", icon: "arrow.up.arrow.down", isDestructive: false, action: {})
 }
