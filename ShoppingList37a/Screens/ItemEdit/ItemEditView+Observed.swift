@@ -57,7 +57,7 @@ extension ItemEditView {
         }
 
         var isDoneEnabled: Bool {
-            !name.isEmpty && isQuantityValid && !isNameDuplicate
+            !normalizedName.isEmpty && isQuantityValid && !isNameDuplicate
         }
 
         /// Название, для которого подсказки не показываются: исходное при открытии или уже принятое.
