@@ -15,15 +15,11 @@ extension ShoppingListView {
         let listTitle: String
         let items: [ShoppingItem]
         var searchText: String
-        var isSortedAlphabetically = false
 
         var filteredItems: [ShoppingItem] {
             let query = searchText.trimmingCharacters(in: .whitespaces)
-            let base = query.isEmpty
-                ? items
-                : items.filter { $0.name.localizedCaseInsensitiveContains(query) }
-            guard isSortedAlphabetically else { return base }
-            return base.sorted { $0.name.localizedCompare($1.name) == .orderedAscending }
+            guard !query.isEmpty else { return items }
+            return items.filter { $0.name.localizedCaseInsensitiveContains(query) }
         }
 
         init(
@@ -34,10 +30,6 @@ extension ShoppingListView {
             self.listTitle = listTitle
             self.items = items
             self.searchText = searchText
-        }
-
-        func toggleAlphabeticalSort() {
-            isSortedAlphabetically.toggle()
         }
     }
 }

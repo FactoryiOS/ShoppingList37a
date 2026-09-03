@@ -20,6 +20,7 @@ private enum Constants {
 struct ShoppingListView: View {
     @Bindable var observed: Observed
     @State private var isMenuPresented = false
+    @State private var isSortedAlphabetically = false
     var onAdd: () -> Void = { }
     var onEdit: (ShoppingItem) -> Void = { _ in }
     var onDelete: (ShoppingItem) -> Void = { _ in }
@@ -65,12 +66,12 @@ struct ShoppingListView: View {
                         onAction: { action in
                             isMenuPresented = false
                             if action == .sort {
-                                observed.toggleAlphabeticalSort()
+                                isSortedAlphabetically.toggle()
                             } else {
                                 onMenuAction(action)
                             }
                         },
-                        isSortActive: observed.isSortedAlphabetically
+                        isSortActive: isSortedAlphabetically
                     )
                     .padding(.trailing, 16)
                 }
@@ -105,7 +106,7 @@ struct ShoppingListView: View {
 
     @ViewBuilder
     private var content: some View {
-        if observed.filteredItems.isEmpty {
+        if displayedItems.isEmpty {
             Spacer()
             EmptyStateView(state: .shoppingItems)
                 .padding(.horizontal, 16)
@@ -115,8 +116,15 @@ struct ShoppingListView: View {
         }
     }
 
+    private var displayedItems: [ShoppingItem] {
+        guard isSortedAlphabetically else { return observed.filteredItems }
+        return observed.filteredItems.sorted {
+            $0.name.localizedCompare($1.name) == .orderedAscending
+        }
+    }
+
     private var itemsList: some View {
-        List(observed.filteredItems) { item in
+        List(displayedItems) { item in
             ShoppingItemView(item: item)
                 .contentShape(Rectangle())
                 .onTapGesture { onToggleBought(item) }
