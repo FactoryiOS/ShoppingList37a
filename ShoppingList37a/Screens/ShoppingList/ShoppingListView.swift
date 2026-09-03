@@ -18,15 +18,37 @@ private enum Constants {
 }
 
 struct ShoppingListView: View {
-    @Bindable var observed: Observed
+    let items: [ShoppingItem]
+    let onAdd: () -> Void
+    let onEdit: (ShoppingItem) -> Void
+    let onDelete: (ShoppingItem) -> Void
+    let onToggleBought: (ShoppingItem) -> Void
+    let onBack: () -> Void
+    let onMenuAction: (MenuAction) -> Void
+
+    @State private var observed: Observed
     @State private var isMenuPresented = false
     @State private var isSortedAlphabetically = false
-    var onAdd: () -> Void = { }
-    var onEdit: (ShoppingItem) -> Void = { _ in }
-    var onDelete: (ShoppingItem) -> Void = { _ in }
-    var onToggleBought: (ShoppingItem) -> Void = { _ in }
-    var onBack: () -> Void = { }
-    var onMenuAction: (MenuAction) -> Void = { _ in }
+
+    init(
+        listTitle: String,
+        items: [ShoppingItem] = [],
+        onAdd: @escaping () -> Void = { },
+        onEdit: @escaping (ShoppingItem) -> Void = { _ in },
+        onDelete: @escaping (ShoppingItem) -> Void = { _ in },
+        onToggleBought: @escaping (ShoppingItem) -> Void = { _ in },
+        onBack: @escaping () -> Void = { },
+        onMenuAction: @escaping (MenuAction) -> Void = { _ in }
+    ) {
+        self.items = items
+        self.onAdd = onAdd
+        self.onEdit = onEdit
+        self.onDelete = onDelete
+        self.onToggleBought = onToggleBought
+        self.onBack = onBack
+        self.onMenuAction = onMenuAction
+        _observed = State(initialValue: Observed(listTitle: listTitle, items: items))
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -40,6 +62,9 @@ struct ShoppingListView: View {
                 .padding(.bottom, 20)
         }
         .background(.slBackgroundPrimary)
+        .onChange(of: items) { _, newItems in
+            observed.sync(items: newItems)
+        }
         .navigationBarBackButtonHidden(true)
         .toolbar {
             if #available(iOS 26.0, *) {
@@ -156,23 +181,19 @@ struct ShoppingListView: View {
 #Preview("Items") {
     NavigationStack {
         ShoppingListView(
-            observed: ShoppingListView.Observed(
-                listTitle: "Новый год",
-                items: [
-                    ShoppingItem(name: "текст", quantity: 2),
-                    ShoppingItem(name: "текст", quantity: 2),
-                    ShoppingItem(name: "Чайник", quantity: 2, isBought: true)
-                ]
-            )
+            listTitle: "Новый год",
+            items: [
+                ShoppingItem(name: "текст", quantity: 2),
+                ShoppingItem(name: "текст", quantity: 2),
+                ShoppingItem(name: "Чайник", quantity: 2, isBought: true)
+            ]
         )
     }
 }
 
 #Preview("Empty") {
     NavigationStack {
-        ShoppingListView(
-            observed: ShoppingListView.Observed(listTitle: "Новый год")
-        )
+        ShoppingListView(listTitle: "Новый год")
     }
 }
 #endif

@@ -94,10 +94,8 @@ struct MainView: View {
     private func shoppingList(_ list: ListItem) -> some View {
         if let sdShoppingList = sdList.first(where: { $0.id == list.id }) {
             ShoppingListView(
-                observed: .init(
-                    listTitle: sdShoppingList.title,
-                    items: sdShoppingList.items.map { ShoppingItem(from: $0) }
-                ),
+                listTitle: sdShoppingList.title,
+                items: sdShoppingList.items.map { ShoppingItem(from: $0) },
                 onAdd: { router.showModal(.createItem) },
                 onEdit: { router.showModal(.editItem($0)) },
                 onDelete: { pendingDeletion = .deleteItem($0) },

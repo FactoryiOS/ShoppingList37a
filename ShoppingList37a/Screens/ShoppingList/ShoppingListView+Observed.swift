@@ -13,7 +13,7 @@ extension ShoppingListView {
     @Observable
     final class Observed {
         let listTitle: String
-        let items: [ShoppingItem]
+        private(set) var items: [ShoppingItem]
         var searchText: String
 
         var filteredItems: [ShoppingItem] {
@@ -30,6 +30,11 @@ extension ShoppingListView {
             self.listTitle = listTitle
             self.items = items
             self.searchText = searchText
+        }
+
+        func sync(items: [ShoppingItem]) {
+            guard self.items != items else { return }
+            self.items = items
         }
     }
 }
