@@ -21,7 +21,7 @@ struct RootView: View {
     private var content: some View {
         switch appState.root {
         case .welcome:
-            WelcomeScreen(onStart: appState.completeWelcome)
+            WelcomeView(onStart: appState.completeWelcome)
 
         case .main:
             MainView()

@@ -1,5 +1,5 @@
 //
-//  WelcomeScreen.swift
+//  WelcomeView.swift
 //  ShoppingList37a
 //
 //  Created by Maria Reshetnikova on 21/08/2026.
@@ -14,7 +14,7 @@ private enum Constants {
     static let buttonTitle: LocalizedStringKey = "Начать"
 }
 
-struct WelcomeScreen: View {
+struct WelcomeView: View {
 
     let onStart: () -> Void
 
@@ -68,6 +68,6 @@ struct WelcomeScreen: View {
 
 #if DEBUG
 #Preview() {
-    WelcomeScreen(onStart: {})
+    WelcomeView(onStart: {})
 }
 #endif
