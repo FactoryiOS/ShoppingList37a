@@ -52,8 +52,12 @@ extension ItemEditView {
             isNameDuplicate ? Errors.itemAlreadyExists : nil
         }
 
+        var isQuantityValid: Bool {
+            (Int(quantity) ?? 0) > 0
+        }
+
         var isDoneEnabled: Bool {
-            !name.isEmpty && !quantity.isEmpty && !isNameDuplicate
+            !name.isEmpty && isQuantityValid && !isNameDuplicate
         }
 
         /// Название, для которого подсказки не показываются: исходное при открытии или уже принятое.
