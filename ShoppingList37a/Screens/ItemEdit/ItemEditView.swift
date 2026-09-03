@@ -4,6 +4,7 @@
 //
 //  Created by Ignat Klimenko on 20.08.2026.
 //
+
 import SwiftUI
 
 private enum Constants {
@@ -12,11 +13,6 @@ private enum Constants {
     static let namePlaceholder: LocalizedStringKey = "Название"
     static let quantityPlaceholder: LocalizedStringKey = "Количество"
     static let unitLabel: LocalizedStringKey = "Ед.изм.:"
-    static let spacing: CGFloat = 16
-    static let unitValueSpacing: CGFloat = 4
-    static let fieldHeight: CGFloat = 54
-    static let fieldCornerRadius: CGFloat = 12
-    static let suggestionRowHeight: CGFloat = 44
 }
 
 struct ItemEditView: View {
@@ -27,7 +23,7 @@ struct ItemEditView: View {
     var body: some View {
         let suggestions = observed.suggestions
 
-        VStack(spacing: Constants.spacing) {
+        VStack(spacing: 16) {
             header
             TextFieldView(
                 placeholder: Constants.namePlaceholder,
@@ -38,7 +34,7 @@ struct ItemEditView: View {
             if !suggestions.isEmpty {
                 suggestionsList(suggestions)
             }
-            HStack(spacing: Constants.spacing) {
+            HStack(spacing: 16) {
                 TextFieldView(
                     placeholder: Constants.quantityPlaceholder,
                     text: $observed.quantity,
@@ -46,12 +42,15 @@ struct ItemEditView: View {
                     errorMessage: nil
                 )
                 .keyboardType(.numberPad)
+                .onChange(of: observed.quantity) { _, _ in
+                    observed.sanitizeQuantity()
+                }
 
                 unitPicker
             }
             Spacer()
         }
-        .padding(Constants.spacing)
+        .padding(16)
         .background(.slBackgroundPrimary)
     }
 
@@ -65,7 +64,7 @@ struct ItemEditView: View {
                         .font(AppFont.bodyRegular)
                         .foregroundStyle(.slTextPrimary)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .frame(height: Constants.suggestionRowHeight)
+                        .frame(height: 44)
                 }
 
                 if suggestion != suggestions.last {
@@ -75,7 +74,7 @@ struct ItemEditView: View {
         }
         .padding(.horizontal)
         .background(.slBackgroundElevated)
-        .cornerRadius(Constants.fieldCornerRadius)
+        .cornerRadius(12)
     }
 
     private var unitPicker: some View {
@@ -94,7 +93,7 @@ struct ItemEditView: View {
 
                 Spacer()
 
-                HStack(spacing: Constants.unitValueSpacing) {
+                HStack(spacing: 4) {
                     Text(observed.unit.title)
 
                     Image(systemName: "chevron.up.chevron.down")
@@ -104,9 +103,9 @@ struct ItemEditView: View {
             .font(AppFont.bodyRegular)
             .padding(.horizontal)
             .frame(maxWidth: .infinity)
-            .frame(height: Constants.fieldHeight)
+            .frame(height: 54)
             .background(.slBackgroundElevated)
-            .cornerRadius(Constants.fieldCornerRadius)
+            .cornerRadius(12)
         }
     }
 
@@ -137,6 +136,7 @@ struct ItemEditView: View {
     }
 }
 
+#if DEBUG
 #Preview("create") {
     ItemEditView(observed: ItemEditView.Observed())
         .preferredColorScheme(.light)
@@ -173,3 +173,4 @@ struct ItemEditView: View {
     )
     .preferredColorScheme(.light)
 }
+#endif

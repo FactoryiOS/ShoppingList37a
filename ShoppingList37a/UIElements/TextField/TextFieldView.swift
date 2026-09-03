@@ -4,14 +4,11 @@
 //
 //  Created by Kirill Maidanovich on 2026/8/15.
 //
+
 import SwiftUI
 
 private enum Constants {
     static let xmark = "xmark.circle.fill"
-    static let spacing: CGFloat = 4
-    static let cornerRadius: CGFloat = 12
-    static let lineWidth = 0.5
-    static let height: CGFloat = 54
 }
 
 struct TextFieldView: View {
@@ -22,7 +19,7 @@ struct TextFieldView: View {
     let errorMessage: LocalizedStringKey?
     
     var body: some View {
-        VStack(spacing: Constants.spacing) {
+        VStack(spacing: 4) {
             HStack {
                 TextField(placeholder, text: $text)
                     
@@ -36,14 +33,14 @@ struct TextFieldView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: Constants.height)
+            .frame(height: 54)
             .font(AppFont.bodyRegular)
             .padding(.horizontal)
             .background(.slBackgroundElevated)
-            .cornerRadius(Constants.cornerRadius)
+            .cornerRadius(12)
             .overlay {
-                RoundedRectangle(cornerRadius: Constants.cornerRadius)
-                    .stroke( isError ? .slDestructive : .clear, lineWidth: Constants.lineWidth)
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(isError ? .slDestructive : .clear, lineWidth: 0.5)
             }
             
             if isError, let errorMessage {
@@ -57,6 +54,7 @@ struct TextFieldView: View {
     }
 }
 
+#if DEBUG
 #Preview("light") {
     ZStack {
         Color.slBackgroundPrimary.ignoresSafeArea()
@@ -90,3 +88,4 @@ struct TextFieldView: View {
     }
     .preferredColorScheme(.dark)
 }
+#endif

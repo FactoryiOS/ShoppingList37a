@@ -9,18 +9,13 @@ import SwiftUI
 
 extension ListsView {
 
-    /// Источник данных - моки, позже заменятся на запросы к SwiftData
     @MainActor
     @Observable
     final class Observed {
-        var lists: [ListItem]
+        let lists: [ListItem]
 
         init(lists: [ListItem]) {
             self.lists = lists
-        }
-        
-        func sortAlphabetically() {
-            lists.sort { $0.title.localizedCompare($1.title) == .orderedAscending }
         }
     }
 }

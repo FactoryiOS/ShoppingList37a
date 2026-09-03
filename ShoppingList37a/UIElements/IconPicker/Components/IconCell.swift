@@ -8,12 +8,7 @@
 import SwiftUI
 
 struct IconCell: View {
-    
-    private enum Constants {
-        static let iconSize: CGFloat = 24
-        static let padding: CGFloat = 12
-    }
-    
+
     let icon: SelectableIcon
     let isSelected: Bool
     let selectionColor: Color
@@ -23,30 +18,29 @@ struct IconCell: View {
             .renderingMode(.template)
             .resizable()
             .scaledToFit()
-            .frame(width: Constants.iconSize, height: Constants.iconSize)
+            .frame(width: 24, height: 24)
             .foregroundStyle(Color(.slBackgroundPrimary))
-            .padding(Constants.padding)
+            .padding(12)
             .background(isSelected ? selectionColor : Color(.slIconBackground))
             .clipShape(Circle())
     }
 }
 
-#Preview("Light") {
+#if DEBUG
+#Preview() {
     HStack(spacing: 8) {
-        IconCell(icon: .snow, isSelected: true, selectionColor: Color(.slCategoryBlue))
-        IconCell(icon: .airplane, isSelected: false, selectionColor: Color(.slCategoryBlue))
+        IconCell(
+            icon: .snow,
+            isSelected: true,
+            selectionColor: Color(.slCategoryBlue)
+        )
+        IconCell(
+            icon: .airplane,
+            isSelected: false,
+            selectionColor: Color(.slCategoryBlue)
+        )
     }
     .frame(width: 160)
     .padding()
-    .preferredColorScheme(.light)
 }
-
-#Preview("Dark") {
-    HStack(spacing: 8) {
-        IconCell(icon: .snow, isSelected: true, selectionColor: Color(.slCategoryBlue))
-        IconCell(icon: .airplane, isSelected: false, selectionColor: Color(.slCategoryBlue))
-    }
-    .frame(width: 160)
-    .padding()
-    .preferredColorScheme(.dark)
-}
+#endif

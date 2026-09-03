@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// Displays a placeholder for empty shopping lists or shopping items.
 struct EmptyStateView: View {
     
     let state: EmptyState
@@ -75,6 +74,7 @@ enum EmptyState {
     }
 }
 
+#if DEBUG
 #Preview("Shopping Lists") {
     EmptyStateView(state: .shoppingLists)
 }
@@ -82,3 +82,4 @@ enum EmptyState {
 #Preview("Shopping Items") {
     EmptyStateView(state: .shoppingItems)
 }
+#endif

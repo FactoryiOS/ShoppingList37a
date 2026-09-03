@@ -1,5 +1,10 @@
 import SwiftUI
 
+private enum Constants {
+    static let namePlaceholder: LocalizedStringKey = "Введите название списка"
+    static let backIcon = "chevron.left"
+}
+
 struct CreateListView: View {
     @Environment(Router.self) private var router
     
@@ -22,7 +27,7 @@ struct CreateListView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     TextFieldView(
-                        placeholder: "Введите название списка",
+                        placeholder: Constants.namePlaceholder,
                         text: $observed.listName,
                         isError: false,
                         errorMessage: nil
@@ -54,7 +59,7 @@ struct CreateListView: View {
                 action: { router.pop() },
                 label: {
                     HStack(spacing: 0) {
-                        Image(systemName: "chevron.left")
+                        Image(systemName: Constants.backIcon)
                             .font(AppFont.callout)
                             .foregroundStyle(Color(.slTextPrimary))
                             .frame(width: 28, height: 44)
@@ -86,10 +91,11 @@ struct CreateListView: View {
             }
         )
         .padding(.horizontal, 16)
-        .padding(.bottom, 8)
+        .padding(.bottom, 20)
     }
 }
 
+#if DEBUG
 #Preview("Редактирование списка") {
     NavigationStack {
         CreateListView(
@@ -103,3 +109,4 @@ struct CreateListView: View {
     }
     .environment(Router())
 }
+#endif

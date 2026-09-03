@@ -5,6 +5,8 @@ enum AppTheme: String, CaseIterable, Identifiable {
 	case light = "Светлая"
 	case dark = "Темная"
 	
+	static let storageKey = "selected_app_theme"
+
 	var id: String { self.rawValue }
 
 	var title: LocalizedStringKey {

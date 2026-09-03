@@ -1,15 +1,11 @@
 //
-//  Button.swift
+//  ButtonView.swift
 //  ShoppingList37a
 //
 //  Created by Kirill Maidanovich on 2026/8/16.
 //
-import SwiftUI
 
-private enum Constants {
-    static let height: CGFloat = 44
-    static let cornerRadius: CGFloat = 100
-}
+import SwiftUI
 
 struct ButtonView: View {
     var isActive: Bool
@@ -21,18 +17,19 @@ struct ButtonView: View {
             action()
         } label: {
             Text(title)
-                .foregroundStyle(isActive ? .white : .slTextSecondary)
+                .foregroundStyle(isActive ? .slTextOnAccent : .slTextSecondary)
                 .font(AppFont.headline)
                 .frame(maxWidth: .infinity)
-                .frame(height: Constants.height)
+                .frame(height: 44)
                 .background(isActive ? .slAccent : .slButtonDisabled)
-                .cornerRadius(Constants.cornerRadius)
+                .cornerRadius(100)
         }
         .disabled(!isActive)
     }
 }
 
-#Preview("light") {
+#if DEBUG
+#Preview() {
     ZStack {
         Color.slBackgroundPrimary.ignoresSafeArea()
         VStack {
@@ -41,17 +38,5 @@ struct ButtonView: View {
         }
         .padding(16)
     }
-    .preferredColorScheme(.light)
 }
-
-#Preview("dark") {
-    ZStack {
-        Color.slBackgroundPrimary.ignoresSafeArea()
-        VStack {
-            Spacer()
-            ButtonView(isActive: false, title: "Создать", action: { })
-        }
-        .padding(16)
-    }
-    .preferredColorScheme(.dark)
-}
+#endif

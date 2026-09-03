@@ -4,6 +4,7 @@
 //
 //  Created by Maria Reshetnikova on 27/08/2026.
 //
+
 import Observation
 
 enum Route: Hashable {
@@ -40,11 +41,7 @@ final class Router {
         guard !navigationPath.isEmpty else { return }
         navigationPath.removeLast()
     }
-    
-    func popToRoot() {
-        navigationPath.removeAll()
-    }
-    
+
     func showModal(_ modal: Modal) {
         presentedModal = modal
     }

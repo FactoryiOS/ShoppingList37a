@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ShoppingItem: Identifiable {
+struct ShoppingItem: Identifiable, Equatable {
     let id: UUID
     let name: String
     let quantity: Int
@@ -31,6 +31,12 @@ struct ShoppingItem: Identifiable {
 
 extension ShoppingItem {
     init(from sdItem: SDShoppingItem) {
-        self.init(id: sdItem.id, name: sdItem.name, quantity: sdItem.quantity, unit: sdItem.unit, isBought: sdItem.isBought)
+        self.init(
+            id: sdItem.id,
+            name: sdItem.name,
+            quantity: sdItem.quantity,
+            unit: sdItem.unit,
+            isBought: sdItem.isBought
+        )
     }
 }

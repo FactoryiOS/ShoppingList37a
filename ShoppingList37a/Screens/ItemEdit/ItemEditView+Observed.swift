@@ -4,6 +4,7 @@
 //
 //  Created by Ignat Klimenko on 20.08.2026.
 //
+
 import SwiftUI
 
 private enum Constants {
@@ -12,7 +13,6 @@ private enum Constants {
 
 extension ItemEditView {
 
-    /// Состояние экрана: создание нового товара или редактирование существующего.
     enum Mode {
         case create
         case edit
@@ -25,7 +25,6 @@ extension ItemEditView {
         }
     }
 
-    /// Логика экрана создания/редактирования товара.
     @MainActor
     @Observable
     final class Observed {
@@ -53,8 +52,12 @@ extension ItemEditView {
             isNameDuplicate ? Errors.itemAlreadyExists : nil
         }
 
+        var isQuantityValid: Bool {
+            (Int(quantity) ?? 0) > 0
+        }
+
         var isDoneEnabled: Bool {
-            !name.isEmpty && !quantity.isEmpty && !isNameDuplicate
+            !normalizedName.isEmpty && isQuantityValid && !isNameDuplicate
         }
 
         /// Название, для которого подсказки не показываются: исходное при открытии или уже принятое.
@@ -85,6 +88,13 @@ extension ItemEditView {
             acceptedName = suggestion
         }
 
+        func sanitizeQuantity() {
+            let digits = quantity.filter(\.isNumber)
+            if digits != quantity {
+                quantity = digits
+            }
+        }
+
         init(
             mode: Mode = .create,
             name: String = "",
@@ -95,7 +105,7 @@ extension ItemEditView {
         ) {
             self.mode = mode
             self.name = name
-            self.quantity = quantity
+            self.quantity = quantity.filter(\.isNumber)
             self.unit = unit
             self.existingNames = Set(existingNames.map(Self.normalized))
             self.suggestionNames = suggestionNames

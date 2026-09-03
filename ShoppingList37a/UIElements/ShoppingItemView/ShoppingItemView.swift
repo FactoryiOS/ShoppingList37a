@@ -48,13 +48,14 @@ struct ShoppingItemView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ZStack {
         Color.slBackgroundPrimary
             .ignoresSafeArea()
 
         VStack(spacing: 0) {
-            ShoppingItemView(item: .mock)
+            ShoppingItemView(item: ShoppingItem(name: "Чайник", quantity: 2))
 
             Divider()
 
@@ -64,3 +65,4 @@ struct ShoppingItemView: View {
         }
     }
 }
+#endif

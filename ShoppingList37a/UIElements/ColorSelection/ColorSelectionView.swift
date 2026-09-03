@@ -4,14 +4,8 @@
 //
 //  Created by Kirill Maidanovich on 16.08.2026.
 //
-import SwiftUI
 
-private enum Constants {
-    static let spacingZero: CGFloat = 0
-    static let padding: CGFloat = 12
-    static let spacing: CGFloat = 12
-    static let cornerRadius: CGFloat = 12
-}
+import SwiftUI
 
 struct ColorSelectionView: View {
     
@@ -19,15 +13,15 @@ struct ColorSelectionView: View {
     var title: LocalizedStringKey
     
     var body: some View {
-        VStack(alignment: .leading, spacing: Constants.spacingZero) {
+        VStack(alignment: .leading, spacing: 0) {
             Text(title)
                 .font(AppFont.callout)
                 .foregroundStyle(.slTextCounter)
-                .padding(.top, Constants.padding)
-                .padding(.leading, Constants.padding)
-                .padding(.bottom, Constants.padding)
+                .padding(.top, 12)
+                .padding(.leading, 12)
+                .padding(.bottom, 12)
             
-            HStack(spacing: Constants.spacing) {
+            HStack(spacing: 12) {
                 ForEach(SelectableColor.allCases) { color in
                     Button {
                         selectedColor = color
@@ -38,15 +32,16 @@ struct ColorSelectionView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .padding(.horizontal, Constants.padding)
-            .padding(.bottom, Constants.padding)
+            .padding(.horizontal, 12)
+            .padding(.bottom, 12)
         }
         .background(.slBackgroundElevated)
-        .cornerRadius(Constants.cornerRadius)
+        .cornerRadius(12)
     }
 }
 
-#Preview("light") {
+#if DEBUG
+#Preview() {
     struct PreviewWrapper: View {
         @State var selectedColor: SelectableColor?
         var body: some View {
@@ -54,22 +49,8 @@ struct ColorSelectionView: View {
                 Color.slBackgroundPrimary
                 ColorSelectionView(selectedColor: $selectedColor, title: "Выберите цвет")
             }
-            .preferredColorScheme(.light)
         }
     }
     return PreviewWrapper()
 }
-
-#Preview("dark") {
-    struct PreviewWrapper: View {
-        @State var selectedColor: SelectableColor?
-        var body: some View {
-            ZStack {
-                Color.slBackgroundPrimary
-                ColorSelectionView(selectedColor: $selectedColor, title: "Выберите цвет")
-            }
-            .preferredColorScheme(.dark)
-        }
-    }
-    return PreviewWrapper()
-}
+#endif

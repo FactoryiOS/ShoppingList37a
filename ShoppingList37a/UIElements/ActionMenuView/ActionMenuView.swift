@@ -7,60 +7,59 @@
 
 import SwiftUI
 
-private enum Constants {
-    static let spacing: CGFloat = 0
-    static let frameWidth: CGFloat = 250
-    static let cornerRadius: CGFloat = 12
-    static let opacity = 0.12
-    static let shadowRadius: CGFloat = 8
-    static let xArg: CGFloat = 0
-    static let yArg: CGFloat = 4
-    static let shadowScale = 0.98
-}
+enum MenuAction: CaseIterable {
+    case sort
+    case share
+    case uncheck
+    case deleteItems
 
-enum MenuAction: String, CaseIterable {
-    case sort = "Сортировать по Алфавиту"
-    case share = "Поделиться"
-    case uncheck = "Снять отметки со всех товаров"
-    case deleteItems = "Удалить купленные товары"
-    
-    var title: String { rawValue }
-    
+    var title: LocalizedStringKey {
+        switch self {
+        case .sort: "Сортировать по Алфавиту"
+        case .share: "Поделиться"
+        case .uncheck: "Снять отметки со всех товаров"
+        case .deleteItems: "Удалить купленные товары"
+        }
+    }
+
     var icon: String {
         switch self {
         case .sort: "arrow.up.arrow.down"
         case .share: "square.and.arrow.up"
-        case .uncheck: "arrow.trianglehead.2.clockwise.rotate.90"
+        case .uncheck: "arrow.triangle.2.circlepath"
         case .deleteItems: "trash"
         }
     }
     
-    var isDestractive: Bool {
+    var isDestructive: Bool {
         self == .deleteItems
     }
 }
 
 struct ActionMenuView: View {
-    
+
     let onAction: (MenuAction) -> Void
+    var isSortActive: Bool = false
+
     var body: some View {
-        VStack(spacing: Constants.spacing) {
+        VStack(spacing: 0) {
             menu
         }
-        .frame(width: Constants.frameWidth)
+        .frame(width: 250)
         .background(Color(.slBackgroundElevated))
-        .clipShape(RoundedRectangle(cornerRadius: Constants.cornerRadius))
-        .shadow(color: Color.black.opacity(Constants.opacity), radius: Constants.shadowRadius, x: Constants.xArg, y: Constants.yArg)
-        .transition(.opacity.combined(with: .scale(scale: Constants.shadowScale, anchor: .topTrailing)))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .shadow(color: Color.black.opacity(0.12), radius: 8, x: 0, y: 4)
+        .transition(.opacity.combined(with: .scale(scale: 0.98, anchor: .topTrailing)))
     }
-    
+
     private var menu: some View {
-        VStack(spacing: Constants.spacing) {
+        VStack(spacing: 0) {
             ForEach(MenuAction.allCases, id: \.self) { action in
                 MenuActionViewRow(
                     title: action.title,
                     icon: action.icon,
-                    isDestractive: action.isDestractive,
+                    isDestructive: action.isDestructive,
+                    isSelected: action == .sort && isSortActive,
                     action: { onAction(action) }
                 )
                 if action != MenuAction.allCases.last {
@@ -71,6 +70,8 @@ struct ActionMenuView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ActionMenuView(onAction: {_ in })
 }
+#endif

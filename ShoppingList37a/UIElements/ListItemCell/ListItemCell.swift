@@ -23,8 +23,6 @@ struct ListItemCell: View {
                 .fixedSize()
         }
         .padding(16)
-        .background(Color(.slBackgroundElevated))
-        .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 
     private var icon: some View {
@@ -37,6 +35,7 @@ struct ListItemCell: View {
             .padding(16)
             .background(item.color.color)
             .clipShape(Circle())
+            .drawingGroup()
     }
     
     private var counter: some View {
@@ -50,15 +49,27 @@ struct ListItemCell: View {
         )
         .monospacedDigit()
     }
-    
 }
 
+#if DEBUG
 #Preview {
     ZStack {
         Color(.slBackgroundPrimary)
             .ignoresSafeArea()
         
-        ListItemCell(item: .mock)
+        ListItemCell(
+            item: ListItem(
+                id: UUID(),
+                title: "Новый год",
+                icon: .calendar,
+                color: .blue,
+                boughtCount: 10,
+                totalCount: 20
+            )
+        )
+        .background(Color(.slBackgroundElevated))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
             .padding()
     }
 }
+#endif

@@ -4,6 +4,7 @@
 //
 //  Created by Ignat Klimenko on 25.08.2026.
 //
+
 import SwiftUI
 
 private enum Constants {
@@ -13,32 +14,57 @@ private enum Constants {
     static let menuIcon = "ellipsis.circle"
     static let editIcon = "square.and.pencil"
     static let deleteIcon = "trash"
-    static let spacing: CGFloat = 16
-    static let titleSpacing: CGFloat = 8
-    static let searchVerticalPadding: CGFloat = 8
     static let animationDuration = 0.3
 }
 
 struct ShoppingListView: View {
-    @Bindable var observed: Observed
+    let items: [ShoppingItem]
+    let onAdd: () -> Void
+    let onEdit: (ShoppingItem) -> Void
+    let onDelete: (ShoppingItem) -> Void
+    let onToggleBought: (ShoppingItem) -> Void
+    let onBack: () -> Void
+    let onMenuAction: (MenuAction) -> Void
+
+    @State private var observed: Observed
     @State private var isMenuPresented = false
-    var onAdd: () -> Void = { }
-    var onEdit: (ShoppingItem) -> Void = { _ in }
-    var onDelete: (ShoppingItem) -> Void = { _ in }
-    var onToggleBought: (ShoppingItem) -> Void = { _ in }
-    var onBack: () -> Void = { }
-    var onMenuAction: (MenuAction) -> Void = { _ in }
+    @State private var isSortedAlphabetically = false
+
+    init(
+        listTitle: String,
+        items: [ShoppingItem] = [],
+        onAdd: @escaping () -> Void = { },
+        onEdit: @escaping (ShoppingItem) -> Void = { _ in },
+        onDelete: @escaping (ShoppingItem) -> Void = { _ in },
+        onToggleBought: @escaping (ShoppingItem) -> Void = { _ in },
+        onBack: @escaping () -> Void = { },
+        onMenuAction: @escaping (MenuAction) -> Void = { _ in }
+    ) {
+        self.items = items
+        self.onAdd = onAdd
+        self.onEdit = onEdit
+        self.onDelete = onDelete
+        self.onToggleBought = onToggleBought
+        self.onBack = onBack
+        self.onMenuAction = onMenuAction
+        _observed = State(initialValue: Observed(listTitle: listTitle, items: items))
+    }
 
     var body: some View {
         VStack(spacing: 0) {
             SearchFieldView(placeholder: Constants.searchPrompt, text: $observed.searchText)
-                .padding(.horizontal, Constants.spacing)
-                .padding(.vertical, Constants.searchVerticalPadding)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
             content
             ButtonView(isActive: true, title: Constants.addTitle, action: onAdd)
-                .padding(Constants.spacing)
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+                .padding(.bottom, 20)
         }
         .background(.slBackgroundPrimary)
+        .onChange(of: items) { _, newItems in
+            observed.sync(items: newItems)
+        }
         .navigationBarBackButtonHidden(true)
         .toolbar {
             if #available(iOS 26.0, *) {
@@ -61,15 +87,18 @@ struct ShoppingListView: View {
         .overlay {
             if isMenuPresented {
                 ZStack(alignment: .topTrailing) {
-                    ActionMenuView(onAction: { action in
-                        isMenuPresented = false
-                        if action == .sort {
-                            observed.sortAlphabetically()
-                        } else {
-                            onMenuAction(action)
-                        }
-                    })
-                    .padding(.trailing, Constants.spacing)
+                    ActionMenuView(
+                        onAction: { action in
+                            isMenuPresented = false
+                            if action == .sort {
+                                isSortedAlphabetically.toggle()
+                            } else {
+                                onMenuAction(action)
+                            }
+                        },
+                        isSortActive: isSortedAlphabetically
+                    )
+                    .padding(.trailing, 16)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
@@ -78,7 +107,7 @@ struct ShoppingListView: View {
 
     private var backTitle: some View {
         Button(action: onBack) {
-            HStack(spacing: Constants.titleSpacing) {
+            HStack(spacing: 8) {
                 Image(systemName: Constants.backIcon)
                     .font(AppFont.bodySemiBold)
 
@@ -102,27 +131,31 @@ struct ShoppingListView: View {
 
     @ViewBuilder
     private var content: some View {
-        if observed.filteredItems.isEmpty {
+        if displayedItems.isEmpty {
             Spacer()
             EmptyStateView(state: .shoppingItems)
-                .padding(.horizontal, Constants.spacing)
+                .padding(.horizontal, 16)
             Spacer()
         } else {
             itemsList
         }
     }
 
+    private var displayedItems: [ShoppingItem] {
+        guard isSortedAlphabetically else { return observed.filteredItems }
+        return observed.filteredItems.sorted {
+            $0.name.localizedCompare($1.name) == .orderedAscending
+        }
+    }
+
     private var itemsList: some View {
-        List(observed.filteredItems) { item in
+        List(displayedItems) { item in
             ShoppingItemView(item: item)
                 .contentShape(Rectangle())
                 .onTapGesture { onToggleBought(item) }
                 .listRowInsets(EdgeInsets())
-                .listRowSeparator(
-                    item.id == observed.filteredItems.first?.id ? .hidden : .visible,
-                    edges: .top
-                )
                 .listRowBackground(Color.slBackgroundPrimary)
+                .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button {
                         onDelete(item)
@@ -144,25 +177,23 @@ struct ShoppingListView: View {
     }
 }
 
+#if DEBUG
 #Preview("Items") {
     NavigationStack {
         ShoppingListView(
-            observed: ShoppingListView.Observed(
-                listTitle: "Новый год",
-                items: [
-                    ShoppingItem(name: "текст", quantity: 2),
-                    ShoppingItem(name: "текст", quantity: 2),
-                    ShoppingItem(name: "Чайник", quantity: 2, isBought: true)
-                ]
-            )
+            listTitle: "Новый год",
+            items: [
+                ShoppingItem(name: "текст", quantity: 2),
+                ShoppingItem(name: "текст", quantity: 2),
+                ShoppingItem(name: "Чайник", quantity: 2, isBought: true)
+            ]
         )
     }
 }
 
 #Preview("Empty") {
     NavigationStack {
-        ShoppingListView(
-            observed: ShoppingListView.Observed(listTitle: "Новый год")
-        )
+        ShoppingListView(listTitle: "Новый год")
     }
 }
+#endif
