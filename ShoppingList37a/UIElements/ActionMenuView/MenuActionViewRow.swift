@@ -46,6 +46,11 @@ struct MenuActionViewRow: View {
 
 #if DEBUG
 #Preview {
-    MenuActionViewRow(title: "Сортировка по Алфавиту", icon: "arrow.up.arrow.down", isDestructive: false, action: {})
+    MenuActionViewRow(
+        title: "Сортировка по Алфавиту",
+        icon: "arrow.up.arrow.down",
+        isDestructive: false,
+        action: {}
+    )
 }
 #endif
